@@ -33,6 +33,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Immediate enforcement for unverified users
+        if (!$request->user()->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice');
+        }
+
         if ($request->user()->is_admin) {
             return redirect()->intended(route('admin.dashboard'));
         }
