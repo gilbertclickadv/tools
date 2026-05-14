@@ -6,223 +6,172 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import VerificationAlert from '@/Components/VerificationAlert.vue';
+import PWAInstallPrompt from '@/Components/PWAInstallPrompt.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
-    <div>
+    <div class="min-h-screen bg-[#0B0F19] text-gray-100 selection:bg-purple-500 selection:text-white">
         <VerificationAlert />
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav
-                class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800"
-            >
-                <!-- Primary Navigation Menu -->
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex h-16 justify-between">
-                        <div class="flex">
-                            <!-- Logo -->
-                            <div class="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
-                                    />
-                                </Link>
-                            </div>
+        <PWAInstallPrompt />
 
-                            <!-- Navigation Links -->
-                            <div
-                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
-                            >
-                                <NavLink
-                                    href="/"
-                                    :active="route().current('home')"
-                                >
-                                    Home
-                                </NavLink>
-                                <NavLink
-                                    v-if="$page.props.auth.user?.is_admin"
-                                    :href="route('admin.dashboard')"
-                                    :active="route().current('admin.dashboard')"
-                                >
-                                    Admin Dashboard
-                                </NavLink>
-                                <NavLink
-                                    v-if="$page.props.auth.user?.is_admin"
-                                    :href="route('admin.settings')"
-                                    :active="route().current('admin.settings')"
-                                >
-                                    Admin Settings
-                                </NavLink>
-                            </div>
+        <header class="border-b border-gray-800/60 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-[100]">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-20 items-center justify-between">
+                <!-- Brand Logo (Left) -->
+                <div class="flex items-center gap-x-3 group">
+                    <Link href="/" class="flex items-center gap-x-3">
+                        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-900/40 group-hover:scale-110 transition-transform duration-300">
+                            <img src="/assets/images/icon_only.webp" class="h-6 w-6 object-contain" alt="FluxMedia Logo" />
                         </div>
-
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
-                            <!-- Settings Dropdown -->
-                            <div class="relative ms-3">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
-                                            >
-                                                {{ $page.props.auth.user.name }}
-
-                                                <svg
-                                                    class="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <DropdownLink
-                                            :href="route('profile.edit')"
-                                        >
-                                            Profile
-                                        </DropdownLink>
-                                        <DropdownLink
-                                            :href="route('logout')"
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
+                        <div class="flex flex-col text-left">
+                            <span class="text-lg font-black tracking-tighter text-white">FLUXMEDIA</span>
+                            <span class="text-[10px] font-bold text-purple-400 tracking-[0.2em] uppercase leading-none">Studio Suite</span>
                         </div>
-
-                        <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button
-                                @click="
-                                    showingNavigationDropdown =
-                                        !showingNavigationDropdown
-                                "
-                                class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-400 dark:focus:bg-gray-900 dark:focus:text-gray-400"
-                            >
-                                <svg
-                                    class="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex':
-                                                !showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex':
-                                                showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+                    </Link>
                 </div>
 
-                <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{
-                        block: showingNavigationDropdown,
-                        hidden: !showingNavigationDropdown,
-                    }"
-                    class="sm:hidden"
-                >
-                    <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href="/"
-                            :active="route().current('home')"
-                        >
-                            Home
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            v-if="$page.props.auth.user?.is_admin"
-                            :href="route('admin.dashboard')"
-                            :active="route().current('admin.dashboard')"
-                        >
-                            Admin Dashboard
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            v-if="$page.props.auth.user?.is_admin"
-                            :href="route('admin.settings')"
-                            :active="route().current('admin.settings')"
-                        >
-                            Admin Settings
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div
-                        class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600"
+                <!-- Desktop Navigation (Center) -->
+                <nav class="hidden md:flex items-center bg-gray-900/50 border border-gray-800/50 rounded-2xl p-1 shadow-inner">
+                    <Link 
+                        :href="route('home')" 
+                        :class="[route().current('home') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
+                        class="px-5 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all"
                     >
-                        <div class="px-4">
-                            <div
-                                class="text-base font-medium text-gray-800 dark:text-gray-200"
-                            >
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="text-sm font-medium text-gray-500">
-                                {{ $page.props.auth.user.email }}
-                            </div>
-                        </div>
+                        Image Studio
+                    </Link>
+                    <Link 
+                        :href="route('qr.generator')" 
+                        :class="[route().current('qr.generator') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
+                        class="px-5 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all"
+                    >
+                        QR Intel
+                    </Link>
+                    <Link 
+                        :href="route('history')" 
+                        :class="[route().current('history') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
+                        class="px-5 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all"
+                    >
+                        History Hub
+                    </Link>
+                </nav>
 
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('logout')"
-                                method="post"
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
+                <!-- User Controls (Right) -->
+                <div class="flex items-center gap-x-4">
+                    <div class="hidden sm:block">
+                        <Dropdown align="right" width="64">
+                            <template #trigger>
+                                <button class="flex items-center gap-x-3 p-1.5 pr-4 rounded-2xl bg-gray-900/80 border border-gray-800/50 hover:border-purple-500/30 transition-all group">
+                                    <div class="h-8 w-8 rounded-lg bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-xs font-bold text-purple-400 border border-gray-700/50">
+                                        {{ $page.props.auth.user.name.charAt(0) }}
+                                    </div>
+                                    <div class="text-left">
+                                        <div class="text-[11px] font-black text-white leading-tight uppercase tracking-wide truncate max-w-[100px]">{{ $page.props.auth.user.name }}</div>
+                                        <div class="text-[9px] font-bold text-gray-500 leading-none">Account Node</div>
+                                    </div>
+                                    <svg class="h-3 w-3 text-gray-600 group-hover:text-purple-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </template>
+
+                            <template #content>
+                                <div class="px-4 py-3 border-b border-gray-800/50 bg-gray-900/50 text-left">
+                                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-1 text-left">Session Identity</p>
+                                    <p class="text-xs font-bold text-white truncate text-left">{{ $page.props.auth.user.email }}</p>
+                                </div>
+                                <div class="p-1">
+                                    <DropdownLink :href="route('profile.edit')" class="rounded-lg">
+                                        <div class="flex items-center gap-x-3 py-1">
+                                            <div class="h-8 w-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                            </div>
+                                            <span class="font-bold">Identity Settings</span>
+                                        </div>
+                                    </DropdownLink>
+                                    <DropdownLink v-if="$page.props.auth.user?.is_admin" :href="route('admin.dashboard')" class="rounded-lg">
+                                        <div class="flex items-center gap-x-3 py-1 text-amber-400">
+                                            <div class="h-8 w-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 border border-amber-500/20">
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                            </div>
+                                            <span class="font-bold text-white">Command Center</span>
+                                        </div>
+                                    </DropdownLink>
+                                    <div class="border-t border-gray-800/50 my-1"></div>
+                                    <DropdownLink :href="route('logout')" method="post" as="button" class="rounded-lg w-full text-left">
+                                        <div class="flex items-center gap-x-3 py-1 text-red-400">
+                                            <div class="h-8 w-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 border border-red-500/20">
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                            </div>
+                                            <span class="font-bold">Terminate Session</span>
+                                        </div>
+                                    </DropdownLink>
+                                </div>
+                            </template>
+                        </Dropdown>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button @click="showingNavigationDropdown = !showingNavigationDropdown" class="md:hidden p-2 rounded-xl bg-gray-900/80 border border-gray-800/50 text-purple-400">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path v-if="!showingNavigationDropdown" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <Transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="opacity-0 -translate-y-4"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition duration-150 ease-in"
+                leave-to-class="opacity-0 -translate-y-4"
+            >
+                <div v-if="showingNavigationDropdown" class="md:hidden border-t border-gray-800/60 bg-[#0B0F19] px-4 py-6 space-y-4">
+                    <div class="grid grid-cols-1 gap-2">
+                        <Link :href="route('home')" class="p-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 flex items-center gap-x-4">
+                            <div class="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            </div>
+                            <span class="font-extrabold uppercase tracking-wider text-sm">Image Studio</span>
+                        </Link>
+                        <Link :href="route('qr.generator')" class="p-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 flex items-center gap-x-4">
+                            <div class="h-10 w-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+                            </div>
+                            <span class="font-extrabold uppercase tracking-wider text-sm text-left">QR Intel</span>
+                        </Link>
+                        <Link :href="route('history')" class="p-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 flex items-center gap-x-4">
+                            <div class="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <span class="font-extrabold uppercase tracking-wider text-sm text-left">History Hub</span>
+                        </Link>
+                    </div>
+                    <div class="pt-4 border-t border-gray-800/60 flex items-center justify-between">
+                        <div class="flex items-center gap-x-3 text-left">
+                            <div class="h-10 w-10 rounded-xl bg-gray-800 flex items-center justify-center text-purple-400 font-bold border border-gray-700">
+                                {{ $page.props.auth.user.name.charAt(0) }}
+                            </div>
+                            <div class="text-left">
+                                <div class="text-xs font-black text-white uppercase tracking-wide text-left">{{ $page.props.auth.user.name }}</div>
+                                <div class="text-[10px] font-bold text-gray-500 truncate max-w-[150px] text-left">{{ $page.props.auth.user.email }}</div>
+                            </div>
                         </div>
+                        <Link :href="route('logout')" method="post" as="button" class="p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                        </Link>
                     </div>
                 </div>
-            </nav>
+            </Transition>
+        </header>
 
-            <!-- Page Heading -->
-            <header
-                class="bg-white shadow dark:bg-gray-800"
-                v-if="$slots.header"
-            >
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-
-            <!-- Page Content -->
-            <main>
-                <slot />
-            </main>
-        </div>
+        <!-- Page Content -->
+        <main>
+            <slot />
+        </main>
     </div>
 </template>
