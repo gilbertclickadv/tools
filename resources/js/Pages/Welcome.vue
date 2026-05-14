@@ -1,7 +1,11 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import { ref, computed, watch, nextTick } from 'vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownLink from '@/Components/DropdownLink.vue';
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
+
+const mobileMenuOpen = ref(false);
 
 const props = defineProps({
     canLogin: Boolean,
@@ -341,54 +345,111 @@ const downloadProcessedImage = () => {
         <meta name="description" content="Professional web-based image manipulation suite. Convert codecs, perform visual overlay cropping, apply Gaussian filters, and compress assets locally with secure persistent disk cache lifecycles." />
     </Head>
 
-    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta selection:bg-purple-500 selection:text-white pb-20">
-        <!-- Premium Navigation Header -->
-        <header class="border-b border-gray-800/60 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-50">
-            <div class="mx-auto max-w-7xl px-6 flex h-20 items-center justify-between">
-                <div class="flex items-center gap-x-3">
-                    <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/20 font-bold text-xl select-none">
-                        F
-                    </div>
+    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta selection:bg-purple-500 selection:text-white pb-20 overflow-x-hidden">
+        <header class="border-b border-gray-800/60 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-[100]">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-20 items-center justify-between">
+                <!-- Brand Logo (Left) -->
+                <Link href="/" class="flex items-center gap-x-3 shrink-0 group">
+                    <img src="/assets/images/icon_only.webp" class="h-10 w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
                     <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
                         FluxMedia
                     </span>
-                </div>
+                </Link>
 
-                <nav class="flex items-center gap-x-4 text-sm font-medium">
-                    <Link href="/" class="text-purple-400 font-semibold transition-colors">
+                <!-- Desktop Navigation (Centered) -->
+                <nav class="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 gap-x-6 text-sm font-medium">
+                    <Link href="/" class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20">
                         Image Studio
                     </Link>
-                    <Link href="/qr-code-generator" class="text-gray-400 hover:text-white transition-colors">
-                        QR Code Generator
+                    <Link href="/qr-code-generator" class="px-4 py-2 rounded-xl transition-all duration-200 text-gray-400 hover:text-white hover:bg-gray-800/50">
+                        QR Generator
                     </Link>
-                    <div class="h-4 w-px bg-gray-800 hidden sm:block"></div>
-                    <Link
-                        v-if="$page.props.auth?.user"
-                        :href="route('dashboard')"
-                        class="rounded-lg px-3 py-1.5 bg-gray-800/80 hover:bg-gray-700/80 transition-all border border-gray-700/50 text-xs sm:text-sm"
-                    >
-                        Dashboard
+                    <Link href="/history" class="px-4 py-2 rounded-xl transition-all duration-200 text-gray-400 hover:text-white hover:bg-gray-800/50">
+                        History Hub
                     </Link>
-                    <Link
-                        v-if="$page.props.auth?.user?.is_admin"
-                        :href="route('admin.dashboard')"
-                        class="rounded-lg px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all text-white font-semibold shadow-md shadow-purple-600/20 text-xs sm:text-sm"
-                    >
-                        Admin Portal
-                    </Link>
-                    <template v-if="!$page.props.auth?.user">
-                        <Link :href="route('login')" class="text-gray-400 hover:text-white transition-colors">
-                            Log in
-                        </Link>
-                        <Link
-                            v-if="canRegister"
-                            :href="route('register')"
-                            class="rounded-lg px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-md shadow-purple-600/20 font-semibold text-xs sm:text-sm"
-                        >
-                            Register
-                        </Link>
-                    </template>
                 </nav>
+
+                <!-- Desktop Auth (Right) -->
+                <div class="hidden lg:flex items-center gap-x-4">
+                    <template v-if="$page.props.auth?.user">
+                        <Dropdown align="right" width="56">
+                            <template #trigger>
+                                <button class="flex items-center gap-x-2.5 px-3 py-1.5 rounded-xl border border-gray-800 bg-[#121826]/50 hover:bg-gray-800/80 transition-all group">
+                                    <div class="h-7 w-7 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-[11px] text-white">
+                                        {{ $page.props.auth.user.name[0] }}
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-300 group-hover:text-white transition-colors">
+                                        {{ $page.props.auth.user.name.split(' ')[0] }}
+                                    </span>
+                                    <svg class="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </template>
+                            <template #content>
+                                <div class="px-4 py-2 border-b border-gray-800/80 mb-1">
+                                    <p class="text-xs font-bold text-white truncate">{{ $page.props.auth.user.name }}</p>
+                                    <p class="text-[10px] text-gray-500 truncate">{{ $page.props.auth.user.email }}</p>
+                                </div>
+                                <DropdownLink :href="route('profile.edit')" class="flex items-center gap-x-2">
+                                    Profile Settings
+                                </DropdownLink>
+                                <DropdownLink v-if="$page.props.auth?.user?.is_admin" :href="route('admin.dashboard')" class="text-purple-400 font-bold">
+                                    Admin Dashboard
+                                </DropdownLink>
+                                <div class="h-px bg-gray-800/60 my-1"></div>
+                                <DropdownLink :href="route('logout')" method="post" as="button" class="text-red-400">
+                                    Logout Session
+                                </DropdownLink>
+                            </template>
+                        </Dropdown>
+                    </template>
+                    <template v-else>
+                        <Link :href="route('login')" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Log in</Link>
+                        <Link v-if="canRegister" :href="route('register')" class="rounded-lg px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm shadow-md shadow-purple-600/20">Register Now</Link>
+                    </template>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="lg:hidden flex items-center">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 text-gray-400 hover:text-white focus:outline-none">
+                        <svg v-if="!mobileMenuOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg v-else class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div v-if="mobileMenuOpen" class="lg:hidden bg-[#121826]/95 backdrop-blur-xl border-t border-gray-800 p-4 space-y-4 animate-fade-in">
+                <div class="flex flex-col gap-y-2">
+                    <Link href="/" class="px-4 py-3 rounded-xl bg-purple-500/10 text-purple-400 font-bold border border-purple-500/20">Image Studio</Link>
+                    <Link href="/qr-code-generator" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">QR Generator</Link>
+                    <Link href="/history" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">History Hub</Link>
+                </div>
+                <div class="pt-4 border-t border-gray-800 flex flex-col gap-y-3">
+                    <template v-if="$page.props.auth?.user">
+                        <div class="flex items-center gap-x-3 px-4 py-2">
+                            <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white">
+                                {{ $page.props.auth.user.name[0] }}
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-white">{{ $page.props.auth.user.name }}</p>
+                                <p class="text-xs text-gray-500">{{ $page.props.auth.user.email }}</p>
+                            </div>
+                        </div>
+                        <Link :href="route('profile.edit')" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">Profile Settings</Link>
+                        <Link v-if="$page.props.auth?.user?.is_admin" :href="route('admin.dashboard')" class="px-4 py-3 rounded-xl text-purple-400 font-bold hover:bg-purple-500/10">Admin Dashboard</Link>
+                        <Link :href="route('logout')" method="post" as="button" class="w-full text-left px-4 py-3 rounded-xl text-red-400 font-semibold hover:bg-red-500/10">Logout</Link>
+                    </template>
+                    <template v-else>
+                        <Link :href="route('login')" class="px-4 py-2 text-gray-400 font-medium">Log in</Link>
+                        <Link v-if="canRegister" :href="route('register')" class="mx-4 py-2 text-center rounded-lg bg-purple-600 text-white font-bold">Register Now</Link>
+                    </template>
+                </div>
             </div>
         </header>
 
@@ -398,10 +459,12 @@ const downloadProcessedImage = () => {
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-purple-600/20 to-pink-600/10 blur-[120px] rounded-full pointer-events-none"></div>
 
             <div class="relative mx-auto max-w-4xl px-6">
-                <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-4 py-1.5 text-xs font-semibold text-purple-300 border border-purple-500/20 mb-6">
+                <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-4 py-1.5 text-xs font-semibold text-purple-300 border border-purple-500/20 mb-8">
                     <span class="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse"></span>
                     FluxMedia Core Studio · Advanced Engine
                 </span>
+
+                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-24 sm:h-32 object-contain mb-10 drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]" alt="FluxMedia Main Logo" />
 
                 <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-tight">
                     Next-Gen Media <br/>
@@ -409,14 +472,14 @@ const downloadProcessedImage = () => {
                         Processing & Refinement
                     </span>
                 </h1>
-                <p class="mt-4 text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
+                <!-- <p class="mt-4 text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
                     Compress byte ratios instantly, transition responsive aspect layers, and convert media stream topologies locally backed by scalable Intervention server buffers.
-                </p>
+                </p> -->
             </div>
         </div>
 
         <!-- Main Workspace Area -->
-        <div class="mx-auto max-w-6xl px-6">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="rounded-2xl border border-gray-800/80 bg-[#121826]/80 backdrop-blur-xl shadow-2xl overflow-hidden p-6 sm:p-10">
                 
                 <!-- File Upload Zone -->
@@ -508,12 +571,12 @@ const downloadProcessedImage = () => {
                         <div v-if="activeTab === 'convert'" class="space-y-4">
                             <label class="block text-xs font-medium text-gray-400">Target Export Stream Codec</label>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                <label v-for="fmt in ['webp', 'jpeg', 'png', 'gif']" :key="fmt" :class="['flex items-center justify-center py-2.5 px-3 rounded-lg border cursor-pointer text-xs font-semibold uppercase transition-all', targetFormat === fmt ? 'bg-purple-600/20 border-purple-500 text-purple-300' : 'border-gray-800 bg-[#0B0F19] text-gray-500 hover:border-gray-700']">
+                                <label v-for="fmt in ['webp', 'jpeg', 'png', 'gif', 'avif', 'tiff', 'bmp', 'ico']" :key="fmt" :class="['flex items-center justify-center py-2.5 px-3 rounded-lg border cursor-pointer text-xs font-semibold uppercase transition-all', targetFormat === fmt ? 'bg-purple-600/20 border-purple-500 text-purple-300' : 'border-gray-800 bg-[#0B0F19] text-gray-500 hover:border-gray-700']">
                                     <input type="radio" v-model="targetFormat" :value="fmt" class="hidden" />
-                                    {{ fmt }} Stream
+                                    {{ fmt }}
                                 </label>
                             </div>
-                            <div v-if="['webp', 'jpeg'].includes(targetFormat)" class="pt-2">
+                            <div v-if="['webp', 'jpeg', 'avif'].includes(targetFormat)" class="pt-2">
                                 <div class="flex justify-between items-center text-xs mb-1">
                                     <span class="text-gray-400">Encoder Quality:</span>
                                     <span class="text-purple-400 font-bold">{{ quality }}%</span>
@@ -726,7 +789,7 @@ const downloadProcessedImage = () => {
         </div>
 
         <!-- Live Session Processing History Log -->
-        <div class="mx-auto max-w-6xl px-6 mt-12">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 mt-12">
             <div class="rounded-2xl border border-gray-800/80 bg-[#121826]/60 backdrop-blur-xl p-6 shadow-2xl">
                 <div class="flex items-center justify-between border-b border-gray-800/80 pb-4 mb-4">
                     <div class="flex items-center gap-x-2.5">

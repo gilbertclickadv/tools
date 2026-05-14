@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProcessedImage;
+use App\Models\StoredQrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
@@ -27,7 +28,7 @@ class ImageProcessingController extends Controller
             'width' => ['nullable', 'integer', 'min:10', 'max:5000'],
             'height' => ['nullable', 'integer', 'min:10', 'max:5000'],
             'maintainAspectRatio' => ['nullable', 'boolean'],
-            'format' => ['nullable', 'string', 'in:jpeg,png,webp,gif'],
+            'format' => ['nullable', 'string', 'in:jpeg,png,webp,gif,avif,tiff,bmp,ico'],
             'greyscale' => ['nullable', 'boolean'],
             'blur' => ['nullable', 'integer', 'min:0', 'max:100'],
             'brightness' => ['nullable', 'integer', 'min:-100', 'max:100'],
@@ -41,18 +42,22 @@ class ImageProcessingController extends Controller
             $user = Auth::guard('web')->user();
             $ipAddress = $request->ip();
 
-            // Enforce Unauthenticated Quotas
-            if (!$user) {
-                $guestDailyLimit = (int) (Redis::get('settings:guest_daily_limit') ?: 15);
-                $todayCount = ProcessedImage::where('ip_address', $ipAddress)
-                    ->where('created_at', '>=', now()->startOfDay())
-                    ->count();
+            // Enforce Unauthenticated Quotas (Bypass for Admins)
+            if (!$user || ($user && !$user->is_admin)) {
+                // If logged in but not admin, we could add a limit here too.
+                // For now, let's just ensure guests are limited.
+                if (!$user) {
+                    $guestDailyLimit = (int) (Redis::get('settings:guest_daily_limit') ?: 15);
+                    $todayCount = ProcessedImage::where('ip_address', $ipAddress)
+                        ->where('created_at', '>=', now()->startOfDay())
+                        ->count();
 
-                if ($todayCount >= $guestDailyLimit) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => "Daily limit of {$guestDailyLimit} files reached for guest sessions. Please sign in to unlock unlimited premium processing capability."
-                    ], 429);
+                    if ($todayCount >= $guestDailyLimit) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Daily limit of {$guestDailyLimit} files reached for guest sessions. Please sign in to unlock unlimited premium processing capability."
+                        ], 429);
+                    }
                 }
             }
 
@@ -124,6 +129,48 @@ class ImageProcessingController extends Controller
                     $mime = 'image/webp';
                     $ext = 'webp';
                     break;
+                case 'avif':
+                    $encoded = $image->encodeUsingFormat(Format::AVIF, quality: $quality);
+                    $mime = 'image/avif';
+                    $ext = 'avif';
+                    break;
+                case 'bmp':
+                    $encoded = $image->encodeUsingFormat(Format::BMP);
+                    $mime = 'image/bmp';
+                    $ext = 'bmp';
+                    break;
+                case 'tiff':
+                    $encoded = $image->encodeUsingFormat(Format::TIFF);
+                    $mime = 'image/tiff';
+                    $ext = 'tiff';
+                    break;
+                case 'ico':
+                    // Encode as PNG first (standard for modern ICO)
+                    $pngData = $image->encodeUsingFormat(Format::PNG)->toString();
+                    $width = $image->width();
+                    $height = $image->height();
+                    
+                    // Simple ICO header for a single PNG image
+                    $icoHeader = pack('v3', 0, 1, 1); // Reserved, Type (1), Count (1)
+                    $icoEntry = pack('CCCCvvVV', 
+                        $width >= 256 ? 0 : $width,
+                        $height >= 256 ? 0 : $height,
+                        0, // Color count
+                        0, // Reserved
+                        1, // Planes
+                        32, // BPP
+                        strlen($pngData),
+                        22 // Offset (Header 6 bytes + Entry 16 bytes)
+                    );
+                    
+                    $binaryData = $icoHeader . $icoEntry . $pngData;
+                    $mime = 'image/x-icon';
+                    $ext = 'ico';
+                    
+                    // For the PREVIEW (dataUrl), use the PNG data so browsers can render it easily
+                    $previewMime = 'image/png';
+                    $previewBinary = $pngData;
+                    break;
                 case 'jpeg':
                 default:
                     $image->fillTransparentAreas('ffffff');
@@ -133,9 +180,11 @@ class ImageProcessingController extends Controller
                     break;
             }
 
-            $binaryData = $encoded->toString();
+            if ($targetFormat !== 'ico') {
+                $binaryData = $encoded->toString();
+            }
             $processedSizeBytes = strlen($binaryData);
-            $base64DataUrl = 'data:' . $mime . ';base64,' . base64_encode($binaryData);
+            $base64DataUrl = 'data:' . ($previewMime ?? $mime) . ';base64,' . base64_encode($previewBinary ?? $binaryData);
 
             // Persist onto public physical disk
             $filename = Str::random(40) . '.' . $ext;
@@ -246,5 +295,44 @@ class ImageProcessingController extends Controller
         }
 
         return response()->download(Storage::disk('public')->path($path), $cleanName);
+    }
+
+    /**
+     * Store generated QR code matrix parameters to cloud history logs.
+     */
+    public function storeQrCode(Request $request)
+    {
+        $request->validate([
+            'profile_type' => ['required', 'string'],
+            'summary_payload' => ['required', 'string'],
+            'foreground_color' => ['nullable', 'string'],
+            'background_color' => ['nullable', 'string'],
+            'matrix_size' => ['nullable', 'integer'],
+            'redundancy_level' => ['nullable', 'string'],
+        ]);
+
+        try {
+            $user = Auth::guard('web')->user();
+            $record = StoredQrCode::create([
+                'user_id' => $user?->id,
+                'ip_address' => $request->ip(),
+                'profile_type' => $request->input('profile_type'),
+                'summary_payload' => $request->input('summary_payload'),
+                'foreground_color' => $request->input('foreground_color', '#8B5CF6'),
+                'background_color' => $request->input('background_color', '#FFFFFF'),
+                'matrix_size' => (int) $request->input('matrix_size', 280),
+                'redundancy_level' => $request->input('redundancy_level', 'H'),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'record' => $record
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to record QR matrix profile: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

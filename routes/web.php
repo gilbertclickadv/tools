@@ -46,16 +46,64 @@ Route::get('/qr-code-generator', function () {
     ]);
 });
 
+Route::get('/history', function () {
+    $user = auth()->user();
+    $imageQuery = \App\Models\ProcessedImage::query();
+    $qrQuery = \App\Models\StoredQrCode::query();
+
+    if ($user) {
+        $imageQuery->where('user_id', $user->id);
+        $qrQuery->where('user_id', $user->id);
+    } else {
+        $imageQuery->whereNull('user_id')->where('ip_address', request()->ip());
+        $qrQuery->whereNull('user_id')->where('ip_address', request()->ip());
+    }
+
+    $images = $imageQuery->orderBy('created_at', 'desc')->get()->map(function ($img) {
+        return [
+            'type' => 'image',
+            'id' => $img->id,
+            'original_name' => $img->original_name,
+            'format' => strtoupper($img->format),
+            'size_bytes' => $img->size_bytes,
+            'expires_at' => $img->expires_at ? $img->expires_at->diffForHumans() : null,
+            'download_url' => route('image.download', ['path' => $img->disk_path]),
+            'created_at' => $img->created_at->diffForHumans(),
+            'timestamp' => $img->created_at->timestamp,
+        ];
+    });
+
+    $qrs = $qrQuery->orderBy('created_at', 'desc')->get()->map(function ($qr) {
+        return [
+            'type' => 'qr',
+            'id' => $qr->id,
+            'profile_type' => $qr->profile_type,
+            'summary_payload' => $qr->summary_payload,
+            'foreground_color' => $qr->foreground_color,
+            'background_color' => $qr->background_color,
+            'matrix_size' => $qr->matrix_size,
+            'redundancy_level' => $qr->redundancy_level,
+            'created_at' => $qr->created_at->diffForHumans(),
+            'timestamp' => $qr->created_at->timestamp,
+        ];
+    });
+
+    $combined = $images->concat($qrs)->sortByDesc('timestamp')->values();
+
+    return Inertia::render('History', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'historyFeed' => $combined,
+    ]);
+});
+
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 use App\Http\Controllers\ImageProcessingController;
 
 Route::post('/api/process-image', [ImageProcessingController::class, 'process'])->name('image.process');
 Route::get('/api/download-image', [ImageProcessingController::class, 'download'])->name('image.download');
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/api/store-qr-code', [ImageProcessingController::class, 'storeQrCode'])->name('qr.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

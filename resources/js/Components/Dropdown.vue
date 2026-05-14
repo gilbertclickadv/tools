@@ -12,7 +12,7 @@ const props = defineProps({
     },
     contentClasses: {
         type: String,
-        default: 'py-1 bg-white dark:bg-gray-700',
+        default: 'py-2 bg-[#121826]/95 backdrop-blur-xl border border-gray-800/80',
     },
 });
 
@@ -28,14 +28,16 @@ onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
 const widthClass = computed(() => {
     return {
         48: 'w-48',
+        56: 'w-56',
+        64: 'w-64',
     }[props.width.toString()];
 });
 
 const alignmentClasses = computed(() => {
     if (props.align === 'left') {
-        return 'ltr:origin-top-left rtl:origin-top-right start-0';
+        return 'origin-top-left left-0';
     } else if (props.align === 'right') {
-        return 'ltr:origin-top-right rtl:origin-top-left end-0';
+        return 'origin-top-right right-0';
     } else {
         return 'origin-top';
     }
@@ -46,7 +48,7 @@ const open = ref(false);
 
 <template>
     <div class="relative">
-        <div @click="open = !open">
+        <div @click="open = !open" class="cursor-pointer">
             <slot name="trigger" />
         </div>
 
@@ -67,13 +69,13 @@ const open = ref(false);
         >
             <div
                 v-show="open"
-                class="absolute z-50 mt-2 rounded-md shadow-lg"
+                class="absolute z-[110] mt-2 rounded-2xl shadow-2xl overflow-hidden"
                 :class="[widthClass, alignmentClasses]"
                 style="display: none"
                 @click="open = false"
             >
                 <div
-                    class="rounded-md ring-1 ring-black ring-opacity-5"
+                    class="rounded-2xl"
                     :class="contentClasses"
                 >
                     <slot name="content" />
