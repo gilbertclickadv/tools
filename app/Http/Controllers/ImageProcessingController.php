@@ -191,13 +191,11 @@ class ImageProcessingController extends Controller
             $diskPath = 'processed/' . $filename;
             Storage::disk('public')->put($diskPath, $binaryData);
 
-            // Determine Expiration Lifecycle
+            // Determine Expiration Lifecycle (Guest: 1hr, Auth: 24hr)
             if ($user) {
-                $authRetentionDays = (int) (Redis::get('settings:auth_retention_days') ?: 7);
-                $expiresAt = now()->addDays($authRetentionDays);
+                $expiresAt = now()->addHours(24);
             } else {
-                $guestRetentionHours = (int) (Redis::get('settings:guest_retention_hours') ?: 6);
-                $expiresAt = now()->addHours($guestRetentionHours);
+                $expiresAt = now()->addHour();
             }
 
             // Commit DB Record
