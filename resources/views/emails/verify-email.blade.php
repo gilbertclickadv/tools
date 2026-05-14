@@ -26,7 +26,7 @@
         <div class="content">
             <h1>Complete Your Onboarding</h1>
             <p>Welcome to the creative suite. To unlock full access to our high-performance media conversion engines and advanced QR matrix profiles, please confirm your identity below.</p>
-            <a href="{{ $url }}" class="btn">Verify Account Access</a>
+            <a href="{{ $url }}" class="btn" style="color: #FFFFFF !important;">Verify Account Access</a>
             <p style="margin-top: 32px; font-size: 14px;">If you did not initiate this registration, you can safely ignore this security transmission.</p>
         </div>
         <div class="footer">
