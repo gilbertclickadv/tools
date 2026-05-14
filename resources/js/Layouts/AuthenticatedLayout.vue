@@ -20,106 +20,83 @@ const showingNavigationDropdown = ref(false);
         <header class="border-b border-gray-800/60 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-[100]">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-20 items-center justify-between">
                 <!-- Brand Logo (Left) -->
-                <div class="flex items-center gap-x-3 group">
-                    <Link href="/" class="flex items-center gap-x-3">
-                        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-900/40 group-hover:scale-110 transition-transform duration-300">
-                            <img src="/assets/images/icon_only.webp" class="h-6 w-6 object-contain" alt="FluxMedia Logo" />
-                        </div>
-                        <div class="flex flex-col text-left">
-                            <span class="text-lg font-black tracking-tighter text-white">FLUXMEDIA</span>
-                            <span class="text-[10px] font-bold text-purple-400 tracking-[0.2em] uppercase leading-none">Studio Suite</span>
-                        </div>
-                    </Link>
-                </div>
+                <Link href="/" class="flex items-center gap-x-3 shrink-0 group">
+                    <img src="/assets/images/icon_only.webp" class="h-10 w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
+                    <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
+                        FluxMedia
+                    </span>
+                </Link>
 
-                <!-- Desktop Navigation (Center) -->
-                <nav class="hidden md:flex items-center bg-gray-900/50 border border-gray-800/50 rounded-2xl p-1 shadow-inner">
+                <!-- Desktop Navigation (Centered) -->
+                <nav class="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 gap-x-6 text-sm font-medium">
                     <Link 
                         :href="route('home')" 
-                        :class="[route().current('home') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
-                        class="px-5 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all"
+                        :class="[route().current('home') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
+                        class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold"
                     >
                         Image Studio
                     </Link>
                     <Link 
                         :href="route('qr.generator')" 
-                        :class="[route().current('qr.generator') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
-                        class="px-5 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all"
+                        :class="[route().current('qr.generator') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
+                        class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold"
                     >
-                        QR Intel
+                        QR Generator
                     </Link>
                     <Link 
                         :href="route('history')" 
-                        :class="[route().current('history') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
-                        class="px-5 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all"
+                        :class="[route().current('history') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
+                        class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold"
                     >
                         History Hub
                     </Link>
                 </nav>
 
-                <!-- User Controls (Right) -->
-                <div class="flex items-center gap-x-4">
-                    <div class="hidden sm:block">
-                        <Dropdown align="right" width="64">
-                            <template #trigger>
-                                <button class="flex items-center gap-x-3 p-1.5 pr-4 rounded-2xl bg-gray-900/80 border border-gray-800/50 hover:border-purple-500/30 transition-all group">
-                                    <div class="h-8 w-8 rounded-lg bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-xs font-bold text-purple-400 border border-gray-700/50">
-                                        {{ $page.props.auth.user.name.charAt(0) }}
-                                    </div>
-                                    <div class="text-left">
-                                        <div class="text-[11px] font-black text-white leading-tight uppercase tracking-wide truncate max-w-[100px]">{{ $page.props.auth.user.name }}</div>
-                                        <div class="text-[9px] font-bold text-gray-500 leading-none">Account Node</div>
-                                    </div>
-                                    <svg class="h-3 w-3 text-gray-600 group-hover:text-purple-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </button>
-                            </template>
-
-                            <template #content>
-                                <div class="px-4 py-3 border-b border-gray-800/50 bg-gray-900/50 text-left">
-                                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-1 text-left">Session Identity</p>
-                                    <p class="text-xs font-bold text-white truncate text-left">{{ $page.props.auth.user.email }}</p>
+                <!-- Desktop Auth (Right) -->
+                <div class="hidden lg:flex items-center gap-x-4">
+                    <Dropdown align="right" width="56">
+                        <template #trigger>
+                            <button class="flex items-center gap-x-2.5 px-3 py-1.5 rounded-xl border border-gray-800 bg-[#121826]/50 hover:bg-gray-800/80 transition-all group">
+                                <div class="h-7 w-7 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-[11px] text-white">
+                                    {{ $page.props.auth.user.name[0] }}
                                 </div>
-                                <div class="p-1">
-                                    <DropdownLink :href="route('profile.edit')" class="rounded-lg">
-                                        <div class="flex items-center gap-x-3 py-1">
-                                            <div class="h-8 w-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
-                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                                            </div>
-                                            <span class="font-bold">Identity Settings</span>
-                                        </div>
-                                    </DropdownLink>
-                                    <DropdownLink v-if="$page.props.auth.user?.is_admin" :href="route('admin.dashboard')" class="rounded-lg">
-                                        <div class="flex items-center gap-x-3 py-1 text-amber-400">
-                                            <div class="h-8 w-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 border border-amber-500/20">
-                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                                            </div>
-                                            <span class="font-bold text-white">Command Center</span>
-                                        </div>
-                                    </DropdownLink>
-                                    <div class="border-t border-gray-800/50 my-1"></div>
-                                    <DropdownLink :href="route('logout')" method="post" as="button" class="rounded-lg w-full text-left">
-                                        <div class="flex items-center gap-x-3 py-1 text-red-400">
-                                            <div class="h-8 w-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 border border-red-500/20">
-                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                                            </div>
-                                            <span class="font-bold">Terminate Session</span>
-                                        </div>
-                                    </DropdownLink>
-                                </div>
-                            </template>
-                        </Dropdown>
-                    </div>
-
-                    <!-- Mobile Menu Button -->
-                    <button @click="showingNavigationDropdown = !showingNavigationDropdown" class="md:hidden p-2 rounded-xl bg-gray-900/80 border border-gray-800/50 text-purple-400">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path v-if="!showingNavigationDropdown" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                                <span class="text-sm font-semibold text-gray-300 group-hover:text-white transition-colors">
+                                    {{ $page.props.auth.user.name.split(' ')[0] }}
+                                </span>
+                                <svg class="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                        </template>
+                        <template #content>
+                            <div class="px-4 py-2 border-b border-gray-800/80 mb-1">
+                                <p class="text-xs font-bold text-white truncate">{{ $page.props.auth.user.name }}</p>
+                                <p class="text-[10px] text-gray-500 truncate">{{ $page.props.auth.user.email }}</p>
+                            </div>
+                            <DropdownLink :href="route('profile.edit')" class="flex items-center gap-x-2">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                Profile Settings
+                            </DropdownLink>
+                            <DropdownLink v-if="$page.props.auth.user?.is_admin" :href="route('admin.dashboard')" class="flex items-center gap-x-2 text-amber-400">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                Command Center
+                            </DropdownLink>
+                            <div class="border-t border-gray-800/80 my-1"></div>
+                            <DropdownLink :href="route('logout')" method="post" as="button" class="flex items-center gap-x-2 text-red-400">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                Terminate Session
+                            </DropdownLink>
+                        </template>
+                    </Dropdown>
                 </div>
+
+                <!-- Mobile Menu Button -->
+                <button @click="showingNavigationDropdown = !showingNavigationDropdown" class="lg:hidden p-2 rounded-xl bg-gray-900/80 border border-gray-800/50 text-purple-400">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path v-if="!showingNavigationDropdown" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
             <!-- Mobile Navigation -->
@@ -130,7 +107,7 @@ const showingNavigationDropdown = ref(false);
                 leave-active-class="transition duration-150 ease-in"
                 leave-to-class="opacity-0 -translate-y-4"
             >
-                <div v-if="showingNavigationDropdown" class="md:hidden border-t border-gray-800/60 bg-[#0B0F19] px-4 py-6 space-y-4">
+                <div v-if="showingNavigationDropdown" class="lg:hidden border-t border-gray-800/60 bg-[#0B0F19] px-4 py-6 space-y-4">
                     <div class="grid grid-cols-1 gap-2">
                         <Link :href="route('home')" class="p-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 flex items-center gap-x-4">
                             <div class="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
