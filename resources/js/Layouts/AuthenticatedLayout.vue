@@ -169,6 +169,13 @@ const showingNavigationDropdown = ref(false);
             </Transition>
         </header>
 
+        <!-- Sub-Header Slot -->
+        <header v-if="$slots.header" class="bg-[#121826]/40 border-b border-gray-800/40 backdrop-blur-sm">
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <slot name="header" />
+            </div>
+        </header>
+
         <!-- Page Content -->
         <main>
             <slot />
