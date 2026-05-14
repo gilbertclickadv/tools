@@ -95,6 +95,9 @@ const getProfileBadge = (type) => {
 
                 <!-- Desktop Auth (Right) -->
                 <div class="hidden lg:flex items-center gap-x-4">
+                    <a href="mailto:gilbert@fluxmetrics.site" class="h-10 w-10 flex items-center justify-center rounded-xl border border-gray-800 bg-[#121826]/50 hover:bg-gray-800/80 text-gray-400 hover:text-white transition-all shadow-lg" title="Contact Support">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 18v-6a9 9 0 0118 0v6M3 18a2 2 0 002 2h2a2 2 0 002-2v-5a2 2 0 00-2-2H3m18 9a2 2 0 002-2v-5a2 2 0 00-2-2h-2a2 2 0 00-2 2v5a2 2 0 002 2h2" /></svg>
+                    </a>
                     <template v-if="$page.props.auth?.user">
                         <Dropdown align="right" width="56">
                             <template #trigger>
@@ -134,8 +137,11 @@ const getProfileBadge = (type) => {
                     </template>
                 </div>
 
-                <!-- Mobile Profile Shortcut -->
+                <!-- Mobile Actions -->
                 <div class="lg:hidden flex items-center gap-x-3">
+                    <a href="mailto:gilbert@fluxmetrics.site" class="h-9 w-9 flex items-center justify-center rounded-xl border border-gray-800 bg-[#121826]/50 text-gray-400 active:scale-95 transition-all">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 18v-6a9 9 0 0118 0v6M3 18a2 2 0 002 2h2a2 2 0 002-2v-5a2 2 0 00-2-2H3m18 9a2 2 0 002-2v-5a2 2 0 00-2-2h-2a2 2 0 00-2 2v5a2 2 0 002 2h2" /></svg>
+                    </a>
                     <template v-if="$page.props.auth?.user">
                         <Link :href="route('profile.edit')" class="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white text-xs border border-purple-400/30">
                             {{ $page.props.auth.user.name[0] }}
