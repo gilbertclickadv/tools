@@ -754,9 +754,22 @@ const downloadProcessedImage = () => {
                 <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
                     <div v-for="item in userHistory" :key="item.id" class="group relative aspect-square rounded-xl overflow-hidden bg-[#0B0F19] border border-gray-800 hover:border-purple-500/50 transition-all">
                         <img :src="item.output_url || item.data_url" class="h-full w-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2.5">
-                            <span class="text-[9px] font-bold text-white uppercase truncate">{{ item.original_name }}</span>
-                            <span class="text-[8px] text-purple-300 font-bold uppercase">{{ item.action }}</span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2.5">
+                            <div class="flex items-center justify-between gap-x-2">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[9px] font-bold text-white uppercase truncate">{{ item.original_name }}</p>
+                                    <p class="text-[8px] text-purple-300 font-bold uppercase">{{ item.format }} · {{ item.created_at }}</p>
+                                </div>
+                                <a 
+                                    :href="item.download_url" 
+                                    class="h-7 w-7 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white flex items-center justify-center shrink-0 transition-colors shadow-lg shadow-emerald-500/20"
+                                    title="Download Asset"
+                                >
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
