@@ -152,7 +152,7 @@ class ImageProcessingController extends Controller
             }
 
             // Commit DB Record
-            ProcessedImage::create([
+            $record = ProcessedImage::create([
                 'user_id' => $user?->id,
                 'ip_address' => $ipAddress,
                 'original_name' => $originalName,
@@ -188,6 +188,15 @@ class ImageProcessingController extends Controller
                 'savedBytes' => $savedBytes,
                 'reductionPercentage' => $reductionPercentage,
                 'format' => $ext,
+                'historyItem' => [
+                    'id' => $record->id,
+                    'original_name' => $originalName,
+                    'format' => strtoupper($ext),
+                    'size_bytes' => $processedSizeBytes,
+                    'expires_at' => $expiresAt->diffForHumans(),
+                    'download_url' => $downloadUrl,
+                    'created_at' => 'Just now',
+                ],
                 'dimensions' => [
                     'width' => $image->width(),
                     'height' => $image->height(),

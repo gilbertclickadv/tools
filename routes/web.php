@@ -6,11 +6,43 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    $user = auth()->user();
+    $query = \App\Models\ProcessedImage::query();
+    
+    if ($user) {
+        $query->where('user_id', $user->id);
+    } else {
+        $query->whereNull('user_id')->where('ip_address', request()->ip());
+    }
+
+    $history = $query->orderBy('created_at', 'desc')
+        ->take(12)
+        ->get()
+        ->map(function ($img) {
+            return [
+                'id' => $img->id,
+                'original_name' => $img->original_name,
+                'format' => strtoupper($img->format),
+                'size_bytes' => $img->size_bytes,
+                'expires_at' => $img->expires_at ? $img->expires_at->diffForHumans() : null,
+                'download_url' => route('image.download', ['path' => $img->disk_path]),
+                'created_at' => $img->created_at->diffForHumans(),
+            ];
+        });
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'initialHistory' => $history,
+    ]);
+});
+
+Route::get('/qr-code-generator', function () {
+    return Inertia::render('QrGenerator', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
     ]);
 });
 
