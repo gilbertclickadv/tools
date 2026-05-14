@@ -358,7 +358,7 @@ const downloadProcessedImage = () => {
             <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-16 lg:h-20 items-center justify-between">
                 <!-- Brand Logo -->
                 <Link href="/" class="flex items-center gap-x-3 shrink-0 group">
-                    <img src="/assets/images/pwa-192.png" class="h-8 w-8 lg:h-10 lg:w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
+                    <img src="/assets/images/icon_only.webp" class="h-8 w-8 lg:h-10 lg:w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
                     <span class="text-lg lg:text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
                         FluxMedia
                     </span>
@@ -445,7 +445,7 @@ const downloadProcessedImage = () => {
                 <div class="h-6 w-6 flex items-center justify-center">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
                 </div>
-                <span class="text-[10px] font-bold uppercase tracking-widest">QR Intel</span>
+                <span class="text-[10px] font-bold uppercase tracking-widest">QR Code</span>
             </Link>
 
 
@@ -784,12 +784,12 @@ const downloadProcessedImage = () => {
         </footer>
 
         <!-- Result Modal -->
-        <div v-if="showResultModal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6">
+        <div v-if="showResultModal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 py-12 lg:py-20 overflow-y-auto">
             <!-- Backdrop -->
-            <div @click="showResultModal = false" class="absolute inset-0 bg-[#05070C]/90 backdrop-blur-sm"></div>
+            <div @click="showResultModal = false" class="fixed inset-0 bg-[#05070C]/90 backdrop-blur-sm"></div>
             
             <!-- Modal Content -->
-            <div class="relative w-full max-w-lg bg-[#121826] border border-gray-800 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div class="relative w-full max-w-lg bg-[#121826] border border-gray-800 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300 my-auto">
                 <!-- Close Button -->
                 <button @click="showResultModal = false" class="absolute top-6 right-6 p-2 rounded-full bg-gray-800/50 text-gray-400 hover:text-white transition-colors z-10">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
