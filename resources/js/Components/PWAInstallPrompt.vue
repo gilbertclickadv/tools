@@ -101,7 +101,7 @@ function dismiss() {
     >
         <div
             v-if="showPrompt"
-            class="fixed bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-[200]"
+            class="fixed bottom-24 lg:bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-[200]"
         >
             <div class="bg-[#121826]/95 backdrop-blur-2xl border border-purple-500/30 rounded-3xl p-5 shadow-2xl shadow-purple-500/10 overflow-hidden relative">
                 <!-- Glow -->
@@ -156,7 +156,7 @@ function dismiss() {
     >
         <div
             v-if="showIOS"
-            class="fixed bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-[200]"
+            class="fixed bottom-24 lg:bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-[200]"
         >
             <div class="bg-[#121826]/95 backdrop-blur-2xl border border-indigo-500/30 rounded-3xl p-5 shadow-2xl shadow-indigo-500/10 overflow-hidden relative">
                 <div class="absolute -top-10 -right-10 w-24 h-24 bg-indigo-600/20 blur-3xl rounded-full pointer-events-none"></div>

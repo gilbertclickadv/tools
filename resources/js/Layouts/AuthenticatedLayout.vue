@@ -13,16 +13,17 @@ const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#0B0F19] text-gray-100 selection:bg-purple-500 selection:text-white">
+    <div class="min-h-screen bg-[#0B0F19] text-gray-100 selection:bg-purple-500 selection:text-white pb-24 lg:pb-0">
         <VerificationAlert />
         <PWAInstallPrompt />
 
+        <!-- Main Header -->
         <header class="border-b border-gray-800/60 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-[100]">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-20 items-center justify-between">
-                <!-- Brand Logo (Left) -->
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-16 lg:h-20 items-center justify-between">
+                <!-- Brand Logo -->
                 <Link href="/" class="flex items-center gap-x-3 shrink-0 group">
-                    <img src="/assets/images/icon_only.webp" class="h-10 w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
-                    <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
+                    <img src="/assets/images/pwa-192.png" class="h-8 w-8 lg:h-10 lg:w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
+                    <span class="text-lg lg:text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
                         FluxMedia
                     </span>
                 </Link>
@@ -90,65 +91,52 @@ const showingNavigationDropdown = ref(false);
                     </Dropdown>
                 </div>
 
-                <!-- Mobile Menu Button -->
-                <button @click="showingNavigationDropdown = !showingNavigationDropdown" class="lg:hidden p-2 rounded-xl bg-gray-900/80 border border-gray-800/50 text-purple-400">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path v-if="!showingNavigationDropdown" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+                <!-- Mobile Profile Shortcut -->
+                <Link :href="route('profile.edit')" class="lg:hidden h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white text-xs border border-purple-400/30 shadow-lg shadow-purple-600/20">
+                    {{ $page.props.auth.user.name[0] }}
+                </Link>
             </div>
-
-            <!-- Mobile Navigation -->
-            <Transition
-                enter-active-class="transition duration-200 ease-out"
-                enter-from-class="opacity-0 -translate-y-4"
-                enter-to-class="opacity-100 translate-y-0"
-                leave-active-class="transition duration-150 ease-in"
-                leave-to-class="opacity-0 -translate-y-4"
-            >
-                <div v-if="showingNavigationDropdown" class="lg:hidden border-t border-gray-800/60 bg-[#0B0F19] px-4 py-6 space-y-4">
-                    <div class="grid grid-cols-1 gap-2">
-                        <Link :href="route('home')" class="p-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 flex items-center gap-x-4">
-                            <div class="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                            </div>
-                            <span class="font-extrabold uppercase tracking-wider text-sm">Image Studio</span>
-                        </Link>
-                        <Link :href="route('qr.generator')" class="p-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 flex items-center gap-x-4">
-                            <div class="h-10 w-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
-                            </div>
-                            <span class="font-extrabold uppercase tracking-wider text-sm text-left">QR Intel</span>
-                        </Link>
-                        <Link :href="route('history')" class="p-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 flex items-center gap-x-4">
-                            <div class="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            </div>
-                            <span class="font-extrabold uppercase tracking-wider text-sm text-left">History Hub</span>
-                        </Link>
-                    </div>
-                    <div class="pt-4 border-t border-gray-800/60 flex items-center justify-between">
-                        <div class="flex items-center gap-x-3 text-left">
-                            <div class="h-10 w-10 rounded-xl bg-gray-800 flex items-center justify-center text-purple-400 font-bold border border-gray-700">
-                                {{ $page.props.auth.user.name.charAt(0) }}
-                            </div>
-                            <div class="text-left">
-                                <div class="text-xs font-black text-white uppercase tracking-wide text-left">{{ $page.props.auth.user.name }}</div>
-                                <div class="text-[10px] font-bold text-gray-500 truncate max-w-[150px] text-left">{{ $page.props.auth.user.email }}</div>
-                            </div>
-                        </div>
-                        <Link :href="route('logout')" method="post" as="button" class="p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                        </Link>
-                    </div>
-                </div>
-            </Transition>
         </header>
+
+        <!-- Bottom Navigation for Mobile -->
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0B0F19]/90 backdrop-blur-xl border-t border-gray-800/60 z-[100] px-6 py-3 flex items-center justify-between pb-[calc(12px+env(safe-area-inset-bottom))] shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+            <Link :href="route('home')" class="flex flex-col items-center gap-y-1 transition-all" :class="[route().current('home') ? 'text-purple-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Studio</span>
+            </Link>
+            
+            <Link :href="route('qr.generator')" class="flex flex-col items-center gap-y-1 transition-all" :class="[route().current('qr.generator') ? 'text-indigo-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">QR Intel</span>
+            </Link>
+
+            <!-- Center Action (Optional, e.g. Upload or Main Feature) -->
+            <Link :href="route('home')" class="relative -top-6 h-14 w-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shadow-xl shadow-purple-900/40 border-4 border-[#0B0F19] transition-transform active:scale-95">
+                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+            </Link>
+
+            <Link :href="route('history')" class="flex flex-col items-center gap-y-1 transition-all" :class="[route().current('history') ? 'text-emerald-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">History</span>
+            </Link>
+
+            <Link :href="route('profile.edit')" class="flex flex-col items-center gap-y-1 transition-all" :class="[route().current('profile.edit') ? 'text-gray-100 scale-110' : 'text-gray-500 hover:text-gray-300']">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Profile</span>
+            </Link>
+        </nav>
 
         <!-- Sub-Header Slot -->
         <header v-if="$slots.header" class="bg-[#121826]/40 border-b border-gray-800/40 backdrop-blur-sm">
-            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl px-4 py-4 lg:py-6 sm:px-6 lg:px-8">
                 <slot name="header" />
             </div>
         </header>

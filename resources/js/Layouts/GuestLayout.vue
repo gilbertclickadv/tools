@@ -12,7 +12,7 @@ import { Link } from '@inertiajs/vue3';
             <!-- Brand Identity -->
             <div class="text-center mb-10">
                 <Link href="/" class="inline-flex flex-col items-center gap-y-4 group">
-                    <img src="/assets/images/icon_only.webp" class="h-20 w-20 object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.4)] group-hover:scale-110 transition-transform duration-500" alt="FluxMedia" />
+                    <img src="/assets/images/pwa-192.png" class="h-20 w-20 object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.4)] group-hover:scale-110 transition-transform duration-500" alt="FluxMedia" />
                     <div class="space-y-1">
                         <h2 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent">
                             FluxMedia
@@ -23,7 +23,7 @@ import { Link } from '@inertiajs/vue3';
             </div>
 
             <!-- Auth Card -->
-            <div class="bg-[#121826]/80 backdrop-blur-xl border border-gray-800/80 rounded-3xl shadow-2xl p-8 sm:p-10">
+            <div class="bg-[#121826]/80 backdrop-blur-xl border border-gray-800/80 rounded-3xl shadow-2xl p-6 sm:p-10">
                 <slot />
             </div>
 

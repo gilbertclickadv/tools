@@ -155,15 +155,17 @@ const applyThemePreset = (fg, bg) => {
         <meta name="description" content="Generate highly customizable vector and raster QR codes instantly. Create links, vCards, WiFi connect codes, and pre-formatted SMS payloads with live canvas color formatting." />
     </Head>
 
-    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta selection:bg-purple-500 selection:text-white pb-20 overflow-x-hidden">
+    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta selection:bg-purple-500 selection:text-white pb-32 lg:pb-10 overflow-x-hidden">
         <VerificationAlert />
         <PWAInstallPrompt />
+
+        <!-- App Header (Unified Style) -->
         <header class="border-b border-gray-800/60 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-[100]">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-20 items-center justify-between">
-                <!-- Brand Logo (Left) -->
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-16 lg:h-20 items-center justify-between">
+                <!-- Brand Logo -->
                 <Link href="/" class="flex items-center gap-x-3 shrink-0 group">
-                    <img src="/assets/images/icon_only.webp" class="h-10 w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
-                    <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
+                    <img src="/assets/images/pwa-192.png" class="h-8 w-8 lg:h-10 lg:w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
+                    <span class="text-lg lg:text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
                         FluxMedia
                     </span>
                 </Link>
@@ -222,336 +224,93 @@ const applyThemePreset = (fg, bg) => {
                     </template>
                 </div>
 
-                <!-- Mobile Hamburger Button -->
-                <div class="lg:hidden flex items-center">
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 text-gray-400 hover:text-white focus:outline-none">
-                        <svg v-if="!mobileMenuOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg v-else class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Mobile Menu Dropdown -->
-            <div v-if="mobileMenuOpen" class="lg:hidden bg-[#121826]/95 backdrop-blur-xl border-t border-gray-800 p-4 space-y-4 animate-fade-in">
-                <div class="flex flex-col gap-y-2">
-                    <Link href="/" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">Image Studio</Link>
-                    <Link href="/qr-code-generator" class="px-4 py-3 rounded-xl bg-purple-500/10 text-purple-400 font-bold border border-purple-500/20">QR Generator</Link>
-                    <Link href="/history" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">History Hub</Link>
-                </div>
-                <div class="pt-4 border-t border-gray-800 flex flex-col gap-y-3">
+                <!-- Mobile Profile Shortcut -->
+                <div class="lg:hidden flex items-center gap-x-3">
                     <template v-if="$page.props.auth?.user">
-                        <div class="flex items-center gap-x-3 px-4 py-2">
-                            <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white">
-                                {{ $page.props.auth.user.name[0] }}
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-white">{{ $page.props.auth.user.name }}</p>
-                                <p class="text-xs text-gray-500">{{ $page.props.auth.user.email }}</p>
-                            </div>
-                        </div>
-                        <Link :href="route('profile.edit')" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">Profile Settings</Link>
-                        <Link v-if="$page.props.auth?.user?.is_admin" :href="route('admin.dashboard')" class="px-4 py-3 rounded-xl text-purple-400 font-bold hover:bg-purple-500/10">Admin Dashboard</Link>
-                        <Link :href="route('logout')" method="post" as="button" class="w-full text-left px-4 py-3 rounded-xl text-red-400 font-semibold hover:bg-red-500/10">Logout</Link>
+                        <Link :href="route('profile.edit')" class="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white text-xs border border-purple-400/30">
+                            {{ $page.props.auth.user.name[0] }}
+                        </Link>
                     </template>
                     <template v-else>
-                        <Link :href="route('login')" class="px-4 py-2 text-gray-400 font-medium">Log in</Link>
-                        <Link v-if="canRegister" :href="route('register')" class="mx-4 py-2 text-center rounded-lg bg-purple-600 text-white font-bold">Register Now</Link>
+                        <Link :href="route('login')" class="text-xs font-bold text-purple-400 uppercase tracking-widest bg-purple-500/10 px-3 py-1.5 rounded-lg border border-purple-500/20">Login</Link>
                     </template>
                 </div>
             </div>
         </header>
 
+        <!-- Bottom Navigation for Mobile -->
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0B0F19]/90 backdrop-blur-xl border-t border-gray-800/60 z-[100] px-6 py-3 flex items-center justify-between pb-[calc(12px+env(safe-area-inset-bottom))] shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+            <Link href="/" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Studio</span>
+            </Link>
+            
+            <Link href="/qr-code-generator" class="flex flex-col items-center gap-y-1 transition-all text-indigo-400 scale-110">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">QR Intel</span>
+            </Link>
+
+            <Link href="/" class="relative -top-6 h-14 w-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shadow-xl shadow-purple-900/40 border-4 border-[#0B0F19] transition-transform active:scale-95">
+                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+            </Link>
+
+            <Link href="/history" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">History</span>
+            </Link>
+
+            <Link :href="$page.props.auth?.user ? route('profile.edit') : route('login')" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">{{ $page.props.auth?.user ? 'Profile' : 'Login' }}</span>
+            </Link>
+        </nav>
+
         <!-- Hero Section -->
-        <div class="relative overflow-hidden pt-12 pb-8 text-center">
+        <div class="relative overflow-hidden pt-10 lg:pt-12 pb-6 lg:pb-8 text-center">
             <!-- Glow ambient background effect -->
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-gradient-to-tr from-purple-600/20 via-indigo-600/10 to-pink-600/10 blur-[100px] rounded-full pointer-events-none"></div>
 
             <div class="relative mx-auto max-w-4xl px-6">
-                <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-4 py-1.5 text-xs font-semibold text-purple-300 border border-purple-500/20 mb-6">
+                <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-4 py-1.5 text-[10px] font-bold text-purple-300 border border-purple-500/20 mb-6 uppercase tracking-widest">
                     <span class="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse"></span>
-                    FluxMedia Multi-Format Barcode Engine
+                    QR Matrix Module
                 </span>
 
-                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-20 sm:h-24 object-contain mb-8 drop-shadow-[0_0_25px_rgba(168,85,247,0.35)]" alt="FluxMedia Logo" />
+                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-16 lg:h-24 object-contain mb-8 drop-shadow-[0_0_25px_rgba(168,85,247,0.35)]" alt="FluxMedia Logo" />
 
-                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-tight">
-                    Dynamic Matrix <br/>
+                <h1 class="text-3xl lg:text-5xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-tight">
+                    Dynamic Matrix <br class="lg:hidden" />
                     <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
-                        QR Generation Engine
+                        Generator
                     </span>
                 </h1>
-                <!-- <p class="mt-3 text-sm sm:text-base text-gray-400 max-w-xl mx-auto">
-                    Design pristine vector matrices locally. Configure custom profiles, live thematic contrast buffers, and error correction structures.
-                </p> -->
             </div>
         </div>
 
         <!-- Main Engine Container Layout -->
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 mt-4">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="mx-auto max-w-6xl px-3 lg:px-6 mt-4">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
                 
-                <!-- Left Column: Input Form Profiles & Tabs (7 cols) -->
-                <div class="lg:col-span-7 rounded-2xl border border-gray-800/80 bg-[#121826]/80 backdrop-blur-xl shadow-2xl p-6 overflow-hidden order-2 lg:order-1">
-                    
-                    <!-- Profile Tab Selection Bar -->
-                    <div class="flex flex-wrap pb-3 mb-6 border-b border-gray-800/80 gap-2">
-                        <button 
-                            v-for="profile in [
-                                { id: 'url', label: '🔗 Link / URL' },
-                                { id: 'text', label: '📝 Plain Text' },
-                                { id: 'email', label: '✉️ Email Flow' },
-                                { id: 'phone', label: '📞 Direct Dial' },
-                                { id: 'wifi', label: '📶 WiFi Setup' },
-                                { id: 'sms', label: '💬 SMS Form' }
-                            ]"
-                            :key="profile.id"
-                            @click="activeProfile = profile.id"
-                            :class="['px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer', activeProfile === profile.id ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30' : 'bg-[#0B0F19] text-gray-400 hover:text-white border border-gray-800/80']"
-                        >
-                            {{ profile.label }}
-                        </button>
-                    </div>
-
-                    <!-- Profile Form 1: URL -->
-                    <div v-if="activeProfile === 'url'" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Destination URL / Web Endpoint</label>
-                            <input 
-                                type="url" 
-                                v-model="formUrl" 
-                                placeholder="https://example.com"
-                                class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none"
-                            />
-                            <span class="text-[11px] text-gray-500 mt-1 block">Barcode matrix updates immediately upon buffer modifications.</span>
-                        </div>
-                    </div>
-
-                    <!-- Profile Form 2: Plain Text -->
-                    <div v-if="activeProfile === 'text'" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Arbitrary Text Content Payload</label>
-                            <textarea 
-                                v-model="formText" 
-                                rows="4"
-                                placeholder="Input any string buffer layout..."
-                                class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none resize-none"
-                            ></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Profile Form 3: Email -->
-                    <div v-if="activeProfile === 'email'" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Recipient Target Email</label>
-                            <input 
-                                type="email" 
-                                v-model="formEmailTo" 
-                                placeholder="hello@fluxmedia.studio"
-                                class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none"
-                            />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Default Subject Line</label>
-                            <input 
-                                type="text" 
-                                v-model="formEmailSubject" 
-                                placeholder="Project Integration Inquiry"
-                                class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none"
-                            />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Pre-formatted Body Content</label>
-                            <textarea 
-                                v-model="formEmailBody" 
-                                rows="3"
-                                placeholder="Greetings team..."
-                                class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none resize-none"
-                            ></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Profile Form 4: Phone -->
-                    <div v-if="activeProfile === 'phone'" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Direct Telephony Access Number</label>
-                            <input 
-                                type="tel" 
-                                v-model="formPhone" 
-                                placeholder="+1 (555) 019-2834"
-                                class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none"
-                            />
-                        </div>
-                    </div>
-
-                    <!-- Profile Form 5: WiFi -->
-                    <div v-if="activeProfile === 'wifi'" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Wireless Network SSID</label>
-                            <input 
-                                type="text" 
-                                v-model="formWifiSsid" 
-                                placeholder="FluxStudio_5G_Guest"
-                                class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none"
-                            />
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1.5">Security Cipher Layer</label>
-                                <select 
-                                    v-model="formWifiEncryption"
-                                    class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none cursor-pointer"
-                                >
-                                    <option value="WPA">WPA / WPA2 / WPA3</option>
-                                    <option value="WEP">WEP Legacy</option>
-                                    <option value="nopass">Unencrypted (Open)</option>
-                                </select>
-                            </div>
-                            <div v-if="formWifiEncryption !== 'nopass'">
-                                <label class="block text-xs font-medium text-gray-400 mb-1.5">Access Password</label>
-                                <input 
-                                    type="password" 
-                                    v-model="formWifiPassword" 
-                                    placeholder="••••••••••••"
-                                    class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Profile Form 6: SMS -->
-                    <div v-if="activeProfile === 'sms'" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Target Destination Phone</label>
-                            <input 
-                                type="tel" 
-                                v-model="formSmsPhone" 
-                                placeholder="+1 (555) 019-2834"
-                                class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none"
-                            />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Pre-filled Message Sub-payload</label>
-                            <textarea 
-                                v-model="formSmsMessage" 
-                                rows="3"
-                                placeholder="I would like to activate a support line..."
-                                class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none resize-none"
-                            ></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Advanced Styling Tools Header -->
-                    <div class="mt-8 pt-6 border-t border-gray-800/80">
-                        <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-4">🎨 Matrix Theming Controls</h3>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <!-- Foreground Color Picker -->
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1.5 flex justify-between">
-                                    <span>Foreground Hex Color</span>
-                                    <span class="font-mono text-purple-300">{{ qrForeground }}</span>
-                                </label>
-                                <div class="flex items-center gap-x-2">
-                                    <input 
-                                        type="color" 
-                                        v-model="qrForeground" 
-                                        class="h-9 w-12 rounded-lg bg-[#0B0F19] border border-gray-700 p-0.5 cursor-pointer"
-                                    />
-                                    <input 
-                                        type="text" 
-                                        v-model="qrForeground" 
-                                        class="flex-1 bg-[#0B0F19] border border-gray-700 rounded-lg py-1.5 px-3 text-white text-xs font-mono focus:border-purple-500 focus:outline-none"
-                                    />
-                                </div>
-                            </div>
-
-                            <!-- Background Color Picker -->
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1.5 flex justify-between">
-                                    <span>Background Hex Color</span>
-                                    <span class="font-mono text-gray-300">{{ qrBackground }}</span>
-                                </label>
-                                <div class="flex items-center gap-x-2">
-                                    <input 
-                                        type="color" 
-                                        v-model="qrBackground" 
-                                        class="h-9 w-12 rounded-lg bg-[#0B0F19] border border-gray-700 p-0.5 cursor-pointer"
-                                    />
-                                    <input 
-                                        type="text" 
-                                        v-model="qrBackground" 
-                                        class="flex-1 bg-[#0B0F19] border border-gray-700 rounded-lg py-1.5 px-3 text-white text-xs font-mono focus:border-purple-500 focus:outline-none"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Theme Presets Palette Buttons -->
-                        <div class="mt-3 flex items-center gap-x-2">
-                            <span class="text-[11px] text-gray-500 font-medium">Quick Gradients:</span>
-                            <button @click="applyThemePreset('#8B5CF6', '#FFFFFF')" class="w-5 h-5 rounded-full border border-gray-600 bg-purple-500 cursor-pointer" title="Neon Purple"></button>
-                            <button @click="applyThemePreset('#000000', '#FFFFFF')" class="w-5 h-5 rounded-full border border-gray-600 bg-black cursor-pointer" title="Classic Pitch Black"></button>
-                            <button @click="applyThemePreset('#EC4899', '#FFFFFF')" class="w-5 h-5 rounded-full border border-gray-600 bg-pink-500 cursor-pointer" title="Vivid Pink"></button>
-                            <button @click="applyThemePreset('#06B6D4', '#0B0F19')" class="w-5 h-5 rounded-full border border-cyan-500 bg-cyan-400 cursor-pointer" title="Cyberpunk Dark Mode Neon"></button>
-                            <button @click="applyThemePreset('#10B981', '#FFFFFF')" class="w-5 h-5 rounded-full border border-gray-600 bg-emerald-500 cursor-pointer" title="Emerald Growth"></button>
-                        </div>
-
-                        <!-- Secondary Settings Range Configuration -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-                            <!-- Matrix Size -->
-                            <div>
-                                <div class="flex justify-between items-center text-xs mb-1">
-                                    <span class="text-gray-400">Resolution Size:</span>
-                                    <span class="text-purple-400 font-bold">{{ qrSize }}px</span>
-                                </div>
-                                <input type="range" v-model="qrSize" min="150" max="450" step="10" class="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-purple-500" />
-                            </div>
-
-                            <!-- Padding / Quiet Zone Margin -->
-                            <div>
-                                <div class="flex justify-between items-center text-xs mb-1">
-                                    <span class="text-gray-400">Quiet Zone Margin:</span>
-                                    <span class="text-purple-400 font-bold">{{ qrMargin }} units</span>
-                                </div>
-                                <input type="range" v-model="qrMargin" min="0" max="6" step="1" class="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-purple-500" />
-                            </div>
-
-                            <!-- Redundancy Level -->
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1">Error Redundancy</label>
-                                <select 
-                                    v-model="qrLevel"
-                                    class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg py-1 px-2.5 text-white text-xs focus:border-purple-500 focus:outline-none cursor-pointer"
-                                >
-                                    <option value="L">Level L (~7% safe)</option>
-                                    <option value="M">Level M (~15% safe)</option>
-                                    <option value="Q">Level Q (~25% safe)</option>
-                                    <option value="H">Level H (~30% max safe)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!-- Right Column: Live Responsive Canvas Render Pane (5 cols) -->
+                <!-- Right Column (Moved to top on mobile for immediate visual feedback) -->
                 <div class="lg:col-span-5 flex flex-col space-y-6 order-1 lg:order-2">
-                    
                     <!-- Bounding View Frame -->
-                    <div class="rounded-2xl border border-purple-500/30 bg-[#121826]/80 backdrop-blur-xl shadow-2xl p-6 text-center relative overflow-hidden flex flex-col items-center">
-                        <div class="absolute top-0 right-0 py-1 px-3 bg-purple-500/10 border-b border-l border-purple-500/20 text-[10px] font-bold text-purple-400 uppercase rounded-bl-lg">
-                            Live Vector Buffer
+                    <div class="rounded-3xl border border-purple-500/30 bg-[#121826]/80 backdrop-blur-xl shadow-2xl p-5 lg:p-6 text-center relative overflow-hidden flex flex-col items-center">
+                        <div class="absolute top-0 right-0 py-1 px-3 bg-purple-500/10 border-b border-l border-purple-500/20 text-[9px] font-black text-purple-400 uppercase rounded-bl-lg tracking-widest">
+                            Live Vector
                         </div>
 
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-4 mt-1">Generated View Matrix</span>
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-5 mt-1">Matrix Preview</span>
 
-                        <!-- Dynamic Matrix Sandbox rendering pipeline -->
-                        <div class="bg-gray-900/60 p-4 rounded-2xl border border-gray-800 inline-flex items-center justify-center min-w-[220px] min-h-[220px] max-w-full overflow-hidden shadow-inner">
+                        <!-- Dynamic Matrix Sandbox -->
+                        <div class="bg-white p-4 rounded-2xl border border-gray-800 inline-flex items-center justify-center min-w-[180px] min-h-[180px] max-w-full overflow-hidden shadow-inner">
                             <div ref="qrWrapperRef" class="transition-all duration-300">
                                 <QrcodeVue
                                     :value="computedQrValue"
@@ -566,56 +325,182 @@ const applyThemePreset = (fg, bg) => {
                             </div>
                         </div>
 
-                        <!-- Computed Metadata summary badge -->
-                        <div class="mt-4 w-full bg-[#0B0F19] rounded-xl p-3 border border-gray-800 text-left">
-                            <span class="text-[10px] text-purple-400 font-bold block uppercase mb-1">Encoded Decoupled Buffer Payload</span>
-                            <div class="text-xs text-gray-300 font-mono break-all max-h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-800">
+                        <!-- Computed Metadata -->
+                        <div class="mt-5 w-full bg-[#0B0F19] rounded-2xl p-4 border border-gray-800 text-left">
+                            <span class="text-[9px] text-purple-400 font-black block uppercase mb-2 tracking-widest">Payload Buffer</span>
+                            <div class="text-[11px] text-gray-400 font-mono break-all max-h-16 overflow-y-auto no-scrollbar">
                                 {{ computedQrValue }}
                             </div>
                         </div>
 
-                        <!-- Notification alert pop -->
-                        <div v-if="exportNotification" class="mt-3 w-full py-1.5 px-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-[11px] text-emerald-400 animate-fade-in font-medium">
-                            {{ exportNotification }}
-                        </div>
-
-                        <!-- Download Execution Suite Triggers -->
-                        <div class="mt-6 w-full pt-4 border-t border-gray-800/80 flex flex-col gap-y-2">
-                            <span class="text-[11px] text-gray-500 font-medium block text-left">Export Output Stream Assets:</span>
-                            
+                        <!-- Export Execution Suite -->
+                        <div class="mt-6 w-full pt-5 border-t border-gray-800/80 flex flex-col gap-y-3">
                             <div class="grid grid-cols-2 gap-3">
-                                <!-- PNG Button -->
                                 <button
                                     @click="triggerDownload('canvas')"
-                                    class="py-2.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs flex items-center justify-center gap-x-2 transition-all shadow-lg shadow-purple-600/20 cursor-pointer"
+                                    class="py-3 px-4 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-x-2 transition-all shadow-lg shadow-purple-600/20 active:scale-95"
                                 >
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                     </svg>
-                                    <span>Save PNG (Raster)</span>
+                                    <span>PNG</span>
                                 </button>
 
-                                <!-- SVG Button -->
                                 <button
                                     @click="triggerDownload('svg')"
-                                    class="py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs flex items-center justify-center gap-x-2 transition-all shadow-lg shadow-emerald-600/20 cursor-pointer"
+                                    class="py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-x-2 transition-all shadow-lg shadow-emerald-600/20 active:scale-95"
                                 >
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                     </svg>
-                                    <span>Save SVG (Vector)</span>
+                                    <span>SVG</span>
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
 
+                <!-- Left Column: Inputs -->
+                <div class="lg:col-span-7 rounded-3xl border border-gray-800/80 bg-[#121826]/80 backdrop-blur-xl shadow-2xl p-5 lg:p-7 overflow-hidden order-2 lg:order-1">
+                    
+                    <!-- Profile Tab Selection Bar -->
+                    <div class="flex overflow-x-auto no-scrollbar pb-4 mb-6 border-b border-gray-800/80 gap-2">
+                        <button 
+                            v-for="profile in [
+                                { id: 'url', label: 'Link' },
+                                { id: 'text', label: 'Text' },
+                                { id: 'email', label: 'Email' },
+                                { id: 'phone', label: 'Phone' },
+                                { id: 'wifi', label: 'WiFi' },
+                                { id: 'sms', label: 'SMS' }
+                            ]"
+                            :key="profile.id"
+                            @click="activeProfile = profile.id"
+                            :class="['px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-200', activeProfile === profile.id ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30' : 'bg-[#0B0F19] text-gray-500 border border-gray-800/80']"
+                        >
+                            {{ profile.label }}
+                        </button>
                     </div>
 
-                    <!-- SEO Auxiliary Features Guidance Card -->
-                    <div class="rounded-xl border border-gray-800 bg-[#121826]/40 p-4 text-left">
-                        <span class="text-xs font-bold text-gray-300 block mb-1">💡 Professional Best Practices</span>
-                        <p class="text-[11px] text-gray-500 leading-relaxed">
-                            For maximum device scanner reliability across long scanning ranges, maintain an optimal contrast ratio (dark foreground blocks layered over light background layers) and keep silent margins quiet.
-                        </p>
+                    <!-- Profile Forms (Shared styling) -->
+                    <div class="space-y-6">
+                        <div v-if="activeProfile === 'url'">
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Endpoint URL</label>
+                            <input type="url" v-model="formUrl" placeholder="https://example.com" class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none" />
+                        </div>
+
+                        <div v-if="activeProfile === 'text'">
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Message Content</label>
+                            <textarea v-model="formText" rows="4" placeholder="Type here..." class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none resize-none"></textarea>
+                        </div>
+
+                        <div v-if="activeProfile === 'email'" class="space-y-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Recipient</label>
+                                <input type="email" v-model="formEmailTo" placeholder="hello@fluxmedia.space" class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none" />
+                            </div>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Subject</label>
+                                    <input type="text" v-model="formEmailSubject" class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="activeProfile === 'phone'">
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Phone Number</label>
+                            <input type="tel" v-model="formPhone" placeholder="+1..." class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none" />
+                        </div>
+
+                        <div v-if="activeProfile === 'wifi'" class="space-y-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">SSID (Name)</label>
+                                <input type="text" v-model="formWifiSsid" class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none" />
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Security</label>
+                                    <select v-model="formWifiEncryption" class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none">
+                                        <option value="WPA">WPA/WPA2/WPA3</option>
+                                        <option value="WEP">WEP</option>
+                                        <option value="nopass">None</option>
+                                    </select>
+                                </div>
+                                <div v-if="formWifiEncryption !== 'nopass'">
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Password</label>
+                                    <input type="password" v-model="formWifiPassword" class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="activeProfile === 'sms'" class="space-y-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Phone</label>
+                                <input type="tel" v-model="formSmsPhone" class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none" />
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Message</label>
+                                <textarea v-model="formSmsMessage" rows="2" class="w-full bg-[#0B0F19] border border-gray-700 rounded-2xl py-3 px-4 text-white text-sm focus:border-purple-500 focus:outline-none resize-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Styling Controls -->
+                    <div class="mt-10 pt-8 border-t border-gray-800/80">
+                        <h3 class="text-[10px] font-black text-purple-400 uppercase tracking-[0.2em] mb-6">Matrix Styling</h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex justify-between">
+                                    <span>Foreground</span>
+                                    <span class="font-mono text-purple-300">{{ qrForeground }}</span>
+                                </label>
+                                <div class="flex items-center gap-x-2">
+                                    <input type="color" v-model="qrForeground" class="h-10 w-14 rounded-xl bg-[#0B0F19] border border-gray-700 p-1 cursor-pointer" />
+                                    <input type="text" v-model="qrForeground" class="flex-1 bg-[#0B0F19] border border-gray-700 rounded-xl py-2 px-3 text-white text-xs font-mono focus:border-purple-500 focus:outline-none" />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex justify-between">
+                                    <span>Background</span>
+                                    <span class="font-mono text-gray-300">{{ qrBackground }}</span>
+                                </label>
+                                <div class="flex items-center gap-x-2">
+                                    <input type="color" v-model="qrBackground" class="h-10 w-14 rounded-xl bg-[#0B0F19] border border-gray-700 p-1 cursor-pointer" />
+                                    <input type="text" v-model="qrBackground" class="flex-1 bg-[#0B0F19] border border-gray-700 rounded-xl py-2 px-3 text-white text-xs font-mono focus:border-purple-500 focus:outline-none" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Config -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+                            <div>
+                                <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest mb-3">
+                                    <span class="text-gray-500">Size</span>
+                                    <span class="text-purple-400">{{ qrSize }}px</span>
+                                </div>
+                                <input type="range" v-model="qrSize" min="150" max="450" step="10" class="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-purple-500" />
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest mb-3">
+                                    <span class="text-gray-500">Margin</span>
+                                    <span class="text-purple-400">{{ qrMargin }}</span>
+                                </div>
+                                <input type="range" v-model="qrMargin" min="0" max="6" step="1" class="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-purple-500" />
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Redundancy</label>
+                                <select v-model="qrLevel" class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2 px-3 text-white text-xs focus:border-purple-500 focus:outline-none">
+                                    <option value="L">Level L (7%)</option>
+                                    <option value="M">Level M (15%)</option>
+                                    <option value="Q">Level Q (25%)</option>
+                                    <option value="H">Level H (30%)</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -623,9 +508,9 @@ const applyThemePreset = (fg, bg) => {
             </div>
         </div>
 
-        <!-- Footer Footer -->
-        <footer class="mt-20 border-t border-gray-800/80 pt-8 text-center text-xs text-gray-600">
-            <p>FluxMedia Premium Core Studio · Dynamic Matrix Module</p>
+        <!-- Footer -->
+        <footer class="mt-20 border-t border-gray-800/80 pt-8 pb-12 text-center">
+            <p class="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em]">FluxMedia Studio · Matrix v1.2.0</p>
         </footer>
     </div>
 </template>
@@ -637,12 +522,11 @@ const applyThemePreset = (fg, bg) => {
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
 }
-
-.animate-fade-in {
-    animation: fadeIn 0.2s ease-out forwards;
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 </style>

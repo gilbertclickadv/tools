@@ -347,15 +347,17 @@ const downloadProcessedImage = () => {
         <meta name="description" content="Professional web-based image manipulation suite. Convert codecs, perform visual overlay cropping, apply Gaussian filters, and compress assets locally with secure persistent disk cache lifecycles." />
     </Head>
 
-    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta selection:bg-purple-500 selection:text-white pb-20 overflow-x-hidden">
+    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta selection:bg-purple-500 selection:text-white pb-32 lg:pb-10 overflow-x-hidden">
         <VerificationAlert />
         <PWAInstallPrompt />
+
+        <!-- App Header (Unified Style) -->
         <header class="border-b border-gray-800/60 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-[100]">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-20 items-center justify-between">
-                <!-- Brand Logo (Left) -->
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-16 lg:h-20 items-center justify-between">
+                <!-- Brand Logo -->
                 <Link href="/" class="flex items-center gap-x-3 shrink-0 group">
-                    <img src="/assets/images/icon_only.webp" class="h-10 w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
-                    <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
+                    <img src="/assets/images/pwa-192.png" class="h-8 w-8 lg:h-10 lg:w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
+                    <span class="text-lg lg:text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
                         FluxMedia
                     </span>
                 </Link>
@@ -414,377 +416,323 @@ const downloadProcessedImage = () => {
                     </template>
                 </div>
 
-                <!-- Mobile Hamburger Button -->
-                <div class="lg:hidden flex items-center">
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 text-gray-400 hover:text-white focus:outline-none">
-                        <svg v-if="!mobileMenuOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg v-else class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Mobile Menu Dropdown -->
-            <div v-if="mobileMenuOpen" class="lg:hidden bg-[#121826]/95 backdrop-blur-xl border-t border-gray-800 p-4 space-y-4 animate-fade-in">
-                <div class="flex flex-col gap-y-2">
-                    <Link href="/" class="px-4 py-3 rounded-xl bg-purple-500/10 text-purple-400 font-bold border border-purple-500/20">Image Studio</Link>
-                    <Link href="/qr-code-generator" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">QR Generator</Link>
-                    <Link href="/history" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">History Hub</Link>
-                </div>
-                <div class="pt-4 border-t border-gray-800 flex flex-col gap-y-3">
+                <!-- Mobile Profile Shortcut -->
+                <div class="lg:hidden flex items-center gap-x-3">
                     <template v-if="$page.props.auth?.user">
-                        <div class="flex items-center gap-x-3 px-4 py-2">
-                            <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white">
-                                {{ $page.props.auth.user.name[0] }}
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-white">{{ $page.props.auth.user.name }}</p>
-                                <p class="text-xs text-gray-500">{{ $page.props.auth.user.email }}</p>
-                            </div>
-                        </div>
-                        <Link :href="route('profile.edit')" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">Profile Settings</Link>
-                        <Link v-if="$page.props.auth?.user?.is_admin" :href="route('admin.dashboard')" class="px-4 py-3 rounded-xl text-purple-400 font-bold hover:bg-purple-500/10">Admin Dashboard</Link>
-                        <Link :href="route('logout')" method="post" as="button" class="w-full text-left px-4 py-3 rounded-xl text-red-400 font-semibold hover:bg-red-500/10">Logout</Link>
+                        <Link :href="route('profile.edit')" class="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white text-xs border border-purple-400/30">
+                            {{ $page.props.auth.user.name[0] }}
+                        </Link>
                     </template>
                     <template v-else>
-                        <Link :href="route('login')" class="px-4 py-2 text-gray-400 font-medium">Log in</Link>
-                        <Link v-if="canRegister" :href="route('register')" class="mx-4 py-2 text-center rounded-lg bg-purple-600 text-white font-bold">Register Now</Link>
+                        <Link :href="route('login')" class="text-xs font-bold text-purple-400 uppercase tracking-widest bg-purple-500/10 px-3 py-1.5 rounded-lg border border-purple-500/20">Login</Link>
                     </template>
                 </div>
             </div>
         </header>
 
-        <!-- Hero Section -->
-        <div class="relative overflow-hidden pt-16 pb-12 text-center">
+        <!-- Bottom Navigation for Mobile -->
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0B0F19]/90 backdrop-blur-xl border-t border-gray-800/60 z-[100] px-6 py-3 flex items-center justify-between pb-[calc(12px+env(safe-area-inset-bottom))] shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+            <Link href="/" class="flex flex-col items-center gap-y-1 transition-all text-purple-400 scale-110">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Studio</span>
+            </Link>
+            
+            <Link href="/qr-code-generator" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">QR Intel</span>
+            </Link>
+
+            <Link href="/" class="relative -top-6 h-14 w-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shadow-xl shadow-purple-900/40 border-4 border-[#0B0F19] transition-transform active:scale-95">
+                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+            </Link>
+
+            <Link href="/history" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">History</span>
+            </Link>
+
+            <Link :href="$page.props.auth?.user ? route('profile.edit') : route('login')" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">{{ $page.props.auth?.user ? 'Profile' : 'Login' }}</span>
+            </Link>
+        </nav>
+
+        <!-- Hero Section (More compact on mobile) -->
+        <div class="relative overflow-hidden pt-10 lg:pt-16 pb-8 lg:pb-12 text-center">
             <!-- Glow background effect -->
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-purple-600/20 to-pink-600/10 blur-[120px] rounded-full pointer-events-none"></div>
 
             <div class="relative mx-auto max-w-4xl px-6">
-                <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-4 py-1.5 text-xs font-semibold text-purple-300 border border-purple-500/20 mb-8">
+                <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-4 py-1.5 text-[10px] lg:text-xs font-semibold text-purple-300 border border-purple-500/20 mb-6 lg:mb-8">
                     <span class="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse"></span>
-                    FluxMedia Core Studio · Advanced Engine
+                    FluxMedia Studio · Pro Engine
                 </span>
 
-                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-24 sm:h-32 object-contain mb-10 drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]" alt="FluxMedia Main Logo" />
+                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-20 lg:h-32 object-contain mb-8 lg:mb-10 drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]" alt="FluxMedia Main Logo" />
 
-                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-tight">
-                    Next-Gen Media <br/>
+                <h1 class="text-3xl lg:text-6xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-tight">
+                    Next-Gen Media <br class="lg:hidden" />
                     <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
-                        Processing & Refinement
+                        Refinement
                     </span>
                 </h1>
-                <!-- <p class="mt-4 text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
-                    Compress byte ratios instantly, transition responsive aspect layers, and convert media stream topologies locally backed by scalable Intervention server buffers.
-                </p> -->
             </div>
         </div>
 
         <!-- Main Workspace Area -->
-        <div class="mx-auto max-w-6xl px-4 sm:px-6">
-            <div class="rounded-2xl border border-gray-800/80 bg-[#121826]/80 backdrop-blur-xl shadow-2xl overflow-hidden p-6 sm:p-10">
+        <div class="mx-auto max-w-6xl px-3 lg:px-6">
+            <div class="rounded-3xl border border-gray-800/80 bg-[#121826]/80 backdrop-blur-xl shadow-2xl overflow-hidden p-5 lg:p-10">
                 
                 <!-- File Upload Zone -->
                 <div 
                     @dragover.prevent 
                     @drop.prevent="onFileSelected"
                     @click="triggerFileInput"
-                    class="relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-700/80 hover:border-purple-500/60 bg-[#0B0F19]/50 py-12 px-6 text-center cursor-pointer transition-all group"
+                    class="relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-700/80 hover:border-purple-500/60 bg-[#0B0F19]/50 py-10 lg:py-16 px-6 text-center cursor-pointer transition-all group"
                 >
                     <input id="file-upload" type="file" class="hidden" accept="image/*" @change="onFileSelected" />
                     
-                    <div class="h-16 w-16 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
-                        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="h-14 w-14 lg:h-16 lg:w-16 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="h-7 w-7 lg:h-8 lg:w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                         </svg>
                     </div>
 
-                    <span class="text-base font-semibold text-white">
-                        {{ selectedFile ? selectedFile.name : 'Choose a file or drag & drop it here' }}
+                    <span class="text-sm lg:text-base font-semibold text-white">
+                        {{ selectedFile ? selectedFile.name : 'Choose a file or drag & drop' }}
                     </span>
-                    <p class="mt-1 text-xs text-gray-400">
-                        {{ selectedFile ? `Size: ${formatBytes(originalSize)} | Format: ${selectedFile.type}` : 'Supports JPEG, PNG, WebP, GIF up to 20MB' }}
+                    <p class="mt-1 text-[10px] lg:text-xs text-gray-400">
+                        {{ selectedFile ? `Size: ${formatBytes(originalSize)}` : 'Supports JPEG, PNG, WebP up to 20MB' }}
                     </p>
 
-                    <div v-if="selectedFile" @click.stop="selectedFile = null" class="absolute top-3 right-3 text-xs bg-red-500/20 text-red-400 hover:bg-red-500/30 px-2.5 py-1 rounded-md transition-colors">
-                        Clear File
+                    <div v-if="selectedFile" @click.stop="selectedFile = null" class="absolute top-3 right-3 text-[10px] bg-red-500/20 text-red-400 hover:bg-red-500/30 px-2 py-1 rounded-lg transition-colors font-bold uppercase tracking-wider">
+                        Clear
                     </div>
                 </div>
 
                 <!-- Processing Mode Tabs -->
-                <div v-if="selectedFile" class="mt-8">
-                    <div class="flex flex-wrap gap-2 p-1.5 bg-[#0B0F19] rounded-xl border border-gray-800">
+                <div v-if="selectedFile" class="mt-6 lg:mt-8">
+                    <div class="flex overflow-x-auto no-scrollbar gap-2 p-1 bg-[#0B0F19] rounded-xl border border-gray-800">
                         <button 
-                            @click="activeTab = 'convert'"
-                            :class="['flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all', activeTab === 'convert' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md' : 'text-gray-400 hover:text-white']"
+                            v-for="tab in [
+                                { id: 'convert', label: 'Convert' },
+                                { id: 'resize', label: 'Resize' },
+                                { id: 'adjust', label: 'Adjust' },
+                                { id: 'crop', label: 'Crop' }
+                            ]"
+                            :key="tab.id"
+                            @click="activeTab = tab.id"
+                            :class="['flex-1 py-2 lg:py-2.5 px-4 rounded-lg text-xs lg:text-sm font-semibold transition-all whitespace-nowrap', activeTab === tab.id ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md' : 'text-gray-400 hover:text-white']"
                         >
-                            Convert Format
-                        </button>
-                        <button 
-                            @click="activeTab = 'resize'"
-                            :class="['flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all', activeTab === 'resize' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md' : 'text-gray-400 hover:text-white']"
-                        >
-                            Resize Dimension
-                        </button>
-                        <button 
-                            @click="activeTab = 'adjust'"
-                            :class="['flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all', activeTab === 'adjust' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md' : 'text-gray-400 hover:text-white']"
-                        >
-                            Filter Adjustments
-                        </button>
-                        <button 
-                            @click="activeTab = 'crop'"
-                            :class="['flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all', activeTab === 'crop' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md' : 'text-gray-400 hover:text-white']"
-                        >
-                            Crop Region
+                            {{ tab.label }}
                         </button>
                     </div>
 
                     <!-- Configuration Panels -->
-                    <div class="mt-6 p-6 rounded-xl bg-[#0B0F19]/40 border border-gray-800/80">
+                    <div class="mt-5 lg:mt-6 p-5 lg:p-6 rounded-2xl bg-[#0B0F19]/40 border border-gray-800/80">
 
-                        <!-- Panel 2: Resize -->
+                        <!-- Panel: Resize -->
                         <div v-if="activeTab === 'resize'" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1">Target Width (px)</label>
-                                <input 
-                                    type="number" 
-                                    v-model="targetWidth" 
-                                    class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-purple-500 focus:outline-none"
-                                />
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Width (px)</label>
+                                <input type="number" v-model="targetWidth" class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none" />
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1">Target Height (px)</label>
-                                <input 
-                                    type="number" 
-                                    v-model="targetHeight" 
-                                    class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-purple-500 focus:outline-none"
-                                />
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Height (px)</label>
+                                <input type="number" v-model="targetHeight" class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2 px-3.5 text-white text-sm focus:border-purple-500 focus:outline-none" />
                             </div>
                             <div class="sm:col-span-2 pt-2">
                                 <label class="inline-flex items-center gap-x-2 cursor-pointer">
                                     <input type="checkbox" v-model="maintainAspect" class="rounded border-gray-700 bg-gray-900 accent-purple-500 text-purple-600" />
-                                    <span class="text-xs text-gray-300 font-medium">Auto-scale boundary targets to maintain raw aspect ratio</span>
+                                    <span class="text-xs text-gray-400 font-medium">Maintain aspect ratio</span>
                                 </label>
                             </div>
                         </div>
 
-                        <!-- Panel 3: Convert -->
-                        <div v-if="activeTab === 'convert'" class="space-y-4">
-                            <label class="block text-xs font-medium text-gray-400">Target Export Stream Codec</label>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                <label v-for="fmt in ['webp', 'jpeg', 'png', 'gif', 'avif', 'tiff', 'bmp', 'ico']" :key="fmt" :class="['flex items-center justify-center py-2.5 px-3 rounded-lg border cursor-pointer text-xs font-semibold uppercase transition-all', targetFormat === fmt ? 'bg-purple-600/20 border-purple-500 text-purple-300' : 'border-gray-800 bg-[#0B0F19] text-gray-500 hover:border-gray-700']">
+                        <!-- Panel: Convert -->
+                        <div v-if="activeTab === 'convert'" class="space-y-5">
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Target Format</label>
+                            <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                                <label v-for="fmt in ['webp', 'jpeg', 'png', 'gif', 'avif', 'ico']" :key="fmt" :class="['flex items-center justify-center py-2 px-2 rounded-xl border cursor-pointer text-[10px] font-bold uppercase transition-all', targetFormat === fmt ? 'bg-purple-600/20 border-purple-500 text-purple-300' : 'border-gray-800 bg-[#0B0F19] text-gray-500 hover:border-gray-700']">
                                     <input type="radio" v-model="targetFormat" :value="fmt" class="hidden" />
                                     {{ fmt }}
                                 </label>
                             </div>
                             <div v-if="['webp', 'jpeg', 'avif'].includes(targetFormat)" class="pt-2">
-                                <div class="flex justify-between items-center text-xs mb-1">
-                                    <span class="text-gray-400">Encoder Quality:</span>
-                                    <span class="text-purple-400 font-bold">{{ quality }}%</span>
+                                <div class="flex justify-between items-center text-[10px] mb-2 font-bold uppercase tracking-wider">
+                                    <span class="text-gray-500">Quality:</span>
+                                    <span class="text-purple-400">{{ quality }}%</span>
                                 </div>
                                 <input type="range" v-model="quality" min="10" max="100" class="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-purple-500" />
                             </div>
                         </div>
 
-                        <!-- Panel 4: Adjust -->
-                        <div v-if="activeTab === 'adjust'" class="space-y-4">
+                        <!-- Panel: Adjust -->
+                        <div v-if="activeTab === 'adjust'" class="space-y-5">
                             <label class="inline-flex items-center gap-x-2 cursor-pointer">
                                 <input type="checkbox" v-model="applyGreyscale" class="rounded border-gray-700 bg-gray-900 accent-purple-500 text-purple-600" />
-                                <span class="text-xs text-gray-300 font-medium">Strip Chromatic Channel (Monochrome/Greyscale)</span>
+                                <span class="text-xs text-gray-400 font-medium">Grayscale Filter</span>
                             </label>
 
                             <div>
-                                <div class="flex justify-between items-center text-xs mb-1">
-                                    <span class="text-gray-400">Gaussian Blur Radius:</span>
-                                    <span class="text-purple-400 font-bold">{{ blurAmount }}px</span>
+                                <div class="flex justify-between items-center text-[10px] mb-2 font-bold uppercase tracking-wider">
+                                    <span class="text-gray-500">Blur:</span>
+                                    <span class="text-purple-400">{{ blurAmount }}px</span>
                                 </div>
                                 <input type="range" v-model="blurAmount" min="0" max="100" class="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-purple-500" />
                             </div>
 
                             <div>
-                                <div class="flex justify-between items-center text-xs mb-1">
-                                    <span class="text-gray-400">Brightness Offset:</span>
-                                    <span class="text-purple-400 font-bold">{{ brightnessAmount }}</span>
+                                <div class="flex justify-between items-center text-[10px] mb-2 font-bold uppercase tracking-wider">
+                                    <span class="text-gray-500">Brightness:</span>
+                                    <span class="text-purple-400">{{ brightnessAmount }}</span>
                                 </div>
                                 <input type="range" v-model="brightnessAmount" min="-100" max="100" class="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-purple-500" />
                             </div>
                         </div>
 
-                        <!-- Panel 5: Crop -->
-                        <div v-if="activeTab === 'crop'" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="sm:col-span-2 pb-1">
-                                <span class="text-xs text-purple-400 font-semibold block mb-1">💡 Interactive Studio Cropping Guide</span>
-                                <p class="text-xs text-gray-400">Drag and resize the active purple overlay box below directly over your uploaded graphic frame to intuitively extract any specific target region.</p>
+                        <!-- Panel: Crop -->
+                        <div v-if="activeTab === 'crop'" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Width (px)</label>
+                                    <input type="number" v-model="cropWidth" @input="syncOverlayFromInputs" class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2 px-3 text-white text-sm focus:border-purple-500 focus:outline-none" />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Height (px)</label>
+                                    <input type="number" v-model="cropHeight" @input="syncOverlayFromInputs" class="w-full bg-[#0B0F19] border border-gray-700 rounded-xl py-2 px-3 text-white text-sm focus:border-purple-500 focus:outline-none" />
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1">Crop Width (px)</label>
-                                <input 
-                                    type="number" 
-                                    v-model="cropWidth" 
-                                    @input="syncOverlayFromInputs"
-                                    class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-purple-500 focus:outline-none"
-                                />
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1">Crop Height (px)</label>
-                                <input 
-                                    type="number" 
-                                    v-model="cropHeight" 
-                                    @input="syncOverlayFromInputs"
-                                    class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-purple-500 focus:outline-none"
-                                />
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1">Offset X / Left (px)</label>
-                                <input 
-                                    type="number" 
-                                    v-model="cropX" 
-                                    @input="syncOverlayFromInputs"
-                                    class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-purple-500 focus:outline-none"
-                                />
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1">Offset Y / Top (px)</label>
-                                <input 
-                                    type="number" 
-                                    v-model="cropY" 
-                                    @input="syncOverlayFromInputs"
-                                    class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-purple-500 focus:outline-none"
-                                />
+                            <div class="text-[10px] text-purple-400/80 font-medium leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
+                                Tip: You can also drag the purple box directly on the preview below to select your area.
                             </div>
                         </div>
 
                         <!-- Progress Indicators -->
                         <div v-if="isProcessing" class="mt-6 pt-4 border-t border-gray-800/80">
-                            <div class="flex justify-between items-center text-xs mb-2">
-                                <span class="text-purple-300 font-medium flex items-center gap-x-2">
-                                    <svg class="animate-spin h-3.5 w-3.5 text-purple-400" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                    </svg>
-                                    <span>{{ uploadProgress < 100 ? 'Transmitting payload buffer...' : 'Processing multi-channel graphics buffer...' }}</span>
-                                </span>
-                                <span class="text-purple-400 font-bold">{{ uploadProgress }}%</span>
+                            <div class="flex justify-between items-center text-[10px] mb-2 font-bold uppercase tracking-wider">
+                                <span class="text-purple-300">Processing Stream...</span>
+                                <span class="text-purple-400">{{ uploadProgress }}%</span>
                             </div>
-                            <div class="w-full bg-gray-900 rounded-full h-2 overflow-hidden border border-gray-800">
-                                <div class="bg-gradient-to-r from-purple-600 to-pink-500 h-full rounded-full transition-all duration-300" :style="{ width: uploadProgress + '%' }"></div>
+                            <div class="w-full bg-gray-900 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-gradient-to-r from-purple-600 to-pink-500 h-full transition-all duration-300" :style="{ width: uploadProgress + '%' }"></div>
                             </div>
                         </div>
 
                         <!-- Action Button -->
-                        <div class="mt-6 flex justify-end">
+                        <div class="mt-6">
                             <button
                                 @click="submitProcess"
                                 :disabled="isProcessing"
-                                class="inline-flex items-center gap-x-2 rounded-xl bg-purple-600 py-3 px-6 text-sm font-semibold text-white shadow-lg shadow-purple-600/30 hover:bg-purple-500 transition-all disabled:opacity-50"
+                                class="w-full lg:w-auto inline-flex items-center justify-center gap-x-2 rounded-2xl bg-purple-600 py-3.5 px-8 text-sm font-bold text-white shadow-lg shadow-purple-600/30 hover:bg-purple-500 transition-all disabled:opacity-50 active:scale-95"
                             >
-                                <span>Process Image Stream</span>
+                                <svg v-if="isProcessing" class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                </svg>
+                                <span>{{ isProcessing ? 'Processing...' : 'Run Engine' }}</span>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Error Response Banner -->
-                <div v-if="processError" class="mt-6 rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-sm text-red-400 flex items-center gap-x-3">
-                    <svg class="h-5 w-5 shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- Error Response -->
+                <div v-if="processError" class="mt-6 rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-xs text-red-400 flex items-center gap-x-3">
+                    <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span>{{ processError }}</span>
                 </div>
 
-                <!-- Live Side-by-Side View Results -->
+                <!-- Live Results Workspace -->
                 <div v-if="processedResult || originalPreviewUrl" class="mt-10 pt-8 border-t border-gray-800">
-                    <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-x-2">
-                        <span>Workspace Preview Comparison</span>
-                        <span v-if="processedResult" class="text-xs font-medium py-1 px-2.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                            Saved {{ processedResult.reductionPercentage }}% Storage
+                    <h3 class="text-sm lg:text-lg font-bold text-white mb-6 flex items-center justify-between">
+                        <span>Workspace Preview</span>
+                        <span v-if="processedResult" class="text-[10px] font-bold py-1 px-3 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-widest">
+                            Optimized {{ processedResult.reductionPercentage }}%
                         </span>
                     </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                         
                         <!-- Original Frame -->
-                        <div v-if="originalPreviewUrl" class="rounded-xl border border-gray-800 bg-[#0B0F19]/60 p-4 overflow-hidden">
-                            <div class="flex justify-between items-center text-xs text-gray-400 mb-3 pb-2 border-b border-gray-800/80">
-                                <span class="font-semibold text-gray-300">Original Uploaded Payload</span>
+                        <div v-if="originalPreviewUrl" class="rounded-2xl border border-gray-800 bg-[#0B0F19]/60 p-4 lg:p-5 overflow-hidden">
+                            <div class="flex justify-between items-center text-[10px] text-gray-500 mb-4 pb-2 border-b border-gray-800/80 font-bold uppercase tracking-wider">
+                                <span>Source Payload</span>
                                 <span>{{ formatBytes(originalSize) }}</span>
                             </div>
-                            <div class="flex items-center justify-center bg-[#05070C] rounded-lg p-2 min-h-[220px] select-none">
+                            <div class="flex items-center justify-center bg-[#05070C] rounded-xl p-2 min-h-[200px] lg:min-h-[250px] relative overflow-hidden">
                                 <div class="relative inline-block max-w-full overflow-hidden" ref="cropContainerRef">
-                                    <img :src="originalPreviewUrl" ref="cropImageRef" class="block max-h-[300px] rounded object-contain pointer-events-none select-none" @load="initCropOverlay" alt="Original Frame" />
+                                    <img :src="originalPreviewUrl" ref="cropImageRef" class="block max-h-[250px] lg:max-h-[300px] rounded-lg object-contain pointer-events-none" @load="initCropOverlay" alt="Original Frame" />
                                     
                                     <!-- Interactive Visual Cropping Overlay -->
-                                    <div v-if="activeTab === 'crop' && cropOverlayWidth > 0" class="absolute inset-0 pointer-events-none overflow-hidden">
-                                        <!-- Darkened Backdrop -->
+                                    <div v-if="activeTab === 'crop' && cropOverlayWidth > 0" class="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
                                         <div class="absolute inset-0 bg-black/60"></div>
-                                        
-                                        <!-- Active Clear Crop Box -->
                                         <div 
-                                            class="absolute border-2 border-purple-500 cursor-move box-border pointer-events-auto"
+                                            class="absolute border-2 border-purple-500 cursor-move box-border pointer-events-auto shadow-[0_0_0_9999px_rgba(0,0,0,0.65)]"
                                             :style="{
                                                 left: cropOverlayX + 'px',
                                                 top: cropOverlayY + 'px',
                                                 width: cropOverlayWidth + 'px',
-                                                height: cropOverlayHeight + 'px',
-                                                boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.65)'
+                                                height: cropOverlayHeight + 'px'
                                             }"
                                             @mousedown.prevent="startDragBox"
                                             @touchstart.prevent="startDragBox"
                                         >
-                                            <!-- Visual Grid Guide Lines -->
-                                            <div class="absolute inset-x-0 top-1/3 border-t border-white/30 pointer-events-none"></div>
-                                            <div class="absolute inset-x-0 top-2/3 border-t border-white/30 pointer-events-none"></div>
-                                            <div class="absolute inset-y-0 left-1/3 border-l border-white/30 pointer-events-none"></div>
-                                            <div class="absolute inset-y-0 left-2/3 border-l border-white/30 pointer-events-none"></div>
-
-                                            <!-- Center Indicator -->
-                                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                                <div class="w-2 h-2 bg-purple-500/50 rounded-full"></div>
-                                            </div>
-
-                                            <!-- 4 Corner Resizable Handles -->
-                                            <div class="absolute -top-2 -left-2 w-4 h-4 bg-purple-500 border-2 border-white rounded-full cursor-nwse-resize pointer-events-auto" @mousedown.stop.prevent="startResize('nw', $event)" @touchstart.stop.prevent="startResize('nw', $event)"></div>
-                                            <div class="absolute -top-2 -right-2 w-4 h-4 bg-purple-500 border-2 border-white rounded-full cursor-nesw-resize pointer-events-auto" @mousedown.stop.prevent="startResize('ne', $event)" @touchstart.stop.prevent="startResize('ne', $event)"></div>
-                                            <div class="absolute -bottom-2 -left-2 w-4 h-4 bg-purple-500 border-2 border-white rounded-full cursor-nesw-resize pointer-events-auto" @mousedown.stop.prevent="startResize('sw', $event)" @touchstart.stop.prevent="startResize('sw', $event)"></div>
-                                            <div class="absolute -bottom-2 -right-2 w-4 h-4 bg-purple-500 border-2 border-white rounded-full cursor-nwse-resize pointer-events-auto" @mousedown.stop.prevent="startResize('se', $event)" @touchstart.stop.prevent="startResize('se', $event)"></div>
+                                            <div class="absolute inset-x-0 top-1/3 border-t border-white/20"></div>
+                                            <div class="absolute inset-x-0 top-2/3 border-t border-white/20"></div>
+                                            <div class="absolute inset-y-0 left-1/3 border-l border-white/20"></div>
+                                            <div class="absolute inset-y-0 left-2/3 border-l border-white/20"></div>
+                                            <div class="absolute -top-2 -left-2 w-5 h-5 bg-purple-500 border-2 border-white rounded-full cursor-nwse-resize" @mousedown.stop.prevent="startResize('nw', $event)" @touchstart.stop.prevent="startResize('nw', $event)"></div>
+                                            <div class="absolute -top-2 -right-2 w-5 h-5 bg-purple-500 border-2 border-white rounded-full cursor-nesw-resize" @mousedown.stop.prevent="startResize('ne', $event)" @touchstart.stop.prevent="startResize('ne', $event)"></div>
+                                            <div class="absolute -bottom-2 -left-2 w-5 h-5 bg-purple-500 border-2 border-white rounded-full cursor-nesw-resize" @mousedown.stop.prevent="startResize('sw', $event)" @touchstart.stop.prevent="startResize('sw', $event)"></div>
+                                            <div class="absolute -bottom-2 -right-2 w-5 h-5 bg-purple-500 border-2 border-white rounded-full cursor-nwse-resize" @mousedown.stop.prevent="startResize('se', $event)" @touchstart.stop.prevent="startResize('se', $event)"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-2 text-right text-[11px] text-gray-500 font-mono">
+                            <div class="mt-3 text-right text-[10px] text-gray-600 font-mono">
                                 {{ originalDimensions.width }} × {{ originalDimensions.height }} px
                             </div>
                         </div>
 
                         <!-- Processed Frame -->
-                        <div v-if="processedResult" class="rounded-xl border border-purple-500/30 bg-[#0B0F19]/60 p-4 overflow-hidden relative">
-                            <div class="flex justify-between items-center text-xs text-purple-300 mb-3 pb-2 border-b border-gray-800/80">
-                                <span class="font-semibold text-white">Manipulated Output Buffer</span>
-                                <span class="text-emerald-400 font-bold">{{ formatBytes(processedResult.processedSizeBytes) }}</span>
+                        <div v-if="processedResult" class="rounded-2xl border border-purple-500/30 bg-[#0B0F19]/60 p-4 lg:p-5 overflow-hidden">
+                            <div class="flex justify-between items-center text-[10px] text-purple-400/80 mb-4 pb-2 border-b border-gray-800/80 font-bold uppercase tracking-wider">
+                                <span>Output Buffer</span>
+                                <span class="text-emerald-400">{{ formatBytes(processedResult.processedSizeBytes) }}</span>
                             </div>
-                            <div class="flex items-center justify-center bg-[#05070C] rounded-lg p-2 min-h-[220px]">
-                                <img :src="processedResult.dataUrl" class="max-h-[300px] rounded object-contain" alt="Processed Output" />
+                            <div class="flex items-center justify-center bg-[#05070C] rounded-xl p-2 min-h-[200px] lg:min-h-[250px]">
+                                <img :src="processedResult.dataUrl" class="max-h-[250px] lg:max-h-[300px] rounded-lg object-contain" alt="Processed Output" />
                             </div>
-                            <div class="mt-3 flex justify-between items-center">
-                                <span class="text-[11px] text-gray-500 font-mono">
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-[10px] text-gray-600 font-mono">
                                     {{ processedResult.dimensions?.width }} × {{ processedResult.dimensions?.height }} px
                                 </span>
                                 <button
                                     @click="downloadProcessedImage"
-                                    class="py-1.5 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center gap-x-1.5 transition-all shadow-md shadow-emerald-600/20"
+                                    class="py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] uppercase tracking-widest flex items-center gap-x-2 transition-all shadow-lg shadow-emerald-600/20 active:scale-95"
                                 >
                                     <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                     </svg>
-                                    <span>Download {{ processedResult.format.toUpperCase() }}</span>
+                                    <span>Download</span>
                                 </button>
                             </div>
                         </div>
-                        <div v-else-if="originalPreviewUrl" class="rounded-xl border border-dashed border-gray-800 flex flex-col items-center justify-center p-6 text-center">
-                            <span class="text-xs text-gray-600">Processed stream will render here instantly upon execution request.</span>
+                        <div v-else-if="originalPreviewUrl" class="rounded-2xl border border-dashed border-gray-800 flex flex-col items-center justify-center p-8 text-center bg-[#0B0F19]/20">
+                            <div class="h-12 w-12 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-700 mb-3">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            </div>
+                            <span class="text-[10px] text-gray-600 uppercase font-bold tracking-widest">Output will appear here</span>
                         </div>
                     </div>
                 </div>
@@ -792,66 +740,35 @@ const downloadProcessedImage = () => {
             </div>
         </div>
 
-        <!-- Live Session Processing History Log -->
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 mt-12">
-            <div class="rounded-2xl border border-gray-800/80 bg-[#121826]/60 backdrop-blur-xl p-6 shadow-2xl">
-                <div class="flex items-center justify-between border-b border-gray-800/80 pb-4 mb-4">
-                    <div class="flex items-center gap-x-2.5">
-                        <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">🕒 Live Studio Processing Feed</span>
-                        <span class="px-2 py-0.5 rounded-full bg-purple-500/10 text-[10px] font-semibold text-purple-300 border border-purple-500/20">
-                            {{ $page.props.auth?.user ? '7-Day Cloud Retention' : '6-Hour Transient Lifecycle' }}
-                        </span>
-                    </div>
-                    <span class="text-[11px] text-gray-500 hidden sm:inline">Auto-pruned synchronously</span>
+        <!-- Live History Feed -->
+        <div class="mx-auto max-w-6xl px-3 lg:px-6 mt-10 lg:mt-12">
+            <div class="rounded-3xl border border-gray-800/80 bg-[#121826]/60 backdrop-blur-xl p-5 lg:p-7 shadow-2xl">
+                <div class="flex items-center justify-between border-b border-gray-800/80 pb-4 mb-5">
+                    <span class="text-[10px] font-bold text-purple-400 uppercase tracking-widest flex items-center gap-x-2">
+                        <span class="h-2 w-2 rounded-full bg-purple-500 animate-pulse"></span>
+                        Live Session Feed
+                    </span>
+                    <Link href="/history" class="text-[10px] font-bold text-gray-500 hover:text-purple-400 transition-colors uppercase tracking-widest">View All</Link>
                 </div>
-
-                <div v-if="userHistory.length === 0" class="py-8 text-center text-xs text-gray-600 italic">
-                    No recently optimized image cache streams captured for this interface instance.
+                
+                <div v-if="userHistory.length === 0" class="py-10 text-center">
+                    <p class="text-xs text-gray-600 font-medium italic">No recent engine cycles detected in current session.</p>
                 </div>
-
-                <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div 
-                        v-for="item in userHistory" 
-                        :key="item.id"
-                        class="rounded-xl bg-[#0B0F19] border border-gray-800/80 hover:border-purple-500/30 transition-all p-3.5 flex flex-col justify-between shadow-lg"
-                    >
-                        <div>
-                            <div class="flex justify-between items-start gap-x-2 mb-1.5">
-                                <span class="text-xs font-semibold text-gray-200 truncate block flex-1" :title="item.original_name">
-                                    {{ item.original_name }}
-                                </span>
-                                <span class="px-1.5 py-0.5 rounded bg-gray-800 text-[9px] font-bold text-purple-400 font-mono uppercase shrink-0">
-                                    {{ item.format }}
-                                </span>
-                            </div>
-                            <div class="flex justify-between items-center text-[11px] text-gray-500 mt-2">
-                                <span>Size: {{ formatBytes(item.size_bytes) }}</span>
-                                <span>{{ item.created_at }}</span>
-                            </div>
-                        </div>
-
-                        <div class="mt-3 pt-2.5 border-t border-gray-800/50 flex justify-between items-center">
-                            <span class="text-[10px] text-amber-500/80 font-medium truncate max-w-[140px]" :title="'Expires ' + item.expires_at">
-                                ⏳ {{ item.expires_at || 'Expiring soon' }}
-                            </span>
-                            <a 
-                                :href="item.download_url"
-                                class="p-1 rounded bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 transition-colors border border-purple-500/20 cursor-pointer"
-                                title="Download Output Asset"
-                            >
-                                <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                </svg>
-                            </a>
+                <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
+                    <div v-for="item in userHistory" :key="item.id" class="group relative aspect-square rounded-xl overflow-hidden bg-[#0B0F19] border border-gray-800 hover:border-purple-500/50 transition-all">
+                        <img :src="item.data_url || `/storage/${item.output_path}`" class="h-full w-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2.5">
+                            <span class="text-[9px] font-bold text-white uppercase truncate">{{ item.original_name }}</span>
+                            <span class="text-[8px] text-purple-300 font-bold uppercase">{{ item.action }}</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer Footer -->
-        <footer class="mt-20 border-t border-gray-800/80 pt-8 text-center text-xs text-gray-600">
-            <p>FluxMedia Premium Core Studio · Laravel v{{ laravelVersion }} · PHP v{{ phpVersion }}</p>
+        <!-- Footer -->
+        <footer class="mt-16 lg:mt-20 border-t border-gray-800/80 pt-8 pb-12 text-center">
+            <p class="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em]">FluxMedia Studio · Core v2.4.0</p>
         </footer>
     </div>
 </template>
@@ -861,5 +778,13 @@ const downloadProcessedImage = () => {
 
 .font-jakarta {
     font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 </style>

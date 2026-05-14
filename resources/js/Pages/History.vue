@@ -48,13 +48,13 @@ const formatBytes = (bytes) => {
 
 const getProfileBadge = (type) => {
     switch (type) {
-        case 'url': return '🔗 Link Endpoint';
-        case 'text': return '📝 Plain Text';
-        case 'email': return '✉️ Email Flow';
-        case 'phone': return '📞 Direct Dial';
-        case 'wifi': return '📶 WiFi Config';
-        case 'sms': return '💬 SMS Template';
-        default: return '📐 Matrix Profile';
+        case 'url': return '🔗 Link';
+        case 'text': return '📝 Text';
+        case 'email': return '✉️ Email';
+        case 'phone': return '📞 Call';
+        case 'wifi': return '📶 WiFi';
+        case 'sms': return '💬 SMS';
+        default: return '📐 Profile';
     }
 };
 </script>
@@ -65,15 +65,17 @@ const getProfileBadge = (type) => {
         <meta name="description" content="Centralized cloud portal aggregating active user session caches. Download optimized Image streams and inspect live customizable vector QR codes securely." />
     </Head>
 
-    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta selection:bg-purple-500 selection:text-white pb-20 overflow-x-hidden">
+    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta selection:bg-purple-500 selection:text-white pb-32 lg:pb-10 overflow-x-hidden">
         <VerificationAlert />
         <PWAInstallPrompt />
+
+        <!-- App Header (Unified Style) -->
         <header class="border-b border-gray-800/60 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-[100]">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-20 items-center justify-between">
-                <!-- Brand Logo (Left) -->
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-16 lg:h-20 items-center justify-between">
+                <!-- Brand Logo -->
                 <Link href="/" class="flex items-center gap-x-3 shrink-0 group">
-                    <img src="/assets/images/icon_only.webp" class="h-10 w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
-                    <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
+                    <img src="/assets/images/pwa-192.png" class="h-8 w-8 lg:h-10 lg:w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
+                    <span class="text-lg lg:text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
                         FluxMedia
                     </span>
                 </Link>
@@ -132,204 +134,185 @@ const getProfileBadge = (type) => {
                     </template>
                 </div>
 
-                <!-- Mobile Hamburger Button -->
-                <div class="lg:hidden flex items-center">
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 text-gray-400 hover:text-white focus:outline-none">
-                        <svg v-if="!mobileMenuOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg v-else class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Mobile Menu Dropdown -->
-            <div v-if="mobileMenuOpen" class="lg:hidden bg-[#121826]/95 backdrop-blur-xl border-t border-gray-800 p-4 space-y-4 animate-fade-in">
-                <div class="flex flex-col gap-y-2">
-                    <Link href="/" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">Image Studio</Link>
-                    <Link href="/qr-code-generator" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">QR Generator</Link>
-                    <Link href="/history" class="px-4 py-3 rounded-xl bg-purple-500/10 text-purple-400 font-bold border border-purple-500/20">History Hub</Link>
-                </div>
-                <div class="pt-4 border-t border-gray-800 flex flex-col gap-y-3">
+                <!-- Mobile Profile Shortcut -->
+                <div class="lg:hidden flex items-center gap-x-3">
                     <template v-if="$page.props.auth?.user">
-                        <div class="flex items-center gap-x-3 px-4 py-2">
-                            <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white">
-                                {{ $page.props.auth.user.name[0] }}
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-white">{{ $page.props.auth.user.name }}</p>
-                                <p class="text-xs text-gray-500">{{ $page.props.auth.user.email }}</p>
-                            </div>
-                        </div>
-                        <Link :href="route('profile.edit')" class="px-4 py-3 rounded-xl text-gray-400 font-semibold hover:bg-gray-800">Profile Settings</Link>
-                        <Link v-if="$page.props.auth?.user?.is_admin" :href="route('admin.dashboard')" class="px-4 py-3 rounded-xl text-purple-400 font-bold hover:bg-purple-500/10">Admin Dashboard</Link>
-                        <Link :href="route('logout')" method="post" as="button" class="w-full text-left px-4 py-3 rounded-xl text-red-400 font-semibold hover:bg-red-500/10">Logout</Link>
+                        <Link :href="route('profile.edit')" class="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-white text-xs border border-purple-400/30">
+                            {{ $page.props.auth.user.name[0] }}
+                        </Link>
                     </template>
                     <template v-else>
-                        <Link :href="route('login')" class="px-4 py-2 text-gray-400 font-medium">Log in</Link>
-                        <Link v-if="canRegister" :href="route('register')" class="mx-4 py-2 text-center rounded-lg bg-purple-600 text-white font-bold">Register Now</Link>
+                        <Link :href="route('login')" class="text-xs font-bold text-purple-400 uppercase tracking-widest bg-purple-500/10 px-3 py-1.5 rounded-lg border border-purple-500/20">Login</Link>
                     </template>
                 </div>
             </div>
         </header>
 
-        <!-- Hero Title Banner -->
-        <div class="relative overflow-hidden pt-12 pb-6 text-center">
+        <!-- Bottom Navigation for Mobile -->
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0B0F19]/90 backdrop-blur-xl border-t border-gray-800/60 z-[100] px-6 py-3 flex items-center justify-between pb-[calc(12px+env(safe-area-inset-bottom))] shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+            <Link href="/" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Studio</span>
+            </Link>
+            
+            <Link href="/qr-code-generator" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">QR Intel</span>
+            </Link>
+
+            <Link href="/" class="relative -top-6 h-14 w-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shadow-xl shadow-purple-900/40 border-4 border-[#0B0F19] transition-transform active:scale-95">
+                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+            </Link>
+
+            <Link href="/history" class="flex flex-col items-center gap-y-1 transition-all text-emerald-400 scale-110">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">History</span>
+            </Link>
+
+            <Link :href="$page.props.auth?.user ? route('profile.edit') : route('login')" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">{{ $page.props.auth?.user ? 'Profile' : 'Login' }}</span>
+            </Link>
+        </nav>
+
+        <!-- Hero Section -->
+        <div class="relative overflow-hidden pt-10 lg:pt-12 pb-6 lg:pb-8 text-center">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[150px] bg-gradient-to-tr from-purple-600/10 via-pink-600/10 to-indigo-600/10 blur-[90px] rounded-full pointer-events-none"></div>
             
             <div class="relative mx-auto max-w-4xl px-6">
-                <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-3.5 py-1 text-xs font-semibold text-purple-300 border border-purple-500/20 mb-4">
-                    Multi-Tool Lifecycle Log Feed
+                <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-3.5 py-1 text-[10px] font-bold text-purple-300 border border-purple-500/20 mb-4 uppercase tracking-widest">
+                    Execution Log
                 </span>
 
-                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-16 object-contain mb-6 drop-shadow-[0_0_20px_rgba(168,85,247,0.3)]" alt="FluxMedia Logo" />
-                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                    Cloud Execution History
+                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-16 lg:h-20 object-contain mb-6 drop-shadow-[0_0_20px_rgba(168,85,247,0.3)]" alt="FluxMedia Logo" />
+                <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-white uppercase tracking-tighter">
+                    History Hub
                 </h1>
-                <p class="mt-2 text-sm text-gray-400 max-w-xl mx-auto">
-                    Review transient asset pipelines and pre-encoded barcode parameters captured securely during active interface workflows.
-                </p>
             </div>
         </div>
 
-        <!-- Filter Controls Hub -->
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 mt-4">
-            <div class="flex items-center justify-center gap-x-3 pb-6 border-b border-gray-800/60">
+        <!-- Filter Hub -->
+        <div class="mx-auto max-w-6xl px-3 lg:px-6 mt-4">
+            <div class="flex overflow-x-auto no-scrollbar items-center gap-x-2 pb-6 border-b border-gray-800/60">
                 <button 
                     @click="activeFilter = 'all'"
-                    :class="['px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer', activeFilter === 'all' ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20' : 'bg-[#121826]/80 text-gray-400 hover:text-white border border-gray-800/80']"
+                    :class="['whitespace-nowrap px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-200', activeFilter === 'all' ? 'bg-purple-600 text-white shadow-md' : 'bg-[#121826]/80 text-gray-500 border border-gray-800/80']"
                 >
-                    🌐 All Activities ({{ historyFeed.length }})
+                    All Activities ({{ historyFeed.length }})
                 </button>
                 <button 
                     @click="activeFilter = 'images'"
-                    :class="['px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer', activeFilter === 'images' ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20' : 'bg-[#121826]/80 text-gray-400 hover:text-white border border-gray-800/80']"
+                    :class="['whitespace-nowrap px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-200', activeFilter === 'images' ? 'bg-purple-600 text-white shadow-md' : 'bg-[#121826]/80 text-gray-500 border border-gray-800/80']"
                 >
-                    🖼️ Image Studio Pipelines ({{ historyFeed.filter(i => i.type === 'image').length }})
+                    Images ({{ historyFeed.filter(i => i.type === 'image').length }})
                 </button>
                 <button 
                     @click="activeFilter = 'qrs'"
-                    :class="['px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer', activeFilter === 'qrs' ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20' : 'bg-[#121826]/80 text-gray-400 hover:text-white border border-gray-800/80']"
+                    :class="['whitespace-nowrap px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-200', activeFilter === 'qrs' ? 'bg-purple-600 text-white shadow-md' : 'bg-[#121826]/80 text-gray-500 border border-gray-800/80']"
                 >
-                    🔳 QR Matrices ({{ historyFeed.filter(i => i.type === 'qr').length }})
+                    QR Matrices ({{ historyFeed.filter(i => i.type === 'qr').length }})
                 </button>
             </div>
 
-            <!-- Feed Grid Viewport -->
+            <!-- Feed Grid -->
             <div class="mt-8">
-                <div v-if="filteredFeed.length === 0" class="py-16 text-center text-sm text-gray-600 border border-dashed border-gray-800 rounded-2xl bg-[#121826]/20">
-                    No matching studio execution streams retained for this filter perspective.
+                <div v-if="filteredFeed.length === 0" class="py-20 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600 border border-dashed border-gray-800 rounded-3xl bg-[#121826]/20">
+                    No matching streams retained
                 </div>
 
-                <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                     <div 
                         v-for="item in filteredFeed" 
                         :key="item.type + '_' + item.id"
-                        class="rounded-2xl border border-gray-800/80 bg-[#121826]/60 backdrop-blur-xl hover:border-purple-500/30 transition-all p-5 flex flex-col justify-between shadow-xl relative overflow-hidden group"
+                        class="rounded-3xl border border-gray-800 bg-[#121826]/60 backdrop-blur-xl hover:border-purple-500/30 transition-all p-5 flex flex-col justify-between shadow-xl relative overflow-hidden"
                     >
-                        <!-- Top Indicator bar -->
-                        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r" :class="item.type === 'image' ? 'from-emerald-500 to-teal-500' : 'from-purple-500 to-pink-500'"></div>
+                        <!-- Header Meta -->
+                        <div class="flex items-center justify-between gap-x-2 mb-4">
+                            <span class="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-[0.15em]" :class="item.type === 'image' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-purple-500/10 text-purple-400 border border-purple-500/20'">
+                                {{ item.type === 'image' ? 'Optimized Asset' : 'Matrix Profile' }}
+                            </span>
+                            <span class="text-[10px] text-gray-600 font-mono">{{ item.created_at }}</span>
+                        </div>
 
-                        <div>
-                            <!-- Header Meta -->
-                            <div class="flex items-center justify-between gap-x-2 mb-3 mt-1">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase font-mono tracking-wider" :class="item.type === 'image' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-purple-500/10 text-purple-400 border border-purple-500/20'">
-                                    {{ item.type === 'image' ? 'Optimized Asset' : 'Matrix Layout' }}
-                                </span>
-                                <span class="text-[11px] text-gray-500 font-mono">{{ item.created_at }}</span>
-                            </div>
-
-                            <!-- Image Studio Item Layout -->
+                        <!-- Content -->
+                        <div class="flex-1">
                             <template v-if="item.type === 'image'">
-                                <h3 class="text-sm font-semibold text-gray-100 truncate block mb-1" :title="item.original_name">
-                                    {{ item.original_name }}
-                                </h3>
-                                <div class="flex items-center gap-x-2 text-xs text-gray-400 mt-2 font-mono bg-[#0B0F19] py-1 px-2.5 rounded-lg border border-gray-800">
-                                    <span>Format: <strong class="text-white">{{ item.format }}</strong></span>
-                                    <span>•</span>
-                                    <span>Buffer: <strong class="text-teal-400">{{ formatBytes(item.size_bytes) }}</strong></span>
+                                <h3 class="text-sm font-bold text-gray-200 truncate mb-3">{{ item.original_name }}</h3>
+                                <div class="flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-widest">
+                                    <span class="bg-[#0B0F19] py-1 px-2.5 rounded-lg border border-gray-800 text-gray-500">
+                                        <strong class="text-white">{{ item.format }}</strong>
+                                    </span>
+                                    <span class="bg-[#0B0F19] py-1 px-2.5 rounded-lg border border-gray-800 text-gray-500">
+                                        <strong class="text-teal-400">{{ formatBytes(item.size_bytes) }}</strong>
+                                    </span>
                                 </div>
                             </template>
 
-                            <!-- QR Studio Item Layout -->
                             <template v-else>
-                                <div class="flex items-start justify-between gap-x-3 mb-2">
-                                    <div>
-                                        <span class="text-xs font-bold text-gray-200 block">{{ getProfileBadge(item.profile_type) }}</span>
-                                        <span class="text-[11px] text-gray-500 block truncate max-w-[160px]" :title="item.summary_payload">
+                                <div class="flex items-start justify-between gap-x-4">
+                                    <div class="flex-1 min-w-0">
+                                        <span class="text-[10px] font-bold text-gray-300 block mb-1 uppercase tracking-wider">{{ getProfileBadge(item.profile_type) }}</span>
+                                        <span class="text-[11px] text-gray-500 font-mono truncate block" :title="item.summary_payload">
                                             {{ item.summary_payload }}
                                         </span>
                                     </div>
-                                    <!-- Embedded Scalable Vector Display Mini Frame -->
-                                    <div class="p-1.5 rounded-lg bg-white shrink-0 shadow-sm border border-gray-200">
-                                        <QrcodeVue
-                                            :value="item.summary_payload"
-                                            :size="54"
-                                            render-as="svg"
-                                            :foreground="item.foreground_color"
-                                            :background="item.background_color"
-                                            :level="item.redundancy_level"
-                                            class="block"
-                                        />
+                                    <div class="p-1.5 rounded-xl bg-white shrink-0 border border-gray-200">
+                                        <QrcodeVue :value="item.summary_payload" :size="48" render-as="svg" :foreground="item.foreground_color" :background="item.background_color" :level="item.redundancy_level" class="block" />
                                     </div>
                                 </div>
-
-                                <div class="flex items-center gap-x-2 text-[11px] text-gray-400 mt-2 bg-[#0B0F19] py-1 px-2.5 rounded-lg border border-gray-800">
-                                    <div class="flex items-center gap-x-1">
-                                        <span class="w-2.5 h-2.5 rounded-full border border-gray-700 block" :style="{ backgroundColor: item.foreground_color }"></span>
-                                        <span class="font-mono text-[10px]">{{ item.foreground_color }}</span>
+                                <div class="mt-4 flex flex-wrap gap-2 text-[9px] font-bold uppercase tracking-widest">
+                                    <div class="flex items-center gap-x-1 bg-[#0B0F19] py-1 px-2.5 rounded-lg border border-gray-800">
+                                        <span class="w-2 h-2 rounded-full border border-gray-700 block" :style="{ backgroundColor: item.foreground_color }"></span>
+                                        <span class="text-gray-500">{{ item.foreground_color }}</span>
                                     </div>
-                                    <span>•</span>
-                                    <span>Level: <strong>{{ item.redundancy_level }}</strong></span>
-                                    <span>•</span>
-                                    <span>Size: <strong>{{ item.matrix_size }}px</strong></span>
+                                    <span class="bg-[#0B0F19] py-1 px-2.5 rounded-lg border border-gray-800 text-gray-500">
+                                        LVL: <strong class="text-purple-400">{{ item.redundancy_level }}</strong>
+                                    </span>
                                 </div>
                             </template>
                         </div>
 
-                        <!-- Action Footer / Downloads -->
-                        <div class="mt-4 pt-3 border-t border-gray-800/80 flex justify-between items-center">
+                        <!-- Actions -->
+                        <div class="mt-5 pt-4 border-t border-gray-800/80 flex justify-between items-center">
                             <template v-if="item.type === 'image'">
-                                <span class="text-[11px] text-amber-500/90 font-medium truncate max-w-[140px]" :title="'Expires ' + item.expires_at">
-                                    ⏳ {{ item.expires_at || 'Transient cycle' }}
+                                <span class="text-[9px] font-bold text-amber-500/80 uppercase tracking-widest">
+                                    ⏳ Expires soon
                                 </span>
                                 <a 
                                     :href="item.download_url"
-                                    class="py-1 px-2.5 rounded-lg bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-400 font-semibold text-xs transition-all border border-emerald-500/20 flex items-center gap-x-1 cursor-pointer"
-                                    title="Download Manipulated Asset"
+                                    class="py-1.5 px-4 rounded-xl bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white font-bold text-[10px] uppercase tracking-widest transition-all border border-emerald-500/20 active:scale-95"
                                 >
-                                    <span>Fetch</span>
-                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                    </svg>
+                                    Fetch
                                 </a>
                             </template>
                             <template v-else>
-                                <span class="text-[11px] text-purple-300/80 font-medium">
-                                    ✨ Live Generated Node
+                                <span class="text-[9px] font-bold text-purple-400/80 uppercase tracking-widest">
+                                    ✨ Vector Node
                                 </span>
                                 <Link 
                                     href="/qr-code-generator" 
-                                    class="py-1 px-2.5 rounded-lg bg-purple-600/10 hover:bg-purple-600/20 text-purple-400 font-semibold text-xs transition-all border border-purple-500/20 flex items-center gap-x-1"
+                                    class="py-1.5 px-4 rounded-xl bg-purple-600/10 hover:bg-purple-600 text-purple-400 hover:text-white font-bold text-[10px] uppercase tracking-widest transition-all border border-purple-500/20 active:scale-95"
                                 >
-                                    <span>Clone Profile</span>
-                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                    </svg>
+                                    Clone
                                 </Link>
                             </template>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- Footer Footer -->
-        <footer class="mt-20 border-t border-gray-800/80 pt-8 text-center text-xs text-gray-600">
-            <p>FluxMedia Premium Core Studio · Comprehensive Persistent Framework</p>
+        <!-- Footer -->
+        <footer class="mt-20 border-t border-gray-800/80 pt-8 pb-12 text-center">
+            <p class="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em]">FluxMedia Studio · History v1.0.4</p>
         </footer>
     </div>
 </template>
@@ -339,5 +322,13 @@ const getProfileBadge = (type) => {
 
 .font-jakarta {
     font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 </style>
