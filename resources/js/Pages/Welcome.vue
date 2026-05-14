@@ -23,6 +23,7 @@ const props = defineProps({
 const userHistory = ref(props.initialHistory || []);
 
 // State Management
+const showResultModal = ref(false);
 const selectedFile = ref(null);
 const originalPreviewUrl = ref(null);
 const originalDimensions = ref({ width: 0, height: 0 });
@@ -316,6 +317,7 @@ const submitProcess = async () => {
                     userHistory.value.pop();
                 }
             }
+            showResultModal.value = true;
         } else {
             processError.value = result.message || 'Processing failed.';
         }
@@ -780,6 +782,56 @@ const downloadProcessedImage = () => {
         <footer class="mt-16 lg:mt-20 border-t border-gray-800/80 pt-8 pb-12 text-center">
             <p class="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em]">FluxMedia Studio · Core v2.4.0</p>
         </footer>
+
+        <!-- Result Modal -->
+        <div v-if="showResultModal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6">
+            <!-- Backdrop -->
+            <div @click="showResultModal = false" class="absolute inset-0 bg-[#05070C]/90 backdrop-blur-sm"></div>
+            
+            <!-- Modal Content -->
+            <div class="relative w-full max-w-lg bg-[#121826] border border-gray-800 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+                <!-- Close Button -->
+                <button @click="showResultModal = false" class="absolute top-6 right-6 p-2 rounded-full bg-gray-800/50 text-gray-400 hover:text-white transition-colors z-10">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+
+                <div class="p-8">
+                    <div class="text-center mb-6">
+                        <div class="h-16 w-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400 mx-auto mb-4">
+                            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white mb-2">Processing Complete</h2>
+                        <p class="text-sm text-gray-400 font-medium">Your optimized asset is ready for deployment.</p>
+                    </div>
+
+                    <!-- Preview Frame -->
+                    <div class="rounded-3xl bg-[#0B0F19] p-4 border border-gray-800/50 mb-6 group">
+                        <img :src="processedResult.dataUrl" class="w-full max-h-[300px] object-contain rounded-2xl shadow-xl transition-transform group-hover:scale-[1.02]" alt="Result Preview" />
+                    </div>
+
+                    <!-- Stats Bar -->
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="bg-[#1A2133]/50 p-4 rounded-2xl border border-gray-800/50 text-center">
+                            <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Savings</span>
+                            <span class="text-lg font-black text-emerald-400">{{ processedResult.reductionPercentage }}%</span>
+                        </div>
+                        <div class="bg-[#1A2133]/50 p-4 rounded-2xl border border-gray-800/50 text-center">
+                            <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Final Size</span>
+                            <span class="text-lg font-black text-purple-400">{{ formatBytes(processedResult.processedSizeBytes) }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Action -->
+                    <button 
+                        @click="downloadProcessedImage(); showResultModal = false"
+                        class="w-full py-5 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-base shadow-xl shadow-purple-600/20 active:scale-[0.98] transition-all flex items-center justify-center gap-x-3"
+                    >
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                        Download Optimized File
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
