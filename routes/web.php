@@ -29,6 +29,7 @@ Route::get('/', function () {
                 'size_bytes' => $img->size_bytes,
                 'expires_at' => $img->expires_at ? $img->expires_at->diffForHumans() : null,
                 'download_url' => route('image.download', ['path' => $img->disk_path]),
+                'output_url' => \Illuminate\Support\Facades\Storage::disk('public')->url($img->disk_path),
                 'created_at' => $img->created_at->diffForHumans(),
             ];
         });

@@ -436,7 +436,7 @@ const downloadProcessedImage = () => {
                 <div class="h-6 w-6 flex items-center justify-center">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
-                <span class="text-[10px] font-bold uppercase tracking-widest">Studio</span>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Image</span>
             </Link>
             
             <Link href="/qr-code-generator" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
@@ -485,7 +485,7 @@ const downloadProcessedImage = () => {
         </div>
 
         <!-- Main Workspace Area -->
-        <div class="mx-auto max-w-6xl px-3 lg:px-6">
+        <div class="mx-auto max-w-6xl px-3 lg:px-6 mt-6 lg:mt-0">
             <div class="rounded-3xl border border-gray-800/80 bg-[#121826]/80 backdrop-blur-xl shadow-2xl overflow-hidden p-5 lg:p-10">
                 
                 <!-- File Upload Zone -->
@@ -753,7 +753,7 @@ const downloadProcessedImage = () => {
                 </div>
                 <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
                     <div v-for="item in userHistory" :key="item.id" class="group relative aspect-square rounded-xl overflow-hidden bg-[#0B0F19] border border-gray-800 hover:border-purple-500/50 transition-all">
-                        <img :src="item.data_url || `/storage/${item.output_path}`" class="h-full w-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all" />
+                        <img :src="item.output_url || item.data_url" class="h-full w-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all" />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2.5">
                             <span class="text-[9px] font-bold text-white uppercase truncate">{{ item.original_name }}</span>
                             <span class="text-[8px] text-purple-300 font-bold uppercase">{{ item.action }}</span>
