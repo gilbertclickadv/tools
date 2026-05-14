@@ -6,8 +6,11 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <meta name="theme-color" content="#0B0F19">
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="manifest" href="/build/manifest.webmanifest">
         <link rel="icon" type="image/webp" href="/assets/images/icon_only.webp">
+        <link rel="apple-touch-icon" href="/assets/images/pwa-192.png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

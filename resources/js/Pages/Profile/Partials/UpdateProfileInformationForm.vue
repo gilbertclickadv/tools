@@ -25,12 +25,12 @@ const form = useForm({
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                Profile Information
+            <h2 class="text-xl font-bold text-white tracking-tight">
+                Account Information
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Update your account's profile information and email address.
+            <p class="mt-2 text-sm text-gray-400">
+                Synchronize your FluxMedia identity by updating your account credentials.
             </p>
         </header>
 
@@ -70,23 +70,25 @@ const form = useForm({
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                <p class="mt-2 text-sm text-gray-800 dark:text-gray-200">
-                    Your email address is unverified.
-                    <Link
-                        :href="route('verification.send')"
-                        method="post"
-                        as="button"
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                    >
-                        Click here to re-send the verification email.
-                    </Link>
-                </p>
+                <div class="mt-4 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                    <p class="text-sm text-amber-200">
+                        Security Notice: Your email address remains unverified.
+                        <Link
+                            :href="route('verification.send')"
+                            method="post"
+                            as="button"
+                            class="ml-2 font-bold text-amber-500 underline hover:text-amber-400 focus:outline-none transition-colors"
+                        >
+                            Trigger Verification Link
+                        </Link>
+                    </p>
 
-                <div
-                    v-show="status === 'verification-link-sent'"
-                    class="mt-2 text-sm font-medium text-green-600 dark:text-green-400"
-                >
-                    A new verification link has been sent to your email address.
+                    <div
+                        v-show="status === 'verification-link-sent'"
+                        class="mt-3 text-xs font-bold uppercase tracking-wider text-green-400"
+                    >
+                        Verification transmission successful. Check your inbox.
+                    </div>
                 </div>
             </div>
 
