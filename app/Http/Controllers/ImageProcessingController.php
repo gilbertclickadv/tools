@@ -163,7 +163,7 @@ class ImageProcessingController extends Controller
                 'expires_at' => $expiresAt,
             ]);
 
-            $downloadUrl = asset('storage/' . $diskPath);
+            $downloadUrl = route('image.download', ['path' => $diskPath]);
 
             // Calculate metrics
             $savedBytes = max(0, $originalSizeBytes - $processedSizeBytes);
@@ -218,5 +218,24 @@ class ImageProcessingController extends Controller
             default:
                 return 'jpeg';
         }
+    }
+
+    /**
+     * Download processed image attachment securely forcing native browser save prompts.
+     */
+    public function download(Request $request)
+    {
+        $path = $request->query('path');
+        if (!$path || !Storage::disk('public')->exists($path)) {
+            abort(404, 'Requested processed file not found or has expired.');
+        }
+
+        $record = ProcessedImage::where('disk_path', $path)->first();
+        $cleanName = 'optimized_image.' . pathinfo($path, PATHINFO_EXTENSION);
+        if ($record && $record->original_name) {
+            $cleanName = 'optimized_' . pathinfo($record->original_name, PATHINFO_FILENAME) . '.' . $record->format;
+        }
+
+        return response()->download(Storage::disk('public')->path($path), $cleanName);
     }
 }

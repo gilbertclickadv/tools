@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 use App\Http\Controllers\ImageProcessingController;
 
 Route::post('/api/process-image', [ImageProcessingController::class, 'process'])->name('image.process');
+Route::get('/api/download-image', [ImageProcessingController::class, 'download'])->name('image.download');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

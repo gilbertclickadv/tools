@@ -309,7 +309,7 @@ const submitProcess = async () => {
 
 const downloadProcessedImage = () => {
     if (processedResult.value?.downloadUrl) {
-        window.open(processedResult.value.downloadUrl, '_blank');
+        window.location.href = processedResult.value.downloadUrl;
         return;
     }
     if (!processedResult.value?.dataUrl) return;
