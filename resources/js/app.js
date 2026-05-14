@@ -1,6 +1,26 @@
 import '../css/app.css';
 import './bootstrap';
 
+// ─── PWA: capture beforeinstallprompt BEFORE Vue mounts ───────────────────────
+// The event fires early (sometimes before Inertia/Vue is ready), so we store
+// it globally. PWAInstallPrompt.vue reads from window.__pwaPrompt.
+window.__pwaPrompt = null;
+window.__pwaInstalled = false;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    window.__pwaPrompt = e;
+    // Dispatch a custom event so any already-mounted component can react
+    window.dispatchEvent(new CustomEvent('pwa-prompt-ready'));
+});
+
+window.addEventListener('appinstalled', () => {
+    window.__pwaPrompt = null;
+    window.__pwaInstalled = true;
+    window.dispatchEvent(new CustomEvent('pwa-installed'));
+});
+// ──────────────────────────────────────────────────────────────────────────────
+
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
