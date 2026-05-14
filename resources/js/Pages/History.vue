@@ -74,7 +74,7 @@ const getProfileBadge = (type) => {
             <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-16 lg:h-20 items-center justify-between">
                 <!-- Brand Logo -->
                 <Link href="/" class="flex items-center gap-x-3 shrink-0 group">
-                    <img src="/assets/images/icon_only.webp" class="h-8 w-8 lg:h-10 lg:w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
+                    <img src="/assets/images/icon_only.webp" class="h-8 w-8 lg:h-10 lg:w-10 object-cover group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
                     <span class="text-lg lg:text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
                         FluxMedia
                     </span>

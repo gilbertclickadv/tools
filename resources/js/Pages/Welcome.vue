@@ -358,7 +358,7 @@ const downloadProcessedImage = () => {
             <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-16 lg:h-20 items-center justify-between">
                 <!-- Brand Logo -->
                 <Link href="/" class="flex items-center gap-x-3 shrink-0 group">
-                    <img src="/assets/images/icon_only.webp" class="h-8 w-8 lg:h-10 lg:w-10 object-contain group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
+                    <img src="/assets/images/icon_only.webp" class="h-8 w-8 lg:h-10 lg:w-10 object-cover group-hover:scale-105 transition-transform" alt="FluxMedia Icon" />
                     <span class="text-lg lg:text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-300 bg-clip-text text-transparent select-none">
                         FluxMedia
                     </span>
@@ -475,7 +475,7 @@ const downloadProcessedImage = () => {
                     FluxMedia Studio · Pro Engine
                 </span>
 
-                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-20 lg:h-32 object-contain mb-8 lg:mb-10 drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]" alt="FluxMedia Main Logo" />
+                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-20 lg:h-32 object-cover mb-8 lg:mb-10" alt="FluxMedia Main Logo" />
 
                 <h1 class="text-3xl lg:text-6xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-tight">
                     Next-Gen Media <br class="lg:hidden" />

@@ -110,8 +110,8 @@ function dismiss() {
 
                 <div class="relative z-10 flex items-start gap-x-4">
                     <!-- Icon -->
-                    <div class="h-12 w-12 bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-purple-900/40">
-                        <img src="/assets/images/pwa-192.webp" class="h-8 w-8 object-contain" alt="App Icon" />
+                    <div class="h-14 w-14 shrink-0 overflow-hidden">
+                        <img src="/assets/images/pwa-192.webp" class="h-full w-full object-cover" alt="App Icon" />
                     </div>
 
                     <div class="flex-1 min-w-0">
@@ -163,8 +163,8 @@ function dismiss() {
 
                 <div class="relative z-10">
                     <div class="flex items-center gap-x-3 mb-3">
-                        <div class="h-10 w-10 bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-900/40">
-                            <img src="/assets/images/pwa-192.webp" class="h-7 w-7 object-contain" alt="App Icon" />
+                        <div class="h-12 w-12 shrink-0 overflow-hidden mb-3">
+                            <img src="/assets/images/pwa-192.webp" class="h-full w-full object-cover" alt="App Icon" />
                         </div>
                         <h3 class="text-sm font-bold text-white tracking-tight">Install FluxMedia Studio</h3>
                     </div>
