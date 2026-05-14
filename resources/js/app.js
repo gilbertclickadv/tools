@@ -1,6 +1,15 @@
 import '../css/app.css';
 import './bootstrap';
 
+// Register PWA service worker from the root
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+            console.error('SW registration failed: ', err);
+        });
+    });
+}
+
 // ─── PWA: capture beforeinstallprompt BEFORE Vue mounts ───────────────────────
 // The event fires early (sometimes before Inertia/Vue is ready), so we store
 // it globally. PWAInstallPrompt.vue reads from window.__pwaPrompt.

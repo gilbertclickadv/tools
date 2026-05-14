@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "vite build && cp public/build/sw.js public/sw.js && cp public/build/manifest.webmanifest public/manifest.webmanifest && cp public/build/workbox-*.js public/",
         "dev": "vite"
     },
     "devDependencies": {

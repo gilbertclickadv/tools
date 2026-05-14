@@ -18,11 +18,8 @@ export default defineConfig({
             },
         }),
         VitePWA({
-            // 'script-defer' injects the SW registration as a <script defer> tag
-            // into the built JS bundle — more reliable than 'auto' when PHP/Laravel
-            // serves the HTML (not Vite's dev server).
             registerType: 'autoUpdate',
-            injectRegister: 'script-defer',
+            injectRegister: false, // We handle SW registration manually in app.js
 
             // Workbox config — cache the app shell + assets
             workbox: {

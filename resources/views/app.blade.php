@@ -10,6 +10,7 @@
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
         <link rel="icon" type="image/webp" href="/assets/images/icon_only.webp">
         <link rel="apple-touch-icon" href="/assets/images/pwa-192.png">
+        <link rel="manifest" href="/manifest.webmanifest">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
