@@ -490,6 +490,28 @@ const downloadProcessedImage = () => {
         <div class="mx-auto max-w-6xl px-3 lg:px-6 mt-6 lg:mt-0">
             <div class="rounded-3xl border border-gray-800/80 bg-[#121826]/80 backdrop-blur-xl shadow-2xl overflow-hidden p-5 lg:p-10">
                 
+                <!-- Storage Policy & Info -->
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-x-2">
+                        <svg class="h-3.5 w-3.5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        Engine Console
+                    </h3>
+                    <div class="group relative">
+                        <button class="inline-flex items-center gap-x-1.5 rounded-full bg-purple-500/5 px-3 py-1 text-[9px] font-bold text-purple-300 border border-purple-500/10 hover:bg-purple-500/10 transition-colors">
+                            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            Auto-Purge: {{ $page.props.auth?.user ? '24h' : '1h' }}
+                        </button>
+                        <!-- Tooltip Card -->
+                        <div class="absolute bottom-full right-0 mb-3 w-56 p-3 bg-[#0B0F19] border border-gray-800 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 pointer-events-none z-50">
+                            <p class="text-[9px] leading-relaxed text-gray-400">
+                                To protect your privacy, optimized assets are permanently deleted after 
+                                <span class="text-purple-400 font-bold">{{ $page.props.auth?.user ? '24 hours' : '1 hour' }}</span> 
+                                from our secure buffers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- File Upload Zone -->
                 <div 
                     @dragover.prevent 

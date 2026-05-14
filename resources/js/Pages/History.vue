@@ -217,6 +217,18 @@ const getProfileBadge = (type) => {
                 >
                     QR Matrices ({{ historyFeed.filter(i => i.type === 'qr').length }})
                 </button>
+
+                <div class="ml-auto shrink-0 group relative">
+                    <button class="flex items-center gap-x-1.5 rounded-full bg-amber-500/5 px-3 py-1.5 text-[9px] font-bold text-amber-500 border border-amber-500/10 hover:bg-amber-500/10 transition-colors">
+                        <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Purge: {{ $page.props.auth?.user ? '24h' : '1h' }}
+                    </button>
+                    <div class="absolute bottom-full right-0 mb-3 w-56 p-3 bg-[#0B0F19] border border-gray-800 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 pointer-events-none z-50">
+                        <p class="text-[9px] leading-relaxed text-gray-400">
+                            Storage is ephemeral. Authenticated sessions retain assets for <span class="text-white font-bold">24 hours</span>, while guest assets are purged after <span class="text-white font-bold">1 hour</span>.
+                        </p>
+                    </div>
+                </div>
             </div>
 
             <!-- Feed Grid -->
