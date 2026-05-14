@@ -114,10 +114,6 @@ const showingNavigationDropdown = ref(false);
                 <span class="text-[10px] font-bold uppercase tracking-widest">QR Intel</span>
             </Link>
 
-            <!-- Center Action (Optional, e.g. Upload or Main Feature) -->
-            <Link :href="route('home')" class="relative -top-6 h-14 w-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shadow-xl shadow-purple-900/40 border-4 border-[#0B0F19] transition-transform active:scale-95">
-                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-            </Link>
 
             <Link :href="route('history')" class="flex flex-col items-center gap-y-1 transition-all" :class="[route().current('history') ? 'text-emerald-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
                 <div class="h-6 w-6 flex items-center justify-center">

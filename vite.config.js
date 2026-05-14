@@ -63,19 +63,19 @@ export default defineConfig({
                 orientation: 'portrait-primary',
                 icons: [
                     {
-                        src: '/assets/images/pwa-192.png',
+                        src: '/assets/images/pwa-192.webp',
                         sizes: '192x192',
-                        type: 'image/png',
+                        type: 'image/webp',
                     },
                     {
-                        src: '/assets/images/pwa-512.png',
+                        src: '/assets/images/pwa-512.webp',
                         sizes: '512x512',
-                        type: 'image/png',
+                        type: 'image/webp',
                     },
                     {
-                        src: '/assets/images/pwa-512.png',
+                        src: '/assets/images/pwa-512.webp',
                         sizes: '512x512',
-                        type: 'image/png',
+                        type: 'image/webp',
                         purpose: 'maskable',
                     },
                 ],

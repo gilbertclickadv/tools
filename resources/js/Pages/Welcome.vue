@@ -446,9 +446,6 @@ const downloadProcessedImage = () => {
                 <span class="text-[10px] font-bold uppercase tracking-widest">QR Intel</span>
             </Link>
 
-            <Link href="/" class="relative -top-6 h-14 w-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shadow-xl shadow-purple-900/40 border-4 border-[#0B0F19] transition-transform active:scale-95">
-                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-            </Link>
 
             <Link href="/history" class="flex flex-col items-center gap-y-1 transition-all text-gray-500 hover:text-gray-300">
                 <div class="h-6 w-6 flex items-center justify-center">
@@ -465,8 +462,8 @@ const downloadProcessedImage = () => {
             </Link>
         </nav>
 
-        <!-- Hero Section (More compact on mobile) -->
-        <div class="relative overflow-hidden pt-10 lg:pt-16 pb-8 lg:pb-12 text-center">
+        <!-- Hero Section (Desktop Only) -->
+        <div class="hidden lg:block relative overflow-hidden pt-10 lg:pt-16 pb-8 lg:pb-12 text-center">
             <!-- Glow background effect -->
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-purple-600/20 to-pink-600/10 blur-[120px] rounded-full pointer-events-none"></div>
 

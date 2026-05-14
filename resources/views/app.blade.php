@@ -9,7 +9,8 @@
         <meta name="theme-color" content="#0B0F19">
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
         <link rel="icon" type="image/webp" href="/assets/images/icon_only.webp">
-        <link rel="apple-touch-icon" href="/assets/images/pwa-192.png">
+        <link rel="apple-touch-icon" href="/assets/images/pwa-192.webp">
+        <link rel="apple-touch-startup-image" href="/assets/images/fluxmedia_main.webp">
         <link rel="manifest" href="/manifest.webmanifest">
 
         <!-- Fonts -->
