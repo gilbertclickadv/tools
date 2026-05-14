@@ -219,13 +219,15 @@ const getProfileBadge = (type) => {
                 </button>
 
                 <div class="ml-auto shrink-0 group relative">
-                    <button class="flex items-center gap-x-1.5 rounded-full bg-amber-500/5 px-3 py-1.5 text-[9px] font-bold text-amber-500 border border-amber-500/10 hover:bg-amber-500/10 transition-colors">
+                    <button class="flex items-center gap-x-1.5 rounded-full bg-amber-500/10 px-3 py-1.5 text-[9px] font-bold text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 transition-colors shadow-lg shadow-amber-900/20">
                         <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         Purge: {{ $page.props.auth?.user ? '24h' : '1h' }}
                     </button>
-                    <div class="absolute bottom-full right-0 mb-3 w-56 p-3 bg-[#0B0F19] border border-gray-800 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 pointer-events-none z-50">
-                        <p class="text-[9px] leading-relaxed text-gray-400">
-                            Storage is ephemeral. Authenticated sessions retain assets for <span class="text-white font-bold">24 hours</span>, while guest assets are purged after <span class="text-white font-bold">1 hour</span>.
+                    <!-- Tooltip Card - Positioned Below -->
+                    <div class="absolute top-full right-0 mt-3 w-56 p-3 bg-[#1A2133] border border-gray-700 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 transition-all transform -translate-y-2 group-hover:translate-y-0 pointer-events-none z-[100]">
+                        <div class="absolute -top-1 right-6 w-2 h-2 bg-[#1A2133] border-t border-l border-gray-700 rotate-45"></div>
+                        <p class="text-[9px] leading-relaxed text-gray-300 font-medium">
+                            <span class="text-amber-400 font-bold">Privacy Note:</span> Authenticated sessions retain assets for <span class="text-white font-bold">24 hours</span>, while guest assets are purged after <span class="text-white font-bold">1 hour</span>.
                         </p>
                     </div>
                 </div>

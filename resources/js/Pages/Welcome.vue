@@ -497,16 +497,17 @@ const downloadProcessedImage = () => {
                         Engine Console
                     </h3>
                     <div class="group relative">
-                        <button class="inline-flex items-center gap-x-1.5 rounded-full bg-purple-500/5 px-3 py-1 text-[9px] font-bold text-purple-300 border border-purple-500/10 hover:bg-purple-500/10 transition-colors">
-                            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            Auto-Purge: {{ $page.props.auth?.user ? '24h' : '1h' }}
+                        <button class="inline-flex items-center gap-x-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-[9px] font-bold text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 transition-colors shadow-lg shadow-amber-900/20">
+                            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            Storage: {{ $page.props.auth?.user ? '24h' : '1h' }}
                         </button>
-                        <!-- Tooltip Card -->
-                        <div class="absolute bottom-full right-0 mb-3 w-56 p-3 bg-[#0B0F19] border border-gray-800 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 pointer-events-none z-50">
-                            <p class="text-[9px] leading-relaxed text-gray-400">
-                                To protect your privacy, optimized assets are permanently deleted after 
-                                <span class="text-purple-400 font-bold">{{ $page.props.auth?.user ? '24 hours' : '1 hour' }}</span> 
-                                from our secure buffers.
+                        <!-- Tooltip Card - Positioned Below to avoid clipping -->
+                        <div class="absolute top-full right-0 mt-3 w-56 p-3 bg-[#1A2133] border border-gray-700 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 transition-all transform -translate-y-2 group-hover:translate-y-0 pointer-events-none z-[100]">
+                            <div class="absolute -top-1 right-6 w-2 h-2 bg-[#1A2133] border-t border-l border-gray-700 rotate-45"></div>
+                            <p class="text-[9px] leading-relaxed text-gray-300 font-medium">
+                                <span class="text-amber-400 font-bold">Important:</span> Assets are permanently purged after 
+                                <span class="text-white font-bold">{{ $page.props.auth?.user ? '24 hours' : '1 hour' }}</span> 
+                                from our secure storage.
                             </p>
                         </div>
                     </div>
@@ -531,7 +532,7 @@ const downloadProcessedImage = () => {
                         {{ selectedFile ? selectedFile.name : 'Choose a file or drag & drop' }}
                     </span>
                     <p class="mt-1 text-[10px] lg:text-xs text-gray-400">
-                        {{ selectedFile ? `Size: ${formatBytes(originalSize)}` : 'Supports JPEG, PNG, WebP up to 20MB' }}
+                        {{ selectedFile ? `Size: ${formatBytes(originalSize)}` : 'Supports JPEG, PNG, WebP, GIF, AVIF & Mobile Formats up to 20MB' }}
                     </p>
 
                     <div v-if="selectedFile" @click.stop="selectedFile = null" class="absolute top-3 right-3 text-[10px] bg-red-500/20 text-red-400 hover:bg-red-500/30 px-2 py-1 rounded-lg transition-colors font-bold uppercase tracking-wider">
