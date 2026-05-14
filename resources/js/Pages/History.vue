@@ -2,6 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
+import VerificationAlert from '@/Components/VerificationAlert.vue';
 import { ref, computed } from 'vue';
 import QrcodeVue from 'qrcode.vue';
 
@@ -64,6 +65,7 @@ const getProfileBadge = (type) => {
     </Head>
 
     <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta selection:bg-purple-500 selection:text-white pb-20 overflow-x-hidden">
+        <VerificationAlert />
         <header class="border-b border-gray-800/60 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-[100]">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 flex h-20 items-center justify-between">
                 <!-- Brand Logo (Left) -->

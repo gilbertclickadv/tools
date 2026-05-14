@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Link, Head } from '@inertiajs/vue3';
+import VerificationAlert from '@/Components/VerificationAlert.vue';
 
 const props = defineProps({
     title: String,
@@ -15,7 +16,9 @@ const toggleSidebar = () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta flex overflow-hidden">
+    <div class="min-h-screen bg-[#0B0F19] text-gray-100 font-jakarta flex flex-col overflow-hidden">
+        <VerificationAlert />
+        <div class="flex-1 flex overflow-hidden">
         <Head :title="title" />
 
         <!-- Sidebar (Desktop) -->
@@ -152,6 +155,7 @@ const toggleSidebar = () => {
             </main>
         </div>
     </div>
+</div>
 </template>
 
 <style>
