@@ -47,7 +47,7 @@ Route::get('/qr-code-generator', function () {
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
     ]);
-});
+})->name('qr.generator');
 
 Route::post('/api/process-image', [ImageProcessingController::class, 'process'])->name('image.process');
 Route::get('/api/download-image', [ImageProcessingController::class, 'download'])->name('image.download');
@@ -103,7 +103,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'canRegister' => Route::has('register'),
             'historyFeed' => $combined,
         ]);
-    });
+    })->name('history');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
