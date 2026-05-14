@@ -19,6 +19,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
+
+        $middleware->redirectTo(
+            guests: '/login',
+            users: function ($request) {
+                if ($request->user()?->is_admin) {
+                    return route('admin.dashboard');
+                }
+                return '/';
+            }
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -93,20 +93,24 @@ const submit = () => {
             </div>
 
             <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="text-sm text-gray-500 hover:text-purple-400 transition-colors font-medium"
-                >
-                    Already registered?
-                </Link>
-
                 <PrimaryButton
-                    class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
                     Register
                 </PrimaryButton>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-800/60 text-center">
+                <p class="text-sm text-gray-500">
+                    Already have an account?
+                    <Link
+                        :href="route('login')"
+                        class="text-purple-400 hover:text-purple-300 font-bold ml-1 transition-colors"
+                    >
+                        Sign In
+                    </Link>
+                </p>
             </div>
         </form>
     </GuestLayout>

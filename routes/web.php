@@ -37,7 +37,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'initialHistory' => $history,
     ]);
-});
+})->name('home');
 
 Route::get('/qr-code-generator', function () {
     return Inertia::render('QrGenerator', [
