@@ -342,8 +342,20 @@ const downloadProcessedImage = () => {
 <template>
     <PublicLayout>
         <Head>
-            <title>FluxMedia Studio · Advanced Image Processing Engine</title>
-            <meta name="description" content="Professional image optimization and transformation suite. Batch process textures, optimize for web, and generate secure storage-ready assets with creative intelligence." />
+            <title>FluxMedia · Free Online Image Converter & Compressor</title>
+            <meta name="description" content="Optimize and convert your images for free. Fast online tool to compress JPEG, PNG, WebP, and AVIF files. Improve website speed with optimized creative assets." />
+            <meta name="keywords" content="image converter, image compressor, online image optimizer, webp converter, png to webp, jpeg optimizer, free image tools" />
+            
+            <!-- Open Graph / Facebook -->
+            <meta property="og:title" content="FluxMedia · Free Online Image Converter & Compressor" />
+            <meta property="og:description" content="Optimize and convert your images for free. Fast online tool to compress JPEG, PNG, WebP, and AVIF files." />
+            <meta property="og:image" content="/assets/images/fluxmedia_main.webp" />
+            <meta property="og:url" content="https://fluxmedia.space" />
+
+            <!-- Twitter -->
+            <meta name="twitter:title" content="FluxMedia · Free Online Image Converter & Compressor" />
+            <meta name="twitter:description" content="Optimize and convert your images for free. Fast online tool to compress JPEG, PNG, WebP, and AVIF files." />
+            <meta name="twitter:image" content="/assets/images/fluxmedia_main.webp" />
         </Head>
 
         <!-- Main Body -->
@@ -364,7 +376,7 @@ const downloadProcessedImage = () => {
 
                     <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-20 lg:h-28 object-contain mb-8 drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]" alt="FluxMedia Logo" />
                     <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight uppercase tracking-tighter">
-                        Image Studio
+                        Image <span class="text-purple-400">Converter</span>
                     </h1>
                 </div>
             </div>
@@ -377,7 +389,7 @@ const downloadProcessedImage = () => {
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-x-2">
                             <svg class="h-3.5 w-3.5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                            Engine Console
+                            Process Control
                         </h3>
                         <div class="group relative">
                             <button class="inline-flex items-center gap-x-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-[9px] font-bold text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 transition-colors shadow-lg shadow-amber-900/20">
@@ -542,7 +554,7 @@ const downloadProcessedImage = () => {
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                                     </svg>
-                                    <span>{{ isProcessing ? 'Processing...' : 'Run Engine' }}</span>
+                                    <span>{{ isProcessing ? 'Processing...' : 'Convert & Optimize' }}</span>
                                 </button>
                             </div>
                         </div>
@@ -570,7 +582,7 @@ const downloadProcessedImage = () => {
                             <!-- Original Frame -->
                             <div v-if="originalPreviewUrl" class="rounded-2xl border border-gray-800 bg-[#0B0F19]/60 p-4 lg:p-5 overflow-hidden">
                                 <div class="flex justify-between items-center text-[10px] text-gray-500 mb-4 pb-2 border-b border-gray-800/80 font-bold uppercase tracking-wider">
-                                    <span>Source Payload</span>
+                                    <span>Original File</span>
                                     <span>{{ formatBytes(originalSize) }}</span>
                                 </div>
                                 <div class="flex items-center justify-center bg-[#05070C] rounded-xl p-2 min-h-[200px] lg:min-h-[250px] relative overflow-hidden">
@@ -611,7 +623,7 @@ const downloadProcessedImage = () => {
                             <!-- Processed Frame -->
                             <div v-if="processedResult" class="rounded-2xl border border-purple-500/30 bg-[#0B0F19]/60 p-4 lg:p-5 overflow-hidden">
                                 <div class="flex justify-between items-center text-[10px] text-purple-400/80 mb-4 pb-2 border-b border-gray-800/80 font-bold uppercase tracking-wider">
-                                    <span>Output Buffer</span>
+                                    <span>Optimized Image</span>
                                     <span class="text-emerald-400">{{ formatBytes(processedResult.processedSizeBytes) }}</span>
                                 </div>
                                 <div class="flex items-center justify-center bg-[#05070C] rounded-xl p-2 min-h-[200px] lg:min-h-[250px]">

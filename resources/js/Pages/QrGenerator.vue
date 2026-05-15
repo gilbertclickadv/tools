@@ -147,8 +147,20 @@ const applyThemePreset = (fg, bg) => {
 <template>
     <PublicLayout>
         <Head>
-            <title>FluxMedia Studio · Advanced QR Code Generator</title>
-            <meta name="description" content="Generate highly customizable vector and raster QR codes instantly. Create links, vCards, WiFi connect codes, and pre-formatted SMS payloads with live canvas color formatting." />
+            <title>FluxMedia · Free Online QR Code Generator with Custom Styles</title>
+            <meta name="description" content="Generate custom QR codes for free. Create QR codes for links, WiFi, Email, and SMS with unique colors and designs. Download high-quality PNG or SVG vectors." />
+            <meta name="keywords" content="qr code generator, free qr code, custom qr code, qr code wifi, qr code email, svg qr code, png qr code, fluxmedia qr" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:title" content="FluxMedia · Free Online QR Code Generator with Custom Styles" />
+            <meta property="og:description" content="Generate custom QR codes for free. Create QR codes for links, WiFi, Email, and SMS with unique colors and designs." />
+            <meta property="og:image" content="/assets/images/fluxmedia_main.webp" />
+            <meta property="og:url" content="https://fluxmedia.space/qr-code-generator" />
+
+            <!-- Twitter -->
+            <meta name="twitter:title" content="FluxMedia · Free Online QR Code Generator with Custom Styles" />
+            <meta name="twitter:description" content="Generate custom QR codes for free. Create QR codes for links, WiFi, Email, and SMS with unique colors and designs." />
+            <meta name="twitter:image" content="/assets/images/fluxmedia_main.webp" />
         </Head>
 
         <!-- Hero Section (Desktop Only) -->
@@ -165,7 +177,7 @@ const applyThemePreset = (fg, bg) => {
                 <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-16 lg:h-24 object-contain mb-8 drop-shadow-[0_0_25px_rgba(168,85,247,0.35)]" alt="FluxMedia Logo" />
 
                 <h1 class="text-3xl lg:text-5xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-tight uppercase">
-                    Dynamic Matrix <br class="lg:hidden" />
+                    Free QR Code <br class="lg:hidden" />
                     <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
                         Generator
                     </span>
@@ -185,7 +197,7 @@ const applyThemePreset = (fg, bg) => {
                             Live Vector
                         </div>
 
-                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-5 mt-1">Matrix Preview</span>
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-5 mt-1">QR Code Preview</span>
 
                         <!-- Dynamic Matrix Sandbox -->
                         <div class="bg-white p-4 rounded-2xl border border-gray-800 inline-flex items-center justify-center min-w-[180px] min-h-[180px] max-w-full overflow-hidden shadow-inner">
@@ -205,7 +217,7 @@ const applyThemePreset = (fg, bg) => {
 
                         <!-- Computed Metadata -->
                         <div class="mt-5 w-full bg-[#0B0F19] rounded-2xl p-4 border border-gray-800 text-left">
-                            <span class="text-[9px] text-purple-400 font-black block uppercase mb-2 tracking-widest">Payload Buffer</span>
+                            <span class="text-[9px] text-purple-400 font-black block uppercase mb-2 tracking-widest">QR Data Content</span>
                             <div class="text-[11px] text-gray-400 font-mono break-all max-h-16 overflow-y-auto no-scrollbar">
                                 {{ computedQrValue }}
                             </div>
@@ -325,7 +337,7 @@ const applyThemePreset = (fg, bg) => {
 
                     <!-- Styling Controls -->
                     <div class="mt-10 pt-8 border-t border-gray-800/80">
-                        <h3 class="text-[10px] font-black text-purple-400 uppercase tracking-[0.2em] mb-6">Matrix Styling</h3>
+                        <h3 class="text-[10px] font-black text-purple-400 uppercase tracking-[0.2em] mb-6">Design Settings</h3>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
