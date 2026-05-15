@@ -67,6 +67,19 @@ const toggleSidebar = () => {
                     <span v-if="isSidebarOpen" class="font-medium text-sm">Settings</span>
                 </Link>
 
+                <Link 
+                    :href="route('admin.users.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.users.*') ? 'bg-purple-600/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">Users</span>
+                </Link>
+
                 <div class="h-px bg-gray-800/60 mx-3 my-4"></div>
 
                 <Link 
@@ -145,6 +158,7 @@ const toggleSidebar = () => {
                 <nav class="p-4 space-y-2">
                     <Link @click="isMobileMenuOpen = false" :href="route('admin.dashboard')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">Dashboard</Link>
                     <Link @click="isMobileMenuOpen = false" :href="route('admin.settings')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">Settings</Link>
+                    <Link @click="isMobileMenuOpen = false" :href="route('admin.users.index')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">Users</Link>
                     <Link @click="isMobileMenuOpen = false" href="/" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 border-t border-gray-800 mt-4 pt-4 text-xs italic">Back to Public Site</Link>
                 </nav>
             </aside>
