@@ -19,7 +19,7 @@ class LogActivity
 
         // Only log successful GET requests for non-internal/api paths to keep it clean
         // Or log everything if the user wants "all activity"
-        if ($request->isMethod('GET') && ! $request->is('api/*') && ! $request->is('_debugbar/*')) {
+        if ($request->isMethod('GET') && ! $request->is('api/*') && ! $request->is('_debugbar/*') && ! $request->user()?->is_admin) {
             \App\Models\ActivityLog::create([
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
