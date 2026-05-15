@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\ProcessedImage;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redis;
 
 class PruneExpiredImages extends Command
 {
@@ -27,9 +28,20 @@ class PruneExpiredImages extends Command
      */
     public function handle()
     {
-        $this->info('Locating expired image records...');
+        $guestHours = (int) (Redis::get('settings:guest_retention_hours') ?: 6);
+        $authDays = (int) (Redis::get('settings:auth_retention_days') ?: 7);
 
-        $expiredImages = ProcessedImage::where('expires_at', '<=', now())->get();
+        $this->comment("Current retention: Guest={$guestHours}h, Member={$authDays}d");
+
+        $expiredImages = ProcessedImage::where(function ($query) use ($guestHours, $authDays) {
+            $query->where(function ($q) use ($guestHours) {
+                $q->whereNull('user_id')
+                  ->where('created_at', '<=', now()->subHours($guestHours));
+            })->orWhere(function ($q) use ($authDays) {
+                $q->whereNotNull('user_id')
+                  ->where('created_at', '<=', now()->subDays($authDays));
+            })->orWhere('expires_at', '<=', now());
+        })->get();
 
         $count = 0;
         foreach ($expiredImages as $image) {

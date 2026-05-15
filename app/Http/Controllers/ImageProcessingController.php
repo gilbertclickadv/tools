@@ -20,8 +20,11 @@ class ImageProcessingController extends Controller
      */
     public function process(Request $request)
     {
+        $maxUploadSizeMb = (int) (Redis::get('settings:max_upload_mb') ?: 20);
+        $maxUploadSizeKb = $maxUploadSizeMb * 1024;
+
         $request->validate([
-            'image' => ['required', 'image', 'max:20480'], // up to 20MB
+            'image' => ['required', 'image', "max:{$maxUploadSizeKb}"], 
             'action' => ['required', 'string', 'in:resize,convert,adjust,crop'],
             // Action specific validation
             'quality' => ['nullable', 'integer', 'min:1', 'max:100'],
@@ -71,7 +74,8 @@ class ImageProcessingController extends Controller
             $image = $manager->decodePath($file->getRealPath());
 
             $action = $request->input('action');
-            $quality = (int) ($request->input('quality') ?: 80);
+            $defaultQuality = (int) (Redis::get('settings:default_quality') ?: 80);
+            $quality = (int) ($request->input('quality') ?: $defaultQuality);
             $targetFormat = $request->input('format') ?: $this->getExtensionFromMime($originalMime);
 
             // Apply specific action transformations
@@ -191,11 +195,13 @@ class ImageProcessingController extends Controller
             $diskPath = 'processed/' . $filename;
             Storage::disk('public')->put($diskPath, $binaryData);
 
-            // Determine Expiration Lifecycle (Guest: 1hr, Auth: 24hr)
+            // Determine Expiration Lifecycle from settings
             if ($user) {
-                $expiresAt = now()->addHours(24);
+                $authRetentionDays = (int) (Redis::get('settings:auth_retention_days') ?: 7);
+                $expiresAt = now()->addDays($authRetentionDays);
             } else {
-                $expiresAt = now()->addHour();
+                $guestRetentionHours = (int) (Redis::get('settings:guest_retention_hours') ?: 6);
+                $expiresAt = now()->addHours($guestRetentionHours);
             }
 
             // Commit DB Record
