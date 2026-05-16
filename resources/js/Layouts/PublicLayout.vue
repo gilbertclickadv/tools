@@ -30,27 +30,35 @@ const page = usePage();
                 </Link>
 
                 <!-- Desktop Navigation (Centered) -->
-                <nav class="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 gap-x-6 text-sm font-medium">
-                    <Link 
-                        :href="route('home')" 
+                <nav class="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 gap-x-1 text-sm font-medium">
+                    <Link
+                        :href="route('home')"
                         :class="[route().current('home') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
+                        class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold flex items-center gap-x-1.5"
+                    >
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                        All Tools
+                    </Link>
+                    <Link
+                        :href="route('tools.image')"
+                        :class="[route().current('tools.image') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
                         class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold"
                     >
                         Image Studio
                     </Link>
-                    <Link 
-                        :href="route('qr.generator')" 
-                        :class="[route().current('qr.generator') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
+                    <Link
+                        :href="route('tools.qr')"
+                        :class="[route().current('tools.qr') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
                         class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold"
                     >
                         QR Generator
                     </Link>
-                    <Link 
-                        :href="route('history')" 
+                    <Link
+                        :href="route('history')"
                         :class="[route().current('history') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50']"
                         class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold"
                     >
-                        History Hub
+                        History
                     </Link>
                 </nav>
 
@@ -120,30 +128,33 @@ const page = usePage();
         </header>
 
         <!-- Bottom Navigation for Mobile -->
-        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0B0F19]/90 backdrop-blur-xl border-t border-gray-800/60 z-[100] px-6 py-3 flex items-center justify-between pb-[calc(12px+env(safe-area-inset-bottom))] shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
-            <Link :href="route('home')" class="flex flex-col items-center gap-y-1 transition-all" :class="[route().current('home') ? 'text-purple-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0B0F19]/90 backdrop-blur-xl border-t border-gray-800/60 z-[100] px-2 py-3 flex items-center justify-around pb-[calc(12px+env(safe-area-inset-bottom))] shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+            <!-- Tools Hub -->
+            <Link :href="route('home')" class="flex flex-col items-center gap-y-1 transition-all px-3" :class="[route().current('home') ? 'text-purple-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
+                <div class="h-6 w-6 flex items-center justify-center">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Tools</span>
+            </Link>
+
+            <!-- Image Studio -->
+            <Link :href="route('tools.image')" class="flex flex-col items-center gap-y-1 transition-all px-3" :class="[route().current('tools.image') ? 'text-purple-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
                 <div class="h-6 w-6 flex items-center justify-center">
                     <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0-2.25Z" /></svg>
                 </div>
                 <span class="text-[10px] font-bold uppercase tracking-widest">Image</span>
             </Link>
-            
-            <Link :href="route('qr.generator')" class="flex flex-col items-center gap-y-1 transition-all" :class="[route().current('qr.generator') ? 'text-purple-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
-                <div class="h-6 w-6 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="h-6 w-6" fill="currentColor"><path d="M160 224L224 224L224 160L160 160L160 224zM96 144C96 117.5 117.5 96 144 96L240 96C266.5 96 288 117.5 288 144L288 240C288 266.5 266.5 288 240 288L144 288C117.5 288 96 266.5 96 240L96 144zM160 480L224 480L224 416L160 416L160 480zM96 400C96 373.5 117.5 352 144 352L240 352C266.5 352 288 373.5 288 400L288 496C288 522.5 266.5 544 240 544L144 544C117.5 544 96 522.5 96 496L96 400zM416 160L416 224L480 224L480 160L416 160zM400 96L496 96C522.5 96 544 117.5 544 144L544 240C544 266.5 522.5 288 496 288L400 288C373.5 288 352 266.5 352 240L352 144C352 117.5 373.5 96 400 96zM384 416C366.3 416 352 401.7 352 384C352 366.3 366.3 352 384 352C401.7 352 416 366.3 416 384C416 401.7 401.7 416 384 416zM384 480C401.7 480 416 494.3 416 512C416 529.7 401.7 544 384 544C366.3 544 352 529.7 352 512C352 494.3 366.3 480 384 480zM480 512C480 494.3 494.3 480 512 480C529.7 480 544 494.3 544 512C544 529.7 529.7 544 512 544C494.3 544 480 529.7 480 512zM512 416C494.3 416 480 401.7 480 384C480 366.3 494.3 352 512 352C529.7 352 544 366.3 544 384C544 401.7 529.7 416 512 416zM480 448C480 465.7 465.7 480 448 480C430.3 480 416 465.7 416 448C416 430.3 430.3 416 448 416C465.7 416 480 430.3 480 448z"/></svg>
-                </div>
-                <span class="text-[10px] font-bold uppercase tracking-widest">QR Code</span>
-            </Link>
 
-
-            <Link :href="route('history')" class="flex flex-col items-center gap-y-1 transition-all" :class="[route().current('history') ? 'text-purple-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
+            <!-- History -->
+            <Link :href="route('history')" class="flex flex-col items-center gap-y-1 transition-all px-3" :class="[route().current('history') ? 'text-purple-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
                 <div class="h-6 w-6 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="h-6 w-6" fill="currentColor"><path d="M320 128C426 128 512 214 512 320C512 426 426 512 320 512C254.8 512 197.1 479.5 162.4 429.7C152.3 415.2 132.3 411.7 117.8 421.8C103.3 431.9 99.8 451.9 109.9 466.4C156.1 532.6 233 576 320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C234.3 64 158.5 106.1 112 170.7L112 144C112 126.3 97.7 112 80 112C62.3 112 48 126.3 48 144L48 256C48 273.7 62.3 288 80 288L104.6 288C105.1 288 105.6 288 106.1 288L192.1 288C209.8 288 224.1 273.7 224.1 256C224.1 238.3 209.8 224 192.1 224L153.8 224C186.9 166.6 249 128 320 128zM344 216C344 202.7 333.3 192 320 192C306.7 192 296 202.7 296 216L296 320C296 326.4 298.5 332.5 303 337L375 409C384.4 418.4 399.6 418.4 408.9 409C418.2 399.6 418.3 384.4 408.9 375.1L343.9 310.1L343.9 216z"/></svg>
                 </div>
                 <span class="text-[10px] font-bold uppercase tracking-widest">History</span>
             </Link>
 
-            <Link :href="page.props.auth?.user ? route('profile.edit') : route('login')" class="flex flex-col items-center gap-y-1 transition-all" :class="[route().current('profile.edit') ? 'text-purple-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
+            <!-- Profile / Login -->
+            <Link :href="page.props.auth?.user ? route('profile.edit') : route('login')" class="flex flex-col items-center gap-y-1 transition-all px-3" :class="[route().current('profile.edit') ? 'text-purple-400 scale-110' : 'text-gray-500 hover:text-gray-300']">
                 <div class="h-6 w-6 flex items-center justify-center">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                 </div>

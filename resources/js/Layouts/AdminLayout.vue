@@ -80,6 +80,45 @@ const toggleSidebar = () => {
                     <span v-if="isSidebarOpen" class="font-medium text-sm">Users</span>
                 </Link>
 
+                <Link 
+                    :href="route('admin.url-shortener.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.url-shortener.*') ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">URL Shortener</span>
+                </Link>
+
+                <Link 
+                    :href="route('admin.uuid-generator.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.uuid-generator.*') ? 'bg-emerald-600/10 text-emerald-400 border border-emerald-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">UUID Generator</span>
+                </Link>
+
+                <Link 
+                    :href="route('admin.password-generator.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.password-generator.*') ? 'bg-purple-600/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">Pass Generator</span>
+                </Link>
+
                 <div class="h-px bg-gray-800/60 mx-3 my-4"></div>
 
                 <Link 
@@ -159,6 +198,7 @@ const toggleSidebar = () => {
                     <Link @click="isMobileMenuOpen = false" :href="route('admin.dashboard')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">Dashboard</Link>
                     <Link @click="isMobileMenuOpen = false" :href="route('admin.settings')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">Settings</Link>
                     <Link @click="isMobileMenuOpen = false" :href="route('admin.users.index')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">Users</Link>
+                    <Link @click="isMobileMenuOpen = false" :href="route('admin.url-shortener.index')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">URL Shortener</Link>
                     <Link @click="isMobileMenuOpen = false" href="/" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 border-t border-gray-800 mt-4 pt-4 text-xs italic">Back to Public Site</Link>
                 </nav>
             </aside>

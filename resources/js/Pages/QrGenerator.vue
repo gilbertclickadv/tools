@@ -155,7 +155,7 @@ const applyThemePreset = (fg, bg) => {
             <meta property="og:title" content="FluxMedia · Free Online QR Code Generator with Custom Styles" />
             <meta property="og:description" content="Generate custom QR codes for free. Create QR codes for links, WiFi, Email, and SMS with unique colors and designs." />
             <meta property="og:image" content="/assets/images/fluxmedia_main.webp" />
-            <meta property="og:url" content="https://fluxmedia.space/qr-code-generator" />
+            <meta property="og:url" content="https://fluxmedia.space/tools/qr-code" />
 
             <!-- Twitter -->
             <meta name="twitter:title" content="FluxMedia · Free Online QR Code Generator with Custom Styles" />

@@ -9,10 +9,19 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// ─── Tools Hub (Home) ────────────────────────────────────────────────────────
 Route::get('/', function () {
-    $user = auth()->user();
+    return Inertia::render('Home', [
+        'canLogin'    => Route::has('login'),
+        'canRegister' => Route::has('register'),
+    ]);
+})->name('home');
+
+// ─── Image Studio ─────────────────────────────────────────────────────────────
+Route::get('/tools/image', function () {
+    $user  = auth()->user();
     $query = \App\Models\ProcessedImage::query();
-    
+
     if ($user) {
         $query->where('user_id', $user->id);
     } else {
@@ -24,34 +33,58 @@ Route::get('/', function () {
         ->get()
         ->map(function ($img) {
             return [
-                'id' => $img->id,
+                'id'            => $img->id,
                 'original_name' => $img->original_name,
-                'format' => strtoupper($img->format),
-                'size_bytes' => $img->size_bytes,
-                'expires_at' => $img->expires_at ? $img->expires_at->diffForHumans() : null,
-                'download_url' => route('image.download', ['path' => $img->disk_path]),
-                'output_url' => \Illuminate\Support\Facades\Storage::disk('public')->url($img->disk_path),
-                'created_at' => $img->created_at->diffForHumans(),
+                'format'        => strtoupper($img->format),
+                'size_bytes'    => $img->size_bytes,
+                'expires_at'    => $img->expires_at ? $img->expires_at->diffForHumans() : null,
+                'download_url'  => route('image.download', ['path' => $img->disk_path]),
+                'output_url'    => \Illuminate\Support\Facades\Storage::disk('public')->url($img->disk_path),
+                'created_at'    => $img->created_at->diffForHumans(),
             ];
         });
 
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+    return Inertia::render('ImageStudio', [
+        'canLogin'       => Route::has('login'),
+        'canRegister'    => Route::has('register'),
         'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'phpVersion'     => PHP_VERSION,
         'initialHistory' => $history,
     ]);
-})->name('home');
+})->name('tools.image');
 
-Route::get('/qr-code-generator', function () {
+// ─── QR Code Generator ────────────────────────────────────────────────────────
+Route::get('/tools/qr-code', function () {
     return Inertia::render('QrGenerator', [
-        'canLogin' => Route::has('login'),
+        'canLogin'    => Route::has('login'),
         'canRegister' => Route::has('register'),
     ]);
-})->name('qr.generator');
+})->name('tools.qr');
 
-Route::post('/api/process-image', [ImageProcessingController::class, 'process'])->name('image.process');
+// ─── Legacy redirect (301 SEO-safe) ──────────────────────────────────────────
+Route::permanentRedirect('/qr-code-generator', '/tools/qr-code');
+
+use App\Http\Controllers\UrlShortenerController;
+// ─── URL Shortener ────────────────────────────────────────────────────────────
+Route::get('/tools/url-shortener', [UrlShortenerController::class, 'index'])->name('tools.url-shortener');
+Route::post('/api/shorten', [UrlShortenerController::class, 'store'])->name('url.shorten');
+Route::delete('/api/shorten/{shortUrl}', [UrlShortenerController::class, 'destroy'])->name('url.destroy');
+
+// ─── Short URL Redirect ───────────────────────────────────────────────────────
+Route::get('/s/{code}', [UrlShortenerController::class, 'redirect'])->name('url.redirect');
+
+// ─── UUID Generator ────────────────────────────────────────────────────────────
+use App\Http\Controllers\UuidGeneratorController;
+Route::get('/tools/uuid-generator', [UuidGeneratorController::class, 'index'])->name('tools.uuid-generator');
+Route::post('/api/uuid/generate', [UuidGeneratorController::class, 'store'])->name('uuid.generate');
+Route::delete('/api/uuid/bulk', [UuidGeneratorController::class, 'bulkDestroy'])->name('uuid.bulk-destroy');
+Route::delete('/api/uuid/{generatedUuid}', [UuidGeneratorController::class, 'destroy'])->name('uuid.destroy');
+
+// ─── Password Generator ─────────────────────────────────────────────────────
+use App\Http\Controllers\PasswordGeneratorController;
+Route::get('/tools/password-generator', [PasswordGeneratorController::class, 'index'])->name('tools.password-generator');
+Route::post('/api/password/track', [PasswordGeneratorController::class, 'track'])->name('password.track');
+
 Route::get('/api/download-image', [ImageProcessingController::class, 'download'])->name('image.download');
 Route::post('/api/store-qr-code', [ImageProcessingController::class, 'storeQrCode'])->name('qr.store');
 
@@ -124,6 +157,13 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.'
     // Using put/patch for updates and delete for destruction
     Route::patch('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/url-shortener', [\App\Http\Controllers\Admin\UrlShortenerController::class, 'index'])->name('url-shortener.index');
+    Route::patch('/url-shortener/{shortUrl}/toggle', [\App\Http\Controllers\Admin\UrlShortenerController::class, 'toggle'])->name('url-shortener.toggle');
+    Route::delete('/url-shortener/{shortUrl}', [\App\Http\Controllers\Admin\UrlShortenerController::class, 'destroy'])->name('url-shortener.destroy');
+
+    Route::get('/uuid-generator', [\App\Http\Controllers\Admin\UuidGeneratorController::class, 'index'])->name('uuid-generator.index');
+    Route::delete('/uuid-generator/{generatedUuid}', [\App\Http\Controllers\Admin\UuidGeneratorController::class, 'destroy'])->name('uuid-generator.destroy');
+    Route::get('/password-generator', [\App\Http\Controllers\Admin\PasswordGeneratorController::class, 'index'])->name('password-generator.index');
 });
 
 require __DIR__.'/auth.php';
