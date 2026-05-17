@@ -98,9 +98,18 @@ const fetchIpDetails = async (ipAddress = '') => {
 };
 
 onMounted(() => {
+    // Pre-populate connecting IP resolved securely from Cloudflare proxy headers
+    if (props.userIp) {
+        if (props.userIp.includes(':')) {
+            detectedIpv6.value = props.userIp;
+        } else {
+            detectedIpv4.value = props.userIp;
+        }
+    }
+
     // Initial fetch of user's own IP details
     fetchIpDetails(props.userIp);
-    // Detect visitor dual stack IP addresses
+    // Detect visitor dual stack IP addresses asynchronously
     detectYourIPs();
 });
 </script>
