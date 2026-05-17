@@ -69,6 +69,14 @@ use App\Http\Controllers\IpLookupController;
 Route::get('/tools/ip-lookup', [IpLookupController::class, 'index'])->name('tools.ip');
 Route::post('/api/ip-lookup', [IpLookupController::class, 'lookup'])->name('ip.lookup');
 
+use App\Http\Controllers\Base64Controller;
+// ─── Base64 Encoder/Decoder ───────────────────────────────────────────────────
+Route::get('/tools/base64', [Base64Controller::class, 'index'])->name('tools.base64');
+
+use App\Http\Controllers\HashGeneratorController;
+// ─── Hash Generator ───────────────────────────────────────────────────────────
+Route::get('/tools/hash-generator', [HashGeneratorController::class, 'index'])->name('tools.hash-generator');
+
 use App\Http\Controllers\UrlShortenerController;
 // ─── URL Shortener ────────────────────────────────────────────────────────────
 Route::get('/tools/url-shortener', [UrlShortenerController::class, 'index'])->name('tools.url-shortener');
