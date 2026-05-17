@@ -219,7 +219,7 @@ const colorMap = {
                 <div class="mt-10 flex flex-wrap items-center justify-center gap-6 lg:gap-10">
                     <div v-for="stat in [
                         { value: '11', label: 'Tools' },
-                        { value: '2', label: 'Live Now' },
+                        { value: '6', label: 'Live Now' },
                         { value: '100%', label: 'Free' },
                         { value: '0', label: 'Signup Required' },
                     ]" :key="stat.label" class="text-center">
