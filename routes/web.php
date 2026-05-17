@@ -85,6 +85,7 @@ use App\Http\Controllers\PasswordGeneratorController;
 Route::get('/tools/password-generator', [PasswordGeneratorController::class, 'index'])->name('tools.password-generator');
 Route::post('/api/password/track', [PasswordGeneratorController::class, 'track'])->name('password.track');
 
+Route::post('/api/process-image', [ImageProcessingController::class, 'process'])->name('image.process');
 Route::get('/api/download-image', [ImageProcessingController::class, 'download'])->name('image.download');
 Route::post('/api/store-qr-code', [ImageProcessingController::class, 'storeQrCode'])->name('qr.store');
 
