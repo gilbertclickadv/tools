@@ -14,8 +14,16 @@ class IpLookupController extends Controller
      */
     public function index(Request $request)
     {
+        // Prioritize Cloudflare proxy headers for exact connecting IP
+        $userIp = $request->header('CF-Connecting-IP', $request->header('X-Forwarded-For', $request->ip()));
+        
+        // If multiple IPs are forwarded, extract the first one
+        if (is_string($userIp) && str_contains($userIp, ',')) {
+            $userIp = explode(',', $userIp)[0];
+        }
+
         return Inertia::render('IpLookup', [
-            'userIp' => $request->ip(),
+            'userIp' => trim($userIp),
         ]);
     }
 
@@ -31,7 +39,12 @@ class IpLookupController extends Controller
         $ip = trim($validated['ip'] ?? '');
 
         if (empty($ip)) {
-            $ip = $request->ip();
+            // Prioritize Cloudflare proxy headers
+            $ip = $request->header('CF-Connecting-IP', $request->header('X-Forwarded-For', $request->ip()));
+            if (is_string($ip) && str_contains($ip, ',')) {
+                $ip = explode(',', $ip)[0];
+            }
+            $ip = trim($ip);
         }
 
         // Validate IP format if it's not a placeholder/empty
@@ -46,9 +59,14 @@ class IpLookupController extends Controller
 
         // Track lookup for analytics
         try {
+            $loggingIp = $request->header('CF-Connecting-IP', $request->ip());
+            if (is_string($loggingIp) && str_contains($loggingIp, ',')) {
+                $loggingIp = explode(',', $loggingIp)[0];
+            }
+
             IpLookup::create([
                 'user_id' => auth()->id(),
-                'ip_address' => $request->ip(),
+                'ip_address' => trim($loggingIp),
                 'searched_ip' => $ip,
                 'country_code' => $result['country_code'] ?? null,
                 'country_name' => $result['country_name'] ?? null,
