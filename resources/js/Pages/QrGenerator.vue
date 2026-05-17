@@ -164,20 +164,20 @@ const applyThemePreset = (fg, bg) => {
         </Head>
 
         <!-- Hero Section (Desktop Only) -->
-        <div class="hidden lg:block relative overflow-hidden pt-10 lg:pt-12 pb-6 lg:pb-8 text-center">
+        <div class="hidden lg:block relative overflow-hidden pt-8 pb-4 text-center">
             <!-- Glow ambient background effect -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-gradient-to-tr from-purple-600/20 via-indigo-600/10 to-pink-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-gradient-to-tr from-purple-600/20 via-indigo-600/10 to-pink-600/10 blur-[100px] rounded-full pointer-events-none"></div>
 
-            <div class="relative mx-auto max-w-4xl px-6">
-                <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-4 py-1.5 text-[10px] font-bold text-purple-300 border border-purple-500/20 mb-6 uppercase tracking-widest">
-                    <span class="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse"></span>
-                    QR Code Generator
-                </span>
+            <div class="relative mx-auto max-w-4xl px-6 space-y-3">
+                <div class="flex items-center justify-center">
+                    <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-4 py-1.5 text-[10px] font-bold text-purple-300 border border-purple-500/20 uppercase tracking-widest">
+                        <span class="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+                        QR Code Generator
+                    </span>
+                </div>
 
-                <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-16 lg:h-24 object-contain mb-8 drop-shadow-[0_0_25px_rgba(168,85,247,0.35)]" alt="FluxMedia Logo" />
-
-                <h1 class="text-3xl lg:text-5xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-tight uppercase">
-                    Free QR Code <br class="lg:hidden" />
+                <h1 class="text-2xl lg:text-3xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-tight uppercase">
+                    Free QR Code 
                     <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
                         Generator
                     </span>

@@ -76,18 +76,18 @@ onMounted(generateHashes);
         </div>
 
         <!-- Header -->
-        <div class="relative pt-24 pb-12 sm:pt-32 sm:pb-16 text-center px-4 overflow-hidden z-10">
+        <div class="relative pt-8 pb-4 text-center px-4 overflow-hidden z-10">
             <div class="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 mask-image-gradient-b"></div>
-            <div class="relative max-w-3xl mx-auto space-y-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-800/50 border border-gray-700/50 backdrop-blur-md mb-2">
+            <div class="relative max-w-3xl mx-auto space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-800/50 border border-gray-700/50 backdrop-blur-md">
                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                     <span class="text-xs font-semibold text-gray-300 uppercase tracking-wider">Zero-Knowledge Execution</span>
                 </div>
                 
-                <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
                     Cryptographic <span class="bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent">Hashes</span>
                 </h1>
-                <p class="text-sm lg:text-base text-gray-400 font-medium max-w-xl mx-auto leading-relaxed">
+                <p class="text-xs text-gray-400 max-w-xl mx-auto leading-relaxed">
                     Compute standard cryptographic hashes instantly as you type. All calculations are performed strictly in your browser.
                 </p>
             </div>

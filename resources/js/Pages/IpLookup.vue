@@ -152,21 +152,21 @@ onMounted(() => {
         </Head>
 
         <!-- Background Accents -->
-        <div class="relative overflow-hidden pt-12 pb-6 text-center">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[250px] bg-gradient-to-tr from-blue-600/10 via-indigo-600/5 to-purple-600/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="relative overflow-hidden pt-8 pb-4 text-center">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-gradient-to-tr from-blue-600/10 via-indigo-600/5 to-purple-600/5 blur-[100px] rounded-full pointer-events-none"></div>
 
-            <div class="relative mx-auto max-w-4xl px-6">
-                <div class="flex items-center justify-center gap-x-2.5 mb-6">
+            <div class="relative mx-auto max-w-4xl px-6 space-y-3">
+                <div class="flex items-center justify-center">
                     <span class="inline-flex items-center gap-x-1.5 rounded-full bg-blue-500/10 px-4 py-1.5 text-[10px] font-bold text-blue-300 border border-blue-500/20 uppercase tracking-[0.2em]">
                         <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
                         Network Utility
                     </span>
                 </div>
 
-                <h1 class="text-3xl lg:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
                     IP Address <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Intelligence</span>
                 </h1>
-                <p class="text-xs lg:text-sm text-gray-400 font-medium max-w-xl mx-auto leading-relaxed">
+                <p class="text-xs text-gray-400 max-w-xl mx-auto leading-relaxed">
                     Retrieve high-fidelity physical coordinates, Autonomous System Number (ASN) mappings, and real-time financial currency profiles instantly.
                 </p>
             </div>

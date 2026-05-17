@@ -282,17 +282,19 @@ const toastConfig = {
         </Teleport>
 
         <!-- Hero -->
-        <div class="relative overflow-hidden pt-10 pb-6 text-center">
+        <div class="relative overflow-hidden pt-8 pb-4 text-center">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-gradient-to-tr from-emerald-600/15 via-teal-600/8 to-blue-600/8 blur-[100px] rounded-full pointer-events-none"></div>
-            <div class="relative mx-auto max-w-4xl px-4">
-                <span class="inline-flex items-center gap-x-2 rounded-full bg-emerald-500/10 px-4 py-1.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/20 uppercase tracking-[0.2em] mb-5">
-                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    UUID Generator
-                </span>
-                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight mb-3">
+            <div class="relative mx-auto max-w-4xl px-4 space-y-3">
+                <div class="flex items-center justify-center">
+                    <span class="inline-flex items-center gap-x-2 rounded-full bg-emerald-500/10 px-4 py-1.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/20 uppercase tracking-[0.2em]">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        UUID Generator
+                    </span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
                     Unique. <span class="bg-gradient-to-r from-emerald-400 via-teal-400 to-blue-400 bg-clip-text text-transparent">Secure.</span> Instant.
                 </h1>
-                <p class="text-sm text-gray-400 max-w-md mx-auto leading-relaxed">
+                <p class="text-xs text-gray-400 max-w-md mx-auto leading-relaxed">
                     Generate RFC-compliant UUIDs v1 or v4 in bulk. Fast, secure, and no data leaves your browser.
                 </p>
             </div>

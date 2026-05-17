@@ -361,22 +361,19 @@ const downloadProcessedImage = () => {
         <!-- Main Body -->
         <div class="relative min-h-screen">
             <!-- Hero Header (Desktop Only) -->
-            <div class="hidden lg:block relative overflow-hidden pt-12 pb-10 text-center">
+            <div class="hidden lg:block relative overflow-hidden pt-8 pb-4 text-center">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-gradient-to-tr from-purple-600/20 via-indigo-600/10 to-pink-600/10 blur-[100px] rounded-full pointer-events-none"></div>
                 
-                <div class="relative mx-auto max-w-4xl px-6">
-                    <div class="flex items-center justify-center gap-x-3 mb-8">
-                        <div class="h-px w-12 bg-gradient-to-r from-transparent to-purple-500/50"></div>
+                <div class="relative mx-auto max-w-4xl px-6 space-y-3">
+                    <div class="flex items-center justify-center">
                         <span class="inline-flex items-center gap-x-2 rounded-full bg-purple-500/10 px-4 py-1.5 text-[10px] font-bold text-purple-300 border border-purple-500/20 uppercase tracking-[0.2em]">
                             <span class="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse"></span>
                             Image Converter & Image Compressor
                         </span>
-                        <div class="h-px w-12 bg-gradient-to-l from-transparent to-purple-500/50"></div>
                     </div>
 
-                    <img src="/assets/images/fluxmedia_main.webp" class="mx-auto h-20 lg:h-28 object-contain mb-8 drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]" alt="FluxMedia Logo" />
-                    <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight uppercase tracking-tighter">
-                        Image <span class="text-purple-400">Converter</span>
+                    <h1 class="text-2xl lg:text-3xl font-extrabold tracking-tight text-white leading-tight uppercase tracking-tighter">
+                        Image <span class="text-purple-400">Converter & Compressor</span>
                     </h1>
                 </div>
             </div>
