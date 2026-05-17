@@ -13,6 +13,12 @@ const ipData = ref(null);
 const isLoading = ref(false);
 const errorMessage = ref('');
 
+// Visitor active IPs
+const detectedIpv4 = ref('');
+const detectedIpv6 = ref('');
+const isLoadingIps = ref(false);
+const copiedText = ref('');
+
 // Currency converter reactive states
 const usdAmount = ref(100);
 const localAmount = ref(0);
@@ -31,6 +37,35 @@ const handleLocalChange = () => {
 
 const roundValue = (val) => {
     return Math.round((val + Number.EPSILON) * 100) / 100;
+};
+
+const copyToClipboard = (text, type) => {
+    navigator.clipboard.writeText(text);
+    copiedText.value = type;
+    setTimeout(() => {
+        copiedText.value = '';
+    }, 2000);
+};
+
+const detectYourIPs = async () => {
+    isLoadingIps.value = true;
+    try {
+        const [v4Result, v6Result] = await Promise.allSettled([
+            axios.get('https://api4.ipify.org?format=json', { timeout: 3500 }),
+            axios.get('https://api6.ipify.org?format=json', { timeout: 3500 })
+        ]);
+        
+        if (v4Result.status === 'fulfilled') {
+            detectedIpv4.value = v4Result.value.data.ip;
+        }
+        if (v6Result.status === 'fulfilled') {
+            detectedIpv6.value = v6Result.value.data.ip;
+        }
+    } catch (e) {
+        console.error('IP detection error:', e);
+    } finally {
+        isLoadingIps.value = false;
+    }
 };
 
 const fetchIpDetails = async (ipAddress = '') => {
@@ -65,6 +100,8 @@ const fetchIpDetails = async (ipAddress = '') => {
 onMounted(() => {
     // Initial fetch of user's own IP details
     fetchIpDetails(props.userIp);
+    // Detect visitor dual stack IP addresses
+    detectYourIPs();
 });
 </script>
 
@@ -137,6 +174,86 @@ onMounted(() => {
                 </div>
             </div>
 
+            <!-- Visitor Dual Stack IP Credentials Card -->
+            <div class="bg-[#121826]/80 backdrop-blur-xl rounded-3xl border border-gray-800/80 p-6 shadow-xl max-w-2xl mx-auto">
+                <h4 class="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <span class="h-1.5 w-1.5 rounded-full bg-blue-500 animate-ping"></span>
+                    Your Detected IP Configuration (Dual Stack)
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- IPv4 Detection Column -->
+                    <div class="bg-[#0B0F19]/60 rounded-2xl border border-gray-800/80 p-4 flex flex-col justify-between gap-y-3 relative group overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Visitor IPv4</span>
+                            <span v-if="detectedIpv4" class="px-1.5 py-0.5 rounded text-[9px] font-black bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">IPv4 Active</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 overflow-hidden">
+                            <span v-if="detectedIpv4" class="text-sm font-mono font-bold text-white truncate break-all select-all">{{ detectedIpv4 }}</span>
+                            <span v-else-if="isLoadingIps" class="text-xs text-gray-500 italic animate-pulse">Detecting IPv4...</span>
+                            <span v-else class="text-xs text-gray-500 italic">Not Detected</span>
+
+                            <button 
+                                v-if="detectedIpv4"
+                                @click="copyToClipboard(detectedIpv4, 'ipv4')"
+                                class="p-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-all shrink-0 cursor-pointer"
+                                title="Copy IPv4 Address"
+                            >
+                                <svg v-if="copiedText === 'ipv4'" class="h-3.5 w-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <svg v-else class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                            </button>
+                        </div>
+                        <button 
+                            v-if="detectedIpv4"
+                            @click="fetchIpDetails(detectedIpv4)"
+                            class="text-[10px] font-bold text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-widest text-left w-fit cursor-pointer flex items-center gap-1 group/btn"
+                        >
+                            Analyze IPv4 Network
+                            <svg class="h-3 w-3 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- IPv6 Detection Column -->
+                    <div class="bg-[#0B0F19]/60 rounded-2xl border border-gray-800/80 p-4 flex flex-col justify-between gap-y-3 relative group overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Visitor IPv6</span>
+                            <span v-if="detectedIpv6" class="px-1.5 py-0.5 rounded text-[9px] font-black bg-purple-500/10 text-purple-400 border border-purple-500/20 uppercase tracking-wider">IPv6 Active</span>
+                            <span v-else-if="!isLoadingIps && !detectedIpv6" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-gray-850 text-gray-600 border border-gray-800 uppercase tracking-wider">No IPv6 Stack</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 overflow-hidden">
+                            <span v-if="detectedIpv6" class="text-xs font-mono font-bold text-white break-all leading-normal select-all overflow-hidden max-w-[82%]">{{ detectedIpv6 }}</span>
+                            <span v-else-if="isLoadingIps" class="text-xs text-gray-500 italic animate-pulse">Detecting IPv6...</span>
+                            <span v-else class="text-xs text-gray-500 italic">Not Detected / Disabled</span>
+
+                            <button 
+                                v-if="detectedIpv6"
+                                @click="copyToClipboard(detectedIpv6, 'ipv6')"
+                                class="p-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-all shrink-0 cursor-pointer"
+                                title="Copy IPv6 Address"
+                            >
+                                <svg v-if="copiedText === 'ipv6'" class="h-3.5 w-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <svg v-else class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                            </button>
+                        </div>
+                        <button 
+                            v-if="detectedIpv6"
+                            @click="fetchIpDetails(detectedIpv6)"
+                            class="text-[10px] font-bold text-purple-400 hover:text-purple-300 transition-colors uppercase tracking-widest text-left w-fit cursor-pointer flex items-center gap-1 group/btn"
+                        >
+                            Analyze IPv6 Network
+                            <svg class="h-3 w-3 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Dashboard Skeleton / Loading state -->
             <div v-if="isLoading && !ipData" class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-pulse">
                 <div class="md:col-span-2 h-[220px] bg-[#121826]/40 rounded-3xl border border-gray-800"></div>
@@ -205,9 +322,25 @@ onMounted(() => {
                         </div>
 
                         <div class="space-y-3.5 text-sm">
-                            <div class="flex justify-between border-b border-gray-800/40 pb-2">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-800/40 pb-2">
                                 <span class="text-gray-500 font-medium">IP Address</span>
-                                <span class="text-white font-bold font-mono">{{ ipData.ip }}</span>
+                                <div class="flex items-center gap-1.5 max-w-full overflow-hidden">
+                                    <span class="text-white font-mono font-bold text-xs md:text-sm break-all text-right select-all truncate max-w-[180px] sm:max-w-none" :title="ipData.ip">
+                                        {{ ipData.ip }}
+                                    </span>
+                                    <button 
+                                        @click="copyToClipboard(ipData.ip, 'analyzed')"
+                                        class="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-all shrink-0 cursor-pointer"
+                                        title="Copy IP Address"
+                                    >
+                                        <svg v-if="copiedText === 'analyzed'" class="h-3.5 w-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <svg v-else class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                             <div class="flex justify-between border-b border-gray-800/40 pb-2">
                                 <span class="text-gray-500 font-medium">Protocol</span>
