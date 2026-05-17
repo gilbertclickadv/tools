@@ -64,6 +64,11 @@ Route::get('/tools/qr-code', function () {
 // ─── Legacy redirect (301 SEO-safe) ──────────────────────────────────────────
 Route::permanentRedirect('/qr-code-generator', '/tools/qr-code');
 
+// ─── IP Lookup ───────────────────────────────────────────────────────────────
+use App\Http\Controllers\IpLookupController;
+Route::get('/tools/ip-lookup', [IpLookupController::class, 'index'])->name('tools.ip');
+Route::post('/api/ip-lookup', [IpLookupController::class, 'lookup'])->name('ip.lookup');
+
 use App\Http\Controllers\UrlShortenerController;
 // ─── URL Shortener ────────────────────────────────────────────────────────────
 Route::get('/tools/url-shortener', [UrlShortenerController::class, 'index'])->name('tools.url-shortener');
@@ -165,6 +170,11 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.'
     Route::get('/uuid-generator', [\App\Http\Controllers\Admin\UuidGeneratorController::class, 'index'])->name('uuid-generator.index');
     Route::delete('/uuid-generator/{generatedUuid}', [\App\Http\Controllers\Admin\UuidGeneratorController::class, 'destroy'])->name('uuid-generator.destroy');
     Route::get('/password-generator', [\App\Http\Controllers\Admin\PasswordGeneratorController::class, 'index'])->name('password-generator.index');
+
+    // IP Lookup Stats & Database Update
+    Route::get('/ip-lookup', [\App\Http\Controllers\Admin\IpLookupController::class, 'index'])->name('ip-lookup.index');
+    Route::delete('/ip-lookup/{ipLookup}', [\App\Http\Controllers\Admin\IpLookupController::class, 'destroy'])->name('ip-lookup.destroy');
+    Route::post('/settings/maxmind-update', [\App\Http\Controllers\Admin\SettingsController::class, 'updateMaxmind'])->name('settings.maxmind.update');
 });
 
 require __DIR__.'/auth.php';

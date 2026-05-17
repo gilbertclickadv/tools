@@ -119,6 +119,19 @@ const toggleSidebar = () => {
                     <span v-if="isSidebarOpen" class="font-medium text-sm">Pass Generator</span>
                 </Link>
 
+                <Link 
+                    :href="route('admin.ip-lookup.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.ip-lookup.*') ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">IP Intelligence</span>
+                </Link>
+
                 <div class="h-px bg-gray-800/60 mx-3 my-4"></div>
 
                 <Link 
