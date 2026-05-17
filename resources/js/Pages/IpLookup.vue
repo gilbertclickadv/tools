@@ -47,20 +47,81 @@ const copyToClipboard = (text, type) => {
     }, 2000);
 };
 
+const fetchIpv4 = async () => {
+    // Attempt 1: Cloudflare icanhazip (forces IPv4)
+    try {
+        const res = await axios.get('https://ipv4.icanhazip.com', { timeout: 3000 });
+        if (res.data) {
+            detectedIpv4.value = res.data.trim();
+            return;
+        }
+    } catch (e) {
+        console.warn('Cloudflare IPv4 resolve failed, trying fallback:', e);
+    }
+
+    // Attempt 2: Ipify IPv4
+    try {
+        const res = await axios.get('https://api4.ipify.org?format=json', { timeout: 3000 });
+        if (res.data?.ip) {
+            detectedIpv4.value = res.data.ip;
+            return;
+        }
+    } catch (e) {
+        console.warn('Ipify IPv4 failed, trying last resort:', e);
+    }
+
+    // Attempt 3: Ident.me IPv4
+    try {
+        const res = await axios.get('https://v4.ident.me', { timeout: 3000 });
+        if (res.data) {
+            detectedIpv4.value = res.data.trim();
+        }
+    } catch (e) {
+        console.error('All IPv4 detection mechanisms exhausted:', e);
+    }
+};
+
+const fetchIpv6 = async () => {
+    // Attempt 1: Cloudflare icanhazip (forces IPv6)
+    try {
+        const res = await axios.get('https://ipv6.icanhazip.com', { timeout: 3000 });
+        if (res.data) {
+            detectedIpv6.value = res.data.trim();
+            return;
+        }
+    } catch (e) {
+        console.warn('Cloudflare IPv6 resolve failed, trying fallback:', e);
+    }
+
+    // Attempt 2: Ipify IPv6
+    try {
+        const res = await axios.get('https://api6.ipify.org?format=json', { timeout: 3000 });
+        if (res.data?.ip) {
+            detectedIpv6.value = res.data.ip;
+            return;
+        }
+    } catch (e) {
+        console.warn('Ipify IPv6 failed, trying last resort:', e);
+    }
+
+    // Attempt 3: Ident.me IPv6
+    try {
+        const res = await axios.get('https://v6.ident.me', { timeout: 3000 });
+        if (res.data) {
+            detectedIpv6.value = res.data.trim();
+        }
+    } catch (e) {
+        console.error('All IPv6 detection mechanisms exhausted:', e);
+    }
+};
+
 const detectYourIPs = async () => {
     isLoadingIps.value = true;
     try {
-        const [v4Result, v6Result] = await Promise.allSettled([
-            axios.get('https://api4.ipify.org?format=json', { timeout: 3500 }),
-            axios.get('https://api6.ipify.org?format=json', { timeout: 3500 })
+        await Promise.allSettled([
+            fetchIpv4(),
+            fetchIpv6()
         ]);
-        
-        if (v4Result.status === 'fulfilled') {
-            detectedIpv4.value = v4Result.value.data.ip;
-        }
-        if (v6Result.status === 'fulfilled') {
-            detectedIpv6.value = v6Result.value.data.ip;
-        }
     } catch (e) {
         console.error('IP detection error:', e);
     } finally {
