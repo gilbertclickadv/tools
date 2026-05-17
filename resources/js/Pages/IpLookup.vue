@@ -84,26 +84,6 @@ const fetchIpv6 = async () => {
     }
 };
 
-const fetchCloudflareTrace = async () => {
-    // Native Domain Fallback: Zero CORS issues, unblockable by adblockers.
-    try {
-        const res = await axios.get('/cdn-cgi/trace', { timeout: 3000 });
-        if (res.data) {
-            const match = res.data.match(/ip=(.+)/);
-            if (match && match[1]) {
-                const ip = match[1].trim();
-                if (ip.includes(':')) {
-                    if (!detectedIpv6.value) detectedIpv6.value = ip;
-                } else {
-                    if (!detectedIpv4.value) detectedIpv4.value = ip;
-                }
-            }
-        }
-    } catch (e) {
-        console.warn('Cloudflare trace failed:', e);
-    }
-};
-
 const detectYourIPs = async () => {
     isLoadingIps.value = true;
     try {
@@ -111,8 +91,6 @@ const detectYourIPs = async () => {
             fetchIpv4(),
             fetchIpv6()
         ]);
-        // Always run trace as final fail-safe to fill any gaps
-        await fetchCloudflareTrace();
     } catch (e) {
         console.error('IP detection error:', e);
     } finally {
@@ -150,7 +128,7 @@ const fetchIpDetails = async (ipAddress = '') => {
 };
 
 onMounted(() => {
-    // Pre-populate connecting IP resolved securely from Cloudflare proxy headers
+    // Pre-populate connecting IP securely from server request proxy headers
     if (props.userIp) {
         if (props.userIp.includes(':')) {
             detectedIpv6.value = props.userIp;
