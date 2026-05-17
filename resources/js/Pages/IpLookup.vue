@@ -48,70 +48,59 @@ const copyToClipboard = (text, type) => {
 };
 
 const fetchIpv4 = async () => {
-    // Attempt 1: Cloudflare icanhazip (forces IPv4)
+    // Primary: Ipify IPv4 (100% CORS guarantee)
     try {
-        const res = await axios.get('https://ipv4.icanhazip.com', { timeout: 3000 });
-        if (res.data) {
-            detectedIpv4.value = res.data.trim();
-            return;
-        }
-    } catch (e) {
-        console.warn('Cloudflare IPv4 resolve failed, trying fallback:', e);
-    }
-
-    // Attempt 2: Ipify IPv4
-    try {
-        const res = await axios.get('https://api4.ipify.org?format=json', { timeout: 3000 });
+        const res = await axios.get('https://api.ipify.org?format=json', { timeout: 3500 });
         if (res.data?.ip) {
             detectedIpv4.value = res.data.ip;
             return;
         }
     } catch (e) {
-        console.warn('Ipify IPv4 failed, trying last resort:', e);
+        console.warn('Ipify IPv4 failed, trying fallback:', e);
     }
 
-    // Attempt 3: Ident.me IPv4
+    // Fallback: FreeIPAPI
     try {
-        const res = await axios.get('https://v4.ident.me', { timeout: 3000 });
-        if (res.data) {
-            detectedIpv4.value = res.data.trim();
+        const res = await axios.get('https://freeipapi.com/api/json', { timeout: 3500 });
+        if (res.data?.ipAddress && res.data.ipVersion === 4) {
+            detectedIpv4.value = res.data.ipAddress;
+            return;
         }
     } catch (e) {
-        console.error('All IPv4 detection mechanisms exhausted:', e);
+        console.warn('FreeIPAPI failed:', e);
     }
 };
 
 const fetchIpv6 = async () => {
-    // Attempt 1: Cloudflare icanhazip (forces IPv6)
+    // Primary: Ipify IPv6
     try {
-        const res = await axios.get('https://ipv6.icanhazip.com', { timeout: 3000 });
-        if (res.data) {
-            detectedIpv6.value = res.data.trim();
-            return;
-        }
-    } catch (e) {
-        console.warn('Cloudflare IPv6 resolve failed, trying fallback:', e);
-    }
-
-    // Attempt 2: Ipify IPv6
-    try {
-        const res = await axios.get('https://api6.ipify.org?format=json', { timeout: 3000 });
-        if (res.data?.ip) {
+        const res = await axios.get('https://api64.ipify.org?format=json', { timeout: 3500 });
+        if (res.data?.ip && res.data.ip.includes(':')) {
             detectedIpv6.value = res.data.ip;
             return;
         }
     } catch (e) {
-        console.warn('Ipify IPv6 failed, trying last resort:', e);
+        console.warn('Ipify IPv6 failed, trying fallback:', e);
     }
+};
 
-    // Attempt 3: Ident.me IPv6
+const fetchCloudflareTrace = async () => {
+    // Native Domain Fallback: Zero CORS issues, unblockable by adblockers.
     try {
-        const res = await axios.get('https://v6.ident.me', { timeout: 3000 });
+        const res = await axios.get('/cdn-cgi/trace', { timeout: 3000 });
         if (res.data) {
-            detectedIpv6.value = res.data.trim();
+            const match = res.data.match(/ip=(.+)/);
+            if (match && match[1]) {
+                const ip = match[1].trim();
+                if (ip.includes(':')) {
+                    if (!detectedIpv6.value) detectedIpv6.value = ip;
+                } else {
+                    if (!detectedIpv4.value) detectedIpv4.value = ip;
+                }
+            }
         }
     } catch (e) {
-        console.error('All IPv6 detection mechanisms exhausted:', e);
+        console.warn('Cloudflare trace failed:', e);
     }
 };
 
@@ -122,6 +111,8 @@ const detectYourIPs = async () => {
             fetchIpv4(),
             fetchIpv6()
         ]);
+        // Always run trace as final fail-safe to fill any gaps
+        await fetchCloudflareTrace();
     } catch (e) {
         console.error('IP detection error:', e);
     } finally {
