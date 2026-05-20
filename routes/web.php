@@ -101,6 +101,11 @@ use App\Http\Controllers\CsvJsonTransformerController;
 // ─── CSV ⇆ JSON Transformer ───────────────────────────────────────────────────
 Route::get('/tools/csv-json', [CsvJsonTransformerController::class, 'index'])->name('tools.csv-json');
 
+use App\Http\Controllers\SvgArchitectController;
+// ─── SVG Path Architect & Optimizer ──────────────────────────────────────────
+Route::get('/tools/svg-architect', [SvgArchitectController::class, 'index'])->name('tools.svg-architect');
+
+
 use App\Http\Controllers\UrlShortenerController;
 // ─── URL Shortener ────────────────────────────────────────────────────────────
 Route::get('/tools/url-shortener', [UrlShortenerController::class, 'index'])->name('tools.url-shortener');

@@ -220,7 +220,7 @@ const categories = [
                 name: 'SVG Path Architect',
                 description: 'Optimize SVG icons, compress inline shapes, and clean layout properties.',
                 route: 'tools.svg-architect',
-                status: 'soon',
+                status: 'live',
                 icon: 'cube',
             },
             {
