@@ -342,20 +342,30 @@ const downloadProcessedImage = () => {
 <template>
     <PublicLayout>
         <Head>
-            <title>FluxMedia · Free Online Image Converter & Compressor</title>
-            <meta name="description" content="Optimize and convert your images for free. Fast online tool to compress JPEG, PNG, WebP, and AVIF files. Improve website speed with optimized creative assets." />
-            <meta name="keywords" content="image converter, image compressor, online image optimizer, webp converter, png to webp, jpeg optimizer, free image tools" />
-            
-            <!-- Open Graph / Facebook -->
-            <meta property="og:title" content="FluxMedia · Free Online Image Converter & Compressor" />
-            <meta property="og:description" content="Optimize and convert your images for free. Fast online tool to compress JPEG, PNG, WebP, and AVIF files." />
-            <meta property="og:image" content="/assets/images/fluxmedia_main.webp" />
-            <meta property="og:url" content="https://fluxmedia.space" />
+            <title>Free Online Image Converter & Compressor — WebP & AVIF | FluxMedia</title>
 
-            <!-- Twitter -->
-            <meta name="twitter:title" content="FluxMedia · Free Online Image Converter & Compressor" />
+            <!-- Primary SEO -->
+            <meta name="description" content="Optimize, compress, and convert your images for free online. Fast, secure client-side compression tool supporting JPEG, PNG, WebP, AVIF, and ICO formats." />
+            <meta name="keywords" content="image converter, image compressor, online image optimizer, webp converter, png to webp, jpeg optimizer, free image tools, avif converter, convert png to avif, web utilities" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow" />
+            <link rel="canonical" href="https://fluxmedia.space" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="Free Online Image Converter & Compressor — WebP & AVIF | FluxMedia" />
+            <meta property="og:description" content="Optimize and convert your images for free. Fast online tool to compress JPEG, PNG, WebP, and AVIF files." />
+            <meta property="og:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
+            <meta property="og:url" content="https://fluxmedia.space" />
+            <meta property="og:site_name" content="FluxMedia" />
+
+            <!-- Twitter Card -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@fluxmedia" />
+            <meta name="twitter:creator" content="@fluxmedia" />
+            <meta name="twitter:title" content="Free Online Image Converter & Compressor — WebP & AVIF" />
             <meta name="twitter:description" content="Optimize and convert your images for free. Fast online tool to compress JPEG, PNG, WebP, and AVIF files." />
-            <meta name="twitter:image" content="/assets/images/fluxmedia_main.webp" />
+            <meta name="twitter:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
         </Head>
 
         <!-- Main Body -->

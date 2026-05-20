@@ -24,8 +24,30 @@ const formatBytes = (bytes) => {
 <template>
     <PublicLayout>
         <Head>
-            <title>FluxMedia Studio · Asset History Hub</title>
+            <title>My Asset History Hub — Optimize & Manage Assets | FluxMedia</title>
+
+            <!-- Primary SEO -->
             <meta name="description" content="Access and manage your processed image assets. Review optimization metrics and download transformed files from your secure session history." />
+            <meta name="keywords" content="asset history, image conversion history, compressed images, my assets, fluxmedia history, session archive" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="noindex, nofollow" />
+            <link rel="canonical" href="https://fluxmedia.space/history" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="My Asset History Hub — Optimize & Manage Assets | FluxMedia" />
+            <meta property="og:description" content="Access and manage your processed image assets. Review optimization metrics and download transformed files from your secure session history." />
+            <meta property="og:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
+            <meta property="og:url" content="https://fluxmedia.space/history" />
+            <meta property="og:site_name" content="FluxMedia" />
+
+            <!-- Twitter Card -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@fluxmedia" />
+            <meta name="twitter:creator" content="@fluxmedia" />
+            <meta name="twitter:title" content="My Asset History Hub — Optimize & Manage Assets" />
+            <meta name="twitter:description" content="Access and manage your processed image assets. Review optimization metrics and download transformed files from your secure session history." />
+            <meta name="twitter:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
         </Head>
 
         <!-- Hero Section (Desktop Only) -->

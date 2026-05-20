@@ -342,20 +342,30 @@ const downloadProcessedImage = () => {
 <template>
     <PublicLayout>
         <Head>
-            <title>FluxMedia · Image Studio — Convert, Resize & Compress Images Free</title>
-            <meta name="description" content="Free online image studio. Convert, resize, crop, and adjust JPEG, PNG, WebP, GIF, and AVIF. No signup required." />
-            <meta name="keywords" content="image converter, image compressor, online image optimizer, webp converter, png to webp, jpeg optimizer, free image tools" />
-            
-            <!-- Open Graph / Facebook -->
-            <meta property="og:title" content="FluxMedia · Image Studio — Convert, Resize & Compress" />
-            <meta property="og:description" content="Free online image studio. Convert, resize, crop, and adjust images instantly." />
-            <meta property="og:image" content="/assets/images/fluxmedia_main.webp" />
-            <meta property="og:url" content="https://fluxmedia.space/tools/image" />
+            <title>Free Online Image Studio — Convert, Resize & Compress Images | FluxMedia</title>
 
-            <!-- Twitter -->
-            <meta name="twitter:title" content="FluxMedia · Image Studio" />
+            <!-- Primary SEO -->
+            <meta name="description" content="Free online image studio. Convert, resize, crop, and adjust JPEG, PNG, WebP, GIF, and AVIF. Secure browser-side processing, no signup required." />
+            <meta name="keywords" content="image converter, image compressor, online image optimizer, webp converter, png to webp, jpeg optimizer, free image tools, convert to avif, crop image online, resize image free" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow" />
+            <link rel="canonical" href="https://fluxmedia.space/tools/image" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="Free Online Image Studio — Convert, Resize & Compress Images | FluxMedia" />
+            <meta property="og:description" content="Free online image studio. Convert, resize, crop, and adjust images instantly. Completely private and browser-based." />
+            <meta property="og:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
+            <meta property="og:url" content="https://fluxmedia.space/tools/image" />
+            <meta property="og:site_name" content="FluxMedia" />
+
+            <!-- Twitter Card -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@fluxmedia" />
+            <meta name="twitter:creator" content="@fluxmedia" />
+            <meta name="twitter:title" content="Free Online Image Studio — Convert, Resize & Compress Images" />
             <meta name="twitter:description" content="Optimize and convert your images for free. Fast online tool to compress JPEG, PNG, WebP, and AVIF files." />
-            <meta name="twitter:image" content="/assets/images/fluxmedia_main.webp" />
+            <meta name="twitter:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
         </Head>
 
         <!-- Main Body -->

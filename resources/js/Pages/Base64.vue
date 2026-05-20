@@ -1,7 +1,32 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+
+// Programmatic JSON-LD Injection
+let ldScript = null;
+onMounted(() => {
+    ldScript = document.createElement('script');
+    ldScript.type = 'application/ld+json';
+    ldScript.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        'name': 'FluxMedia Base64 Encoder & Decoder',
+        'url': 'https://fluxmedia.space/tools/base64',
+        'description': 'Instantly encode or decode text to Base64 formatting right in your browser. Fast, secure, and 100% browser-based client-side utility.',
+        'applicationCategory': 'UtilityApplication',
+        'operatingSystem': 'Web',
+        'offers': {
+            '@type': 'Offer',
+            'price': '0',
+            'priceCurrency': 'USD'
+        }
+    });
+    document.head.appendChild(ldScript);
+});
+onUnmounted(() => {
+    ldScript?.remove();
+});
 
 const mode = ref('encode'); // 'encode' or 'decode'
 const inputText = ref('');
@@ -64,8 +89,30 @@ const clearAll = () => {
 <template>
     <PublicLayout>
         <Head>
-            <title>Base64 Encoder & Decoder · FluxMedia</title>
-            <meta name="description" content="Instantly encode or decode text to Base64 formatting right in your browser. Fast, secure, and privacy-focused utility." />
+            <title>Free Base64 Encoder & Decoder Online — Fast & Secure | FluxMedia</title>
+
+            <!-- Primary SEO -->
+            <meta name="description" content="Instantly encode or decode text to Base64 formatting right in your browser. Fast, secure, and privacy-focused utility with 100% client-side execution." />
+            <meta name="keywords" content="base64 encoder, base64 decoder, base64 convert, base64 encode online, base64 decode online, base64 translator, free utility, client-side base64" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow" />
+            <link rel="canonical" href="https://fluxmedia.space/tools/base64" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="Free Base64 Encoder & Decoder Online — Fast & Secure | FluxMedia" />
+            <meta property="og:description" content="Instantly encode or decode text to Base64 formatting right in your browser. Completely private and browser-based." />
+            <meta property="og:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
+            <meta property="og:url" content="https://fluxmedia.space/tools/base64" />
+            <meta property="og:site_name" content="FluxMedia" />
+
+            <!-- Twitter Card -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@fluxmedia" />
+            <meta name="twitter:creator" content="@fluxmedia" />
+            <meta name="twitter:title" content="Free Base64 Encoder & Decoder Online — Fast & Secure" />
+            <meta name="twitter:description" content="Instantly encode or decode text to Base64 formatting right in your browser. Completely private and browser-based." />
+            <meta name="twitter:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
         </Head>
 
         <!-- Background Accents -->

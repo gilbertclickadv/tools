@@ -171,7 +171,8 @@ const categories = [
                 id: 'json-formatter',
                 name: 'JSON Formatter',
                 description: 'Beautify, minify, and validate JSON with syntax highlighting.',
-                status: 'soon',
+                route: 'tools.json-formatter',
+                status: 'live',
                 icon: 'braces',
             },
             {

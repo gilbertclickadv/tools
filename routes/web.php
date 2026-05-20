@@ -73,6 +73,10 @@ use App\Http\Controllers\Base64Controller;
 // ─── Base64 Encoder/Decoder ───────────────────────────────────────────────────
 Route::get('/tools/base64', [Base64Controller::class, 'index'])->name('tools.base64');
 
+use App\Http\Controllers\JsonFormatterController;
+// ─── JSON Formatter ──────────────────────────────────────────────────────────
+Route::get('/tools/json-formatter', [JsonFormatterController::class, 'index'])->name('tools.json-formatter');
+
 use App\Http\Controllers\HashGeneratorController;
 // ─── Hash Generator ───────────────────────────────────────────────────────────
 Route::get('/tools/hash-generator', [HashGeneratorController::class, 'index'])->name('tools.hash-generator');

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import md5 from 'crypto-js/md5';
@@ -59,13 +59,60 @@ const clearInput = () => {
 
 // Initial empty state trigger
 onMounted(generateHashes);
+
+// Programmatic JSON-LD Injection
+let ldScript = null;
+onMounted(() => {
+    ldScript = document.createElement('script');
+    ldScript.type = 'application/ld+json';
+    ldScript.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        'name': 'FluxMedia Cryptographic Hash Generator',
+        'url': 'https://fluxmedia.space/tools/hash-generator',
+        'description': 'Generate cryptographic hashes instantly in your browser. Supports MD5, SHA-1, SHA-256, SHA-384, SHA-512, and SHA-3 with 100% secure client-side execution.',
+        'applicationCategory': 'UtilityApplication',
+        'operatingSystem': 'Web',
+        'offers': {
+            '@type': 'Offer',
+            'price': '0',
+            'priceCurrency': 'USD'
+        }
+    });
+    document.head.appendChild(ldScript);
+});
+onUnmounted(() => {
+    ldScript?.remove();
+});
 </script>
 
 <template>
     <PublicLayout>
         <Head>
-            <title>Hash Generator · MD5, SHA-256, SHA-512 · FluxMedia</title>
-            <meta name="description" content="Generate cryptographic hashes instantly in your browser. Supports MD5, SHA-1, SHA-256, SHA-512, and SHA-3. 100% secure client-side execution." />
+            <title>Free Online Hash Generator — SHA-256, MD5, SHA-512 | FluxMedia</title>
+
+            <!-- Primary SEO -->
+            <meta name="description" content="Generate cryptographic hashes instantly in your browser. Supports MD5, SHA-1, SHA-256, SHA-384, SHA-512, and SHA-3. 100% secure client-side execution." />
+            <meta name="keywords" content="hash generator, md5 hash, sha256 generator, sha512 generator, cryptographic hash, online sha256, md5 converter, sha3 generator, free hash tool, secure hashing" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow" />
+            <link rel="canonical" href="https://fluxmedia.space/tools/hash-generator" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="Free Online Hash Generator — SHA-256, MD5, SHA-512 | FluxMedia" />
+            <meta property="og:description" content="Generate cryptographic hashes instantly in your browser. Supports MD5, SHA-1, SHA-256, SHA-512, and SHA-3. Fast & private." />
+            <meta property="og:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
+            <meta property="og:url" content="https://fluxmedia.space/tools/hash-generator" />
+            <meta property="og:site_name" content="FluxMedia" />
+
+            <!-- Twitter Card -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@fluxmedia" />
+            <meta name="twitter:creator" content="@fluxmedia" />
+            <meta name="twitter:title" content="Free Online Hash Generator — SHA-256, MD5, SHA-512" />
+            <meta name="twitter:description" content="Generate cryptographic hashes instantly in your browser. Supports MD5, SHA-1, SHA-256, SHA-512, and SHA-3. Fast & private." />
+            <meta name="twitter:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
         </Head>
 
         <!-- Background Accents -->

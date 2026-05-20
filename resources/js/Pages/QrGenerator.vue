@@ -147,20 +147,30 @@ const applyThemePreset = (fg, bg) => {
 <template>
     <PublicLayout>
         <Head>
-            <title>FluxMedia · Free Online QR Code Generator with Custom Styles</title>
-            <meta name="description" content="Generate custom QR codes for free. Create QR codes for links, WiFi, Email, and SMS with unique colors and designs. Download high-quality PNG or SVG vectors." />
-            <meta name="keywords" content="qr code generator, free qr code, custom qr code, qr code wifi, qr code email, svg qr code, png qr code, fluxmedia qr" />
+            <title>Free Custom QR Code Generator — PNG & SVG Vector Download | FluxMedia</title>
+
+            <!-- Primary SEO -->
+            <meta name="description" content="Generate custom QR codes for free. Create styled QR codes for links, WiFi, Email, SMS, and phone numbers with custom colors. Download high-quality PNG or SVG vectors instantly." />
+            <meta name="keywords" content="qr code generator, free qr code, custom qr code, qr code wifi, qr code email, svg qr code, png qr code, fluxmedia qr, design qr code, high quality qr code, dynamic qr code generator" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow" />
+            <link rel="canonical" href="https://fluxmedia.space/tools/qr-code" />
 
             <!-- Open Graph / Facebook -->
-            <meta property="og:title" content="FluxMedia · Free Online QR Code Generator with Custom Styles" />
-            <meta property="og:description" content="Generate custom QR codes for free. Create QR codes for links, WiFi, Email, and SMS with unique colors and designs." />
-            <meta property="og:image" content="/assets/images/fluxmedia_main.webp" />
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="Free Custom QR Code Generator — PNG & SVG Vector Download | FluxMedia" />
+            <meta property="og:description" content="Generate custom QR codes for free. Create QR codes for links, WiFi, Email, and SMS with unique colors. Completely private and client-side." />
+            <meta property="og:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
             <meta property="og:url" content="https://fluxmedia.space/tools/qr-code" />
+            <meta property="og:site_name" content="FluxMedia" />
 
-            <!-- Twitter -->
-            <meta name="twitter:title" content="FluxMedia · Free Online QR Code Generator with Custom Styles" />
+            <!-- Twitter Card -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@fluxmedia" />
+            <meta name="twitter:creator" content="@fluxmedia" />
+            <meta name="twitter:title" content="Free Custom QR Code Generator — PNG & SVG Vector Download" />
             <meta name="twitter:description" content="Generate custom QR codes for free. Create QR codes for links, WiFi, Email, and SMS with unique colors and designs." />
-            <meta name="twitter:image" content="/assets/images/fluxmedia_main.webp" />
+            <meta name="twitter:image" content="https://fluxmedia.space/assets/images/fluxmedia_main.webp" />
         </Head>
 
         <!-- Hero Section (Desktop Only) -->
