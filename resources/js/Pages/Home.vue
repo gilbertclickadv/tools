@@ -159,6 +159,14 @@ const categories = [
                 status: 'live',
                 icon: 'shield-check',
             },
+            {
+                id: 'jwt-debugger',
+                name: 'JWT Debugger',
+                description: 'Decode, encode, verify signatures, and analyze token claims locally.',
+                route: 'tools.jwt',
+                status: 'live',
+                icon: 'key',
+            },
         ],
     },
     {
@@ -190,6 +198,38 @@ const categories = [
                 route: 'tools.text',
                 status: 'live',
                 icon: 'text-size',
+            },
+            {
+                id: 'regex-tester',
+                name: 'Regex Tester',
+                description: 'Test, visualize, and explain regular expression matches in real-time.',
+                route: 'tools.regex',
+                status: 'live',
+                icon: 'search',
+            },
+            {
+                id: 'csv-json',
+                name: 'CSV ⇆ JSON Transformer',
+                description: 'Convert spreadsheet lists directly to clean, formatted JSON.',
+                route: 'tools.csv-json',
+                status: 'soon',
+                icon: 'arrows-right-left',
+            },
+            {
+                id: 'svg-architect',
+                name: 'SVG Path Architect',
+                description: 'Optimize SVG icons, compress inline shapes, and clean layout properties.',
+                route: 'tools.svg-architect',
+                status: 'soon',
+                icon: 'cube',
+            },
+            {
+                id: 'epoch-translator',
+                name: 'Epoch UNIX Translator',
+                description: 'Decode UNIX timestamps into relative and human-readable dates.',
+                route: 'tools.epoch',
+                status: 'soon',
+                icon: 'clock',
             },
         ],
     },
@@ -250,11 +290,16 @@ const iconPaths = {
     braces: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"/>`,
     palette: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z"/>`,
     'text-size': `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/>`,
+    key: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-.999.43-1.563A6 6 0 1121.75 8.25z"/>`,
+    search: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>`,
+    'arrows-right-left': `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>`,
+    cube: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/>`,
+    clock: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>`,
 };
 
 const stats = [
-    { value: '11', label: 'Total Tools' },
-    { value: '11', label: 'Live Now' },
+    { value: '16', label: 'Total Tools' },
+    { value: '13', label: 'Live Now' },
     { value: '100%', label: 'Free Forever' },
     { value: '0', label: 'Sign-up Needed' },
 ];
@@ -371,7 +416,7 @@ const stats = [
             </div>
 
             <div class="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2">
-                <div v-for="category in categories" :key="category.id">
+                <div v-for="category in categories" :key="category.id" :class="[category.id === 'dev-tools' ? 'md:col-span-2' : '']">
 
                     <!-- Category header -->
                     <div class="mb-3 flex items-center gap-2.5">
@@ -381,7 +426,7 @@ const stats = [
                     </div>
 
                     <!-- Tool cards -->
-                    <ul class="space-y-2" role="list">
+                    <ul :class="[category.id === 'dev-tools' ? 'grid grid-cols-1 md:grid-cols-2 gap-3 space-y-0' : 'space-y-2']" role="list">
                         <li v-for="tool in category.tools" :key="tool.id">
                             <component
                                 :is="tool.status === 'live' ? Link : 'div'"

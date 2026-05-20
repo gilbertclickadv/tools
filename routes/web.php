@@ -89,6 +89,14 @@ use App\Http\Controllers\TextToolsController;
 // ─── Text Tools ──────────────────────────────────────────────────────────────
 Route::get('/tools/text', [TextToolsController::class, 'index'])->name('tools.text');
 
+use App\Http\Controllers\JwtDebuggerController;
+// ─── JWT Debugger ────────────────────────────────────────────────────────────
+Route::get('/tools/jwt', [JwtDebuggerController::class, 'index'])->name('tools.jwt');
+
+use App\Http\Controllers\RegexTesterController;
+// ─── Regex Tester ────────────────────────────────────────────────────────────
+Route::get('/tools/regex', [RegexTesterController::class, 'index'])->name('tools.regex');
+
 use App\Http\Controllers\UrlShortenerController;
 // ─── URL Shortener ────────────────────────────────────────────────────────────
 Route::get('/tools/url-shortener', [UrlShortenerController::class, 'index'])->name('tools.url-shortener');
@@ -203,6 +211,8 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.'
     Route::get('/color-picker', [\App\Http\Controllers\Admin\ColorPickerController::class, 'index'])->name('color-picker.index');
     Route::get('/json-formatter', [\App\Http\Controllers\Admin\JsonFormatterController::class, 'index'])->name('json-formatter.index');
     Route::get('/text-tools', [\App\Http\Controllers\Admin\TextToolsController::class, 'index'])->name('text-tools.index');
+    Route::get('/jwt-debugger', [\App\Http\Controllers\Admin\JwtDebuggerController::class, 'index'])->name('jwt-debugger.index');
+    Route::get('/regex-tester', [\App\Http\Controllers\Admin\RegexTesterController::class, 'index'])->name('regex-tester.index');
 
     // IP Lookup Stats & Database Update
     Route::get('/ip-lookup', [\App\Http\Controllers\Admin\IpLookupController::class, 'index'])->name('ip-lookup.index');

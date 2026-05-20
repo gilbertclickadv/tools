@@ -171,6 +171,32 @@ const toggleSidebar = () => {
                     <span v-if="isSidebarOpen" class="font-medium text-sm">Text Tools</span>
                 </Link>
 
+                <Link 
+                    :href="route('admin.regex-tester.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.regex-tester.*') ? 'bg-rose-600/10 text-rose-400 border border-rose-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">Regex Tester</span>
+                </Link>
+
+                <Link 
+                    :href="route('admin.jwt-debugger.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.jwt-debugger.*') ? 'bg-amber-600/10 text-amber-400 border border-amber-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m-3.436-5.84a8 8 0 00-11.202 11.2A8 8 0 0011.8 17.8L3 21h3v-2h2v-2h2.2l2.8-2.8a8 8 0 005.8-5.8z" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">JWT Debugger</span>
+                </Link>
+
                 <div class="h-px bg-gray-800/60 mx-3 my-4"></div>
 
                 <Link 
@@ -386,6 +412,34 @@ const toggleSidebar = () => {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
                         </svg>
                         <span class="font-medium text-sm">Text Tools</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.regex-tester.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.regex-tester.*') ? 'bg-rose-600/10 text-rose-400 border-rose-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <span class="font-medium text-sm">Regex Tester</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.jwt-debugger.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.jwt-debugger.*') ? 'bg-amber-600/10 text-amber-400 border-amber-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m-3.436-5.84a8 8 0 00-11.202 11.2A8 8 0 0011.8 17.8L3 21h3v-2h2v-2h2.2l2.8-2.8a8 8 0 005.8-5.8z" />
+                        </svg>
+                        <span class="font-medium text-sm">JWT Debugger</span>
                     </Link>
 
                     <div class="h-px bg-gray-800/60 my-4"></div>
