@@ -405,13 +405,9 @@ const applyThemePreset = (fg, bg) => {
 
                 </div>
 
+
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="mt-20 border-t border-gray-800/80 pt-8 pb-12 text-center">
-            <p class="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em]">FluxMedia Studio · Matrix v1.2.0</p>
-        </footer>
     </PublicLayout>
 </template>
 

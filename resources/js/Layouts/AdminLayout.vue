@@ -197,6 +197,19 @@ const toggleSidebar = () => {
                     <span v-if="isSidebarOpen" class="font-medium text-sm">JWT Debugger</span>
                 </Link>
 
+                <Link 
+                    :href="route('admin.csv-json.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.csv-json.*') ? 'bg-indigo-600/10 text-indigo-400 border border-indigo-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">CSV ⇆ JSON</span>
+                </Link>
+
                 <div class="h-px bg-gray-800/60 mx-3 my-4"></div>
 
                 <Link 
@@ -440,6 +453,20 @@ const toggleSidebar = () => {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m-3.436-5.84a8 8 0 00-11.202 11.2A8 8 0 0011.8 17.8L3 21h3v-2h2v-2h2.2l2.8-2.8a8 8 0 005.8-5.8z" />
                         </svg>
                         <span class="font-medium text-sm">JWT Debugger</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.csv-json.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.csv-json.*') ? 'bg-indigo-600/10 text-indigo-400 border border-indigo-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                        <span class="font-medium text-sm">CSV ⇆ JSON</span>
                     </Link>
 
                     <div class="h-px bg-gray-800/60 my-4"></div>

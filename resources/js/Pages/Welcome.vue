@@ -705,11 +705,6 @@ const downloadProcessedImage = () => {
                 </div>
             </div>
 
-            <!-- Footer -->
-            <footer class="mt-16 lg:mt-20 border-t border-gray-800/80 pt-8 pb-12 text-center">
-                <p class="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em]">FluxMedia Studio · Core v2.4.0</p>
-            </footer>
-
             <!-- Result Modal -->
             <div v-if="showResultModal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 py-12 lg:py-20 overflow-y-auto">
                 <!-- Backdrop -->

@@ -166,6 +166,26 @@ const page = usePage();
         <main>
             <slot />
         </main>
+
+        <!-- ─────────────── FOOTER ─────────────── -->
+        <footer class="border-t border-white/[0.04] bg-[#0A0E17]/40 backdrop-blur-md pb-16 pt-8 text-center space-y-4 relative z-10" role="contentinfo">
+            <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-gray-500">
+                <Link :href="route('privacy')" class="hover:text-purple-400 transition-colors">
+                    Privacy Policy
+                </Link>
+                <span class="text-gray-800 select-none hidden sm:inline">&middot;</span>
+                <Link :href="route('terms')" class="hover:text-purple-400 transition-colors">
+                    Terms of Service
+                </Link>
+                <span class="text-gray-800 select-none hidden sm:inline">&middot;</span>
+                <a href="mailto:gilbert@fluxmetrics.site" class="hover:text-purple-400 transition-colors">
+                    Contact Support
+                </a>
+            </div>
+            <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-700">
+                FluxMedia Studio &middot; Hub v1.0.0
+            </p>
+        </footer>
     </div>
 </template>
 

@@ -97,6 +97,10 @@ use App\Http\Controllers\RegexTesterController;
 // ─── Regex Tester ────────────────────────────────────────────────────────────
 Route::get('/tools/regex', [RegexTesterController::class, 'index'])->name('tools.regex');
 
+use App\Http\Controllers\CsvJsonTransformerController;
+// ─── CSV ⇆ JSON Transformer ───────────────────────────────────────────────────
+Route::get('/tools/csv-json', [CsvJsonTransformerController::class, 'index'])->name('tools.csv-json');
+
 use App\Http\Controllers\UrlShortenerController;
 // ─── URL Shortener ────────────────────────────────────────────────────────────
 Route::get('/tools/url-shortener', [UrlShortenerController::class, 'index'])->name('tools.url-shortener');
@@ -185,8 +189,16 @@ Route::middleware('auth')->group(function () {
     Route::put('/tools/color-picker/swatches', [ColorPickerController::class, 'updateSwatch'])->name('tools.color-picker.swatches.update');
     Route::delete('/tools/color-picker/swatches', [ColorPickerController::class, 'deleteSwatch'])->name('tools.color-picker.swatches.delete');
     Route::delete('/tools/color-picker/swatches/clear', [ColorPickerController::class, 'clearSwatches'])->name('tools.color-picker.swatches.clear');
-    Route::post('/tools/color-picker/swatches/sync', [ColorPickerController::class, 'syncSwatches'])->name('tools.color-picker.swatches.sync');
 });
+
+// ─── Legal & Compliance Policies ─────────────────────────────────────────────
+Route::get('/privacy', function () {
+    return Inertia::render('PrivacyPolicy');
+})->name('privacy');
+
+Route::get('/terms', function () {
+    return Inertia::render('TermsOfService');
+})->name('terms');
 
 // Admin Route Group
 Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.')->group(function () {
@@ -213,6 +225,7 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.'
     Route::get('/text-tools', [\App\Http\Controllers\Admin\TextToolsController::class, 'index'])->name('text-tools.index');
     Route::get('/jwt-debugger', [\App\Http\Controllers\Admin\JwtDebuggerController::class, 'index'])->name('jwt-debugger.index');
     Route::get('/regex-tester', [\App\Http\Controllers\Admin\RegexTesterController::class, 'index'])->name('regex-tester.index');
+    Route::get('/csv-json', [\App\Http\Controllers\Admin\CsvJsonTransformerController::class, 'index'])->name('csv-json.index');
 
     // IP Lookup Stats & Database Update
     Route::get('/ip-lookup', [\App\Http\Controllers\Admin\IpLookupController::class, 'index'])->name('ip-lookup.index');

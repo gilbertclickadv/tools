@@ -212,7 +212,7 @@ const categories = [
                 name: 'CSV ⇆ JSON Transformer',
                 description: 'Convert spreadsheet lists directly to clean, formatted JSON.',
                 route: 'tools.csv-json',
-                status: 'soon',
+                status: 'live',
                 icon: 'arrows-right-left',
             },
             {
@@ -299,7 +299,7 @@ const iconPaths = {
 
 const stats = [
     { value: '16', label: 'Total Tools' },
-    { value: '13', label: 'Live Now' },
+    { value: '14', label: 'Live Now' },
     { value: '100%', label: 'Free Forever' },
     { value: '0', label: 'Sign-up Needed' },
 ];
@@ -485,12 +485,5 @@ const stats = [
                 </div>
             </div>
         </main>
-
-        <!-- ─────────────── FOOTER ─────────────── -->
-        <footer class="border-t border-white/[0.05] pb-12 pt-8 text-center" role="contentinfo">
-            <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-700">
-                FluxMedia Studio &middot; Hub v1.0.0
-            </p>
-        </footer>
     </PublicLayout>
 </template>

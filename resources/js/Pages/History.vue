@@ -141,10 +141,6 @@ const formatBytes = (bytes) => {
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="mt-10 border-t border-gray-800/80 pt-8 pb-12 text-center">
-            <p class="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em]">FluxMedia Studio · Registry v2.1.0</p>
-        </footer>
     </PublicLayout>
 </template>
 
