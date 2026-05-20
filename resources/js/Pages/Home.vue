@@ -179,7 +179,8 @@ const categories = [
                 id: 'color-picker',
                 name: 'Color Picker',
                 description: 'Pick, convert, and generate palettes in HEX, RGB, and HSL.',
-                status: 'soon',
+                route: 'tools.color-picker',
+                status: 'live',
                 icon: 'palette',
             },
             {
@@ -252,7 +253,7 @@ const iconPaths = {
 
 const stats = [
     { value: '11', label: 'Total Tools' },
-    { value: '8', label: 'Live Now' },
+    { value: '9', label: 'Live Now' },
     { value: '100%', label: 'Free Forever' },
     { value: '0', label: 'Sign-up Needed' },
 ];

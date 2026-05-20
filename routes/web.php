@@ -81,6 +81,10 @@ use App\Http\Controllers\HashGeneratorController;
 // ─── Hash Generator ───────────────────────────────────────────────────────────
 Route::get('/tools/hash-generator', [HashGeneratorController::class, 'index'])->name('tools.hash-generator');
 
+use App\Http\Controllers\ColorPickerController;
+// ─── Color Picker ─────────────────────────────────────────────────────────────
+Route::get('/tools/color-picker', [ColorPickerController::class, 'index'])->name('tools.color-picker');
+
 use App\Http\Controllers\UrlShortenerController;
 // ─── URL Shortener ────────────────────────────────────────────────────────────
 Route::get('/tools/url-shortener', [UrlShortenerController::class, 'index'])->name('tools.url-shortener');
@@ -163,6 +167,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// --- Authenticated Color Picker Swatches (Only requires auth, not verified) ---
+Route::middleware('auth')->group(function () {
+    Route::post('/tools/color-picker/swatches', [ColorPickerController::class, 'storeSwatch'])->name('tools.color-picker.swatches.store');
+    Route::put('/tools/color-picker/swatches', [ColorPickerController::class, 'updateSwatch'])->name('tools.color-picker.swatches.update');
+    Route::delete('/tools/color-picker/swatches', [ColorPickerController::class, 'deleteSwatch'])->name('tools.color-picker.swatches.delete');
+    Route::delete('/tools/color-picker/swatches/clear', [ColorPickerController::class, 'clearSwatches'])->name('tools.color-picker.swatches.clear');
+    Route::post('/tools/color-picker/swatches/sync', [ColorPickerController::class, 'syncSwatches'])->name('tools.color-picker.swatches.sync');
+});
+
 // Admin Route Group
 Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
@@ -182,6 +195,9 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.'
     Route::get('/uuid-generator', [\App\Http\Controllers\Admin\UuidGeneratorController::class, 'index'])->name('uuid-generator.index');
     Route::delete('/uuid-generator/{generatedUuid}', [\App\Http\Controllers\Admin\UuidGeneratorController::class, 'destroy'])->name('uuid-generator.destroy');
     Route::get('/password-generator', [\App\Http\Controllers\Admin\PasswordGeneratorController::class, 'index'])->name('password-generator.index');
+
+    Route::get('/color-picker', [\App\Http\Controllers\Admin\ColorPickerController::class, 'index'])->name('color-picker.index');
+    Route::get('/json-formatter', [\App\Http\Controllers\Admin\JsonFormatterController::class, 'index'])->name('json-formatter.index');
 
     // IP Lookup Stats & Database Update
     Route::get('/ip-lookup', [\App\Http\Controllers\Admin\IpLookupController::class, 'index'])->name('ip-lookup.index');

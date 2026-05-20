@@ -39,4 +39,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new \App\Notifications\VerifyEmailBranded);
     }
+
+    /**
+     * Get the color swatches saved by the user.
+     */
+    public function colorSwatches(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ColorSwatch::class);
+    }
 }

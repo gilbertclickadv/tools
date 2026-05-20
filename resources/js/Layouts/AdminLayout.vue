@@ -132,6 +132,32 @@ const toggleSidebar = () => {
                     <span v-if="isSidebarOpen" class="font-medium text-sm">IP Intelligence</span>
                 </Link>
 
+                <Link 
+                    :href="route('admin.color-picker.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.color-picker.*') ? 'bg-rose-600/10 text-rose-400 border border-rose-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">Color Picker</span>
+                </Link>
+
+                <Link 
+                    :href="route('admin.json-formatter.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.json-formatter.*') ? 'bg-amber-600/10 text-amber-400 border border-amber-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">JSON Formatter</span>
+                </Link>
+
                 <div class="h-px bg-gray-800/60 mx-3 my-4"></div>
 
                 <Link 
@@ -207,12 +233,146 @@ const toggleSidebar = () => {
                 </div>
 
                 <!-- Mobile Nav -->
-                <nav class="p-4 space-y-2">
-                    <Link @click="isMobileMenuOpen = false" :href="route('admin.dashboard')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">Dashboard</Link>
-                    <Link @click="isMobileMenuOpen = false" :href="route('admin.settings')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">Settings</Link>
-                    <Link @click="isMobileMenuOpen = false" :href="route('admin.users.index')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">Users</Link>
-                    <Link @click="isMobileMenuOpen = false" :href="route('admin.url-shortener.index')" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800">URL Shortener</Link>
-                    <Link @click="isMobileMenuOpen = false" href="/" class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 border-t border-gray-800 mt-4 pt-4 text-xs italic">Back to Public Site</Link>
+                <nav class="p-4 space-y-2 overflow-y-auto max-h-[calc(100vh-10rem)] custom-scrollbar">
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.dashboard')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.dashboard') ? 'bg-purple-600/10 text-purple-400 border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span class="font-medium text-sm">Dashboard</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.settings')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.settings') ? 'bg-purple-600/10 text-purple-400 border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span class="font-medium text-sm">Settings</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.users.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.users.*') ? 'bg-purple-600/10 text-purple-400 border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <span class="font-medium text-sm">Users</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.url-shortener.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.url-shortener.*') ? 'bg-blue-600/10 text-blue-400 border-blue-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        <span class="font-medium text-sm">URL Shortener</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.uuid-generator.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.uuid-generator.*') ? 'bg-emerald-600/10 text-emerald-400 border-emerald-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                        </svg>
+                        <span class="font-medium text-sm">UUID Generator</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.password-generator.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.password-generator.*') ? 'bg-purple-600/10 text-purple-400 border-purple-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <span class="font-medium text-sm">Pass Generator</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.ip-lookup.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.ip-lookup.*') ? 'bg-blue-600/10 text-blue-400 border-blue-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                        </svg>
+                        <span class="font-medium text-sm">IP Intelligence</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.color-picker.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.color-picker.*') ? 'bg-rose-600/10 text-rose-400 border-rose-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                        </svg>
+                        <span class="font-medium text-sm">Color Picker</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.json-formatter.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.json-formatter.*') ? 'bg-amber-600/10 text-amber-400 border-amber-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        <span class="font-medium text-sm">JSON Formatter</span>
+                    </Link>
+
+                    <div class="h-px bg-gray-800/60 my-4"></div>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        href="/" 
+                        class="flex items-center gap-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/50 transition-all duration-200 group border border-transparent"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        <span class="font-medium text-sm">Exit to Public</span>
+                    </Link>
                 </nav>
             </aside>
 
