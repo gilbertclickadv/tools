@@ -187,7 +187,8 @@ const categories = [
                 id: 'text-tools',
                 name: 'Text Tools',
                 description: 'Count words, change case, remove duplicates, and more.',
-                status: 'soon',
+                route: 'tools.text',
+                status: 'live',
                 icon: 'text-size',
             },
         ],
@@ -253,7 +254,7 @@ const iconPaths = {
 
 const stats = [
     { value: '11', label: 'Total Tools' },
-    { value: '9', label: 'Live Now' },
+    { value: '11', label: 'Live Now' },
     { value: '100%', label: 'Free Forever' },
     { value: '0', label: 'Sign-up Needed' },
 ];

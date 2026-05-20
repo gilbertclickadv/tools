@@ -158,6 +158,19 @@ const toggleSidebar = () => {
                     <span v-if="isSidebarOpen" class="font-medium text-sm">JSON Formatter</span>
                 </Link>
 
+                <Link 
+                    :href="route('admin.text-tools.index')" 
+                    :class="[
+                        'flex items-center gap-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                        route().current('admin.text-tools.*') ? 'bg-rose-600/10 text-rose-450 border border-rose-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ]"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                    </svg>
+                    <span v-if="isSidebarOpen" class="font-medium text-sm">Text Tools</span>
+                </Link>
+
                 <div class="h-px bg-gray-800/60 mx-3 my-4"></div>
 
                 <Link 
@@ -359,6 +372,20 @@ const toggleSidebar = () => {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                         </svg>
                         <span class="font-medium text-sm">JSON Formatter</span>
+                    </Link>
+
+                    <Link 
+                        @click="isMobileMenuOpen = false" 
+                        :href="route('admin.text-tools.index')" 
+                        :class="[
+                            'flex items-center gap-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border border-transparent',
+                            route().current('admin.text-tools.*') ? 'bg-rose-600/10 text-rose-455 border-rose-500/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ]"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                        </svg>
+                        <span class="font-medium text-sm">Text Tools</span>
                     </Link>
 
                     <div class="h-px bg-gray-800/60 my-4"></div>
