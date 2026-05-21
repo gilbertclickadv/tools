@@ -9,6 +9,7 @@ import axios from 'axios';
 
 const props = defineProps({
     userIp: String,
+    initialIpData: Object,
 });
 
 const searchQuery = ref('');
@@ -140,8 +141,20 @@ onMounted(() => {
         }
     }
 
-    // Initial fetch of user's own IP details
-    fetchIpDetails(props.userIp);
+    if (props.initialIpData) {
+        ipData.value = props.initialIpData;
+        searchQuery.value = props.initialIpData.ip;
+        
+        // Reset and compute initial currency conversion
+        usdAmount.value = 100;
+        if (props.initialIpData.currency?.rate) {
+            localAmount.value = roundValue(100 * props.initialIpData.currency.rate);
+        }
+    } else {
+        // Initial fetch of user's own IP details as fallback
+        fetchIpDetails(props.userIp);
+    }
+
     // Detect visitor dual stack IP addresses asynchronously
     detectYourIPs();
 

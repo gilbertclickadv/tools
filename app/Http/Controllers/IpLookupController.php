@@ -12,10 +12,20 @@ class IpLookupController extends Controller
     /**
      * Display the public IP Lookup dashboard.
      */
-    public function index(Request $request)
+    public function index(Request $request, IpLookupService $ipLookupService)
     {
+        $ip = $request->ip();
+
+        // For local development or empty IPs, use a public fallback IP to display nice, real-looking data
+        if (empty($ip) || $ip === '127.0.0.1' || $ip === '::1' || str_starts_with($ip, '192.168.') || str_starts_with($ip, '10.')) {
+            $ip = '8.8.8.8';
+        }
+
+        $ipData = $ipLookupService->lookup($ip);
+
         return Inertia::render('IpLookup', [
             'userIp' => $request->ip(),
+            'initialIpData' => $ipData,
         ]);
     }
 
