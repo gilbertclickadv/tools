@@ -55,6 +55,54 @@ const roundToFour = (val) => {
     return Math.round((val + Number.EPSILON) * 10000) / 10000;
 };
 
+const FALLBACK_SEED_RATES = {
+    'EUR': 0.92,
+    'GBP': 0.78,
+    'INR': 83.3,
+    'CAD': 1.36,
+    'AUD': 1.50,
+    'JPY': 155.0,
+    'CNY': 7.24,
+    'CHF': 0.90,
+    'NZD': 1.63,
+    'SEK': 10.6,
+    'NOK': 10.6,
+    'DKK': 6.85,
+    'RUB': 90.0,
+    'BRL': 5.15,
+    'ZAR': 18.5,
+    'KRW': 1360.0,
+    'SGD': 1.35,
+    'HKD': 7.80,
+    'MXN': 16.7,
+    'TRY': 32.2,
+    'IDR': 16000.0,
+    'MYR': 4.70,
+    'PHP': 58.0,
+    'THB': 36.5,
+    'VND': 25400.0,
+    'PKR': 278.0,
+    'AED': 3.67,
+    'SAR': 3.75,
+    'ILS': 3.70,
+    'PLN': 3.95,
+    'UAH': 40.0,
+    'RON': 4.60,
+    'HUF': 360.0,
+    'CZK': 22.8,
+    'COP': 3850.0,
+    'CLP': 910.0,
+    'PEN': 3.72,
+    'ARS': 890.0,
+    'EGP': 47.0,
+    'NGN': 1500.0,
+    'KES': 130.0,
+    'MAD': 10.0,
+    'TWD': 32.2,
+    'BDT': 117.0,
+    'USD': 1.0,
+};
+
 // Update selected currency details dynamically
 const updateSelectedCurrency = (code) => {
     if (!ipData.value?.currency) return;
@@ -69,7 +117,7 @@ const updateSelectedCurrency = (code) => {
     let rate = 1.0;
     
     if (code !== 'USD') {
-        rate = allRates[code] ? parseFloat(allRates[code]) : null;
+        rate = allRates[code] ? parseFloat(allRates[code]) : (FALLBACK_SEED_RATES[code] || null);
     }
     
     const inverseRate = rate && rate > 0 ? 1 / rate : null;
