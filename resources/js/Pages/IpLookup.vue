@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
@@ -26,22 +26,97 @@ const copiedText = ref('');
 // Currency converter reactive states
 const usdAmount = ref(100);
 const localAmount = ref(0);
+const selectedCurrency = ref(null);
+const isDropdownOpen = ref(false);
+const currencySearchQuery = ref('');
+const selectorRef = ref(null);
 
 const handleUsdChange = () => {
-    if (ipData.value?.currency?.rate) {
-        localAmount.value = roundValue(usdAmount.value * ipData.value.currency.rate);
+    if (selectedCurrency.value?.rate) {
+        localAmount.value = roundValue(usdAmount.value * selectedCurrency.value.rate);
+    } else {
+        localAmount.value = 0;
     }
 };
 
 const handleLocalChange = () => {
-    if (ipData.value?.currency?.inverse_rate) {
-        usdAmount.value = roundValue(localAmount.value * ipData.value.currency.inverse_rate);
+    if (selectedCurrency.value?.inverse_rate) {
+        usdAmount.value = roundValue(localAmount.value * selectedCurrency.value.inverse_rate);
+    } else {
+        usdAmount.value = 0;
     }
 };
 
 const roundValue = (val) => {
     return Math.round((val + Number.EPSILON) * 100) / 100;
 };
+
+const roundToFour = (val) => {
+    return Math.round((val + Number.EPSILON) * 10000) / 10000;
+};
+
+// Update selected currency details dynamically
+const updateSelectedCurrency = (code) => {
+    if (!ipData.value?.currency) return;
+    
+    const meta = ipData.value.currency.all_currencies?.find(c => c.code === code) || {
+        code: code,
+        name: code === 'USD' ? 'US Dollar' : code,
+        symbol: code === 'USD' ? '$' : ''
+    };
+    
+    const allRates = ipData.value.currency.all_rates || {};
+    let rate = 1.0;
+    
+    if (code !== 'USD') {
+        rate = allRates[code] ? parseFloat(allRates[code]) : null;
+    }
+    
+    const inverseRate = rate && rate > 0 ? 1 / rate : null;
+    
+    selectedCurrency.value = {
+        code: code,
+        name: meta.name,
+        symbol: meta.symbol,
+        rate: rate ? roundToFour(rate) : null,
+        inverse_rate: inverseRate ? roundToFour(inverseRate) : null,
+        has_rates: rate !== null
+    };
+    
+    // Recalculate conversions
+    handleUsdChange();
+};
+
+const selectCurrency = (code) => {
+    updateSelectedCurrency(code);
+    isDropdownOpen.value = false;
+    currencySearchQuery.value = '';
+};
+
+// Computed property to filter the currencies
+const filteredCurrencies = computed(() => {
+    const list = ipData.value?.currency?.all_currencies || [];
+    const q = currencySearchQuery.value.trim().toLowerCase();
+    if (!q) return list;
+    return list.filter(c => 
+        c.code.toLowerCase().includes(q) || 
+        c.name.toLowerCase().includes(q)
+    );
+});
+
+// Click outside handling for dropdown
+const handleClickOutside = (event) => {
+    if (selectorRef.value && !selectorRef.value.contains(event.target)) {
+        isDropdownOpen.value = false;
+    }
+};
+
+// Watcher to initialize selected currency when IP data changes
+watch(ipData, (newData) => {
+    if (newData?.currency?.code) {
+        updateSelectedCurrency(newData.currency.code);
+    }
+}, { immediate: true });
 
 const copyToClipboard = (text, type) => {
     navigator.clipboard.writeText(text);
@@ -132,6 +207,9 @@ const fetchIpDetails = async (ipAddress = '') => {
 };
 
 onMounted(() => {
+    // Register click outside handler for currency selector dropdown
+    document.addEventListener('click', handleClickOutside);
+
     // Pre-populate connecting IP securely from server request proxy headers
     if (props.userIp) {
         if (props.userIp.includes(':')) {
@@ -179,6 +257,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+    document.removeEventListener('click', handleClickOutside);
     ldScript?.remove();
 });
 </script>
@@ -469,23 +548,77 @@ onUnmounted(() => {
                                 Local Currency Exchange
                             </h4>
                             <span class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                                {{ ipData.currency.code }}
+                                {{ selectedCurrency?.code || ipData.currency.code }}
                             </span>
+                        </div>
+
+                        <!-- Currency Selector Dropdown -->
+                        <div v-if="ipData.currency.has_rates && ipData.currency.all_currencies?.length" ref="selectorRef" class="relative z-20">
+                            <label class="text-[10px] font-black uppercase text-gray-500 tracking-wider block mb-1">Target Currency</label>
+                            <button
+                                @click="isDropdownOpen = !isDropdownOpen"
+                                class="w-full bg-[#0B0F19]/60 hover:bg-[#0B0F19] transition duration-200 border border-gray-800 rounded-xl px-3 py-2 flex items-center justify-between text-white text-xs font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500/50"
+                            >
+                                <span class="flex items-center gap-2 truncate">
+                                    <span class="text-emerald-400 font-black font-mono bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+                                        {{ selectedCurrency?.code }}
+                                    </span>
+                                    <span class="text-gray-200 truncate">{{ selectedCurrency?.name }}</span>
+                                </span>
+                                <svg class="h-4 w-4 text-gray-400 transition-transform duration-200 shrink-0" :class="{ 'rotate-180': isDropdownOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div
+                                v-show="isDropdownOpen"
+                                class="absolute left-0 right-0 mt-1 bg-[#121826]/95 border border-gray-800 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-xl max-h-56 flex flex-col"
+                            >
+                                <!-- Search bar inside dropdown -->
+                                <div class="p-2 border-b border-gray-800/60 shrink-0">
+                                    <input
+                                        type="text"
+                                        v-model="currencySearchQuery"
+                                        placeholder="Search currency..."
+                                        class="w-full bg-[#0B0F19] text-white text-xs rounded-lg px-2.5 py-1.5 border border-gray-800 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 focus:border-emerald-500/50"
+                                    />
+                                </div>
+                                <!-- Currencies List -->
+                                <div class="overflow-y-auto flex-1 divide-y divide-gray-850/40">
+                                    <button
+                                        v-for="currency in filteredCurrencies"
+                                        :key="currency.code"
+                                        @click="selectCurrency(currency.code)"
+                                        class="w-full px-3 py-2 hover:bg-emerald-500/10 text-left transition duration-150 flex items-center justify-between text-xs text-gray-300 hover:text-white"
+                                        :class="{ 'bg-emerald-500/5 font-bold text-white': selectedCurrency?.code === currency.code }"
+                                    >
+                                        <span class="truncate flex items-center gap-2">
+                                            <span class="font-mono bg-gray-900 text-emerald-400 px-1.5 py-0.5 rounded border border-gray-800/80">{{ currency.code }}</span>
+                                            <span>{{ currency.name }}</span>
+                                        </span>
+                                        <span class="text-gray-500 font-bold font-mono">{{ currency.symbol }}</span>
+                                    </button>
+                                    <div v-if="filteredCurrencies.length === 0" class="p-3 text-center text-xs text-gray-500 italic">
+                                        No currencies found
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Currency Info -->
                         <div class="space-y-2 text-sm">
                             <div class="flex justify-between border-b border-gray-800/40 pb-2">
                                 <span class="text-gray-500 font-medium">Name</span>
-                                <span class="text-white font-bold">{{ ipData.currency.name }} ({{ ipData.currency.symbol }})</span>
+                                <span class="text-white font-bold">{{ selectedCurrency?.name || ipData.currency.name }} ({{ selectedCurrency?.symbol || ipData.currency.symbol }})</span>
                             </div>
-                            <div v-if="ipData.currency.has_rates" class="flex justify-between border-b border-gray-800/40 pb-2">
+                            <div v-if="selectedCurrency?.has_rates" class="flex justify-between border-b border-gray-800/40 pb-2">
                                 <span class="text-gray-500 font-medium">USD base rate</span>
-                                <span class="text-white font-bold font-mono">1 USD = {{ ipData.currency.rate }} {{ ipData.currency.code }}</span>
+                                <span class="text-white font-bold font-mono">1 USD = {{ selectedCurrency.rate }} {{ selectedCurrency.code }}</span>
                             </div>
-                            <div v-if="ipData.currency.has_rates" class="flex justify-between">
+                            <div v-if="selectedCurrency?.has_rates" class="flex justify-between">
                                 <span class="text-gray-500 font-medium">Inverse rate</span>
-                                <span class="text-white font-bold font-mono">1 {{ ipData.currency.code }} = {{ ipData.currency.inverse_rate }} USD</span>
+                                <span class="text-white font-bold font-mono">1 {{ selectedCurrency.code }} = {{ selectedCurrency.inverse_rate }} USD</span>
                             </div>
                             <div v-else class="text-xs text-gray-500 italic mt-2 text-center bg-gray-900/40 p-2 rounded-xl border border-gray-850">
                                 Real-time exchange rates not available for this localized environment.
@@ -493,7 +626,7 @@ onUnmounted(() => {
                         </div>
 
                         <!-- Interactive Micro-Conversion Tool -->
-                        <div v-if="ipData.currency.has_rates" class="mt-4 pt-4 border-t border-gray-800/60 space-y-3">
+                        <div v-if="selectedCurrency?.has_rates" class="mt-4 pt-4 border-t border-gray-800/60 space-y-3">
                             <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Currency Exchange Calculator</p>
                             <div class="grid grid-cols-2 gap-2">
                                 <div class="bg-[#0B0F19] rounded-xl p-2 border border-gray-800 relative">
@@ -506,7 +639,7 @@ onUnmounted(() => {
                                     />
                                 </div>
                                 <div class="bg-[#0B0F19] rounded-xl p-2 border border-gray-800 relative">
-                                    <span class="absolute right-2 top-2 text-[10px] font-black text-gray-500">{{ ipData.currency.code }}</span>
+                                    <span class="absolute right-2 top-2 text-[10px] font-black text-gray-500">{{ selectedCurrency.code }}</span>
                                     <input
                                         type="number"
                                         v-model="localAmount"

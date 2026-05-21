@@ -120,6 +120,8 @@ class IpLookupService
                 'rate' => round($rate, 4),
                 'inverse_rate' => round($inverseRate, 4),
                 'has_rates' => !empty($exchangeRates),
+                'all_currencies' => CurrencyMapper::allCurrencies(),
+                'all_rates' => $exchangeRates ?: [],
             ];
 
             return $data;
@@ -179,6 +181,8 @@ class IpLookupService
                 'rate' => 1.0,
                 'inverse_rate' => 1.0,
                 'has_rates' => false,
+                'all_currencies' => CurrencyMapper::allCurrencies(),
+                'all_rates' => [],
             ],
         ];
     }

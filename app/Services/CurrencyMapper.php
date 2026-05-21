@@ -81,4 +81,20 @@ class CurrencyMapper
         $countryCode = strtoupper(trim($countryCode));
         return self::$countryToCurrency[$countryCode] ?? ['code' => 'USD', 'name' => 'US Dollar', 'symbol' => '$'];
     }
+
+    /**
+     * Get all unique supported currency definitions.
+     */
+    public static function allCurrencies(): array
+    {
+        $unique = [];
+        foreach (self::$countryToCurrency as $meta) {
+            $unique[$meta['code']] = $meta;
+        }
+        if (!isset($unique['USD'])) {
+            $unique['USD'] = ['code' => 'USD', 'name' => 'US Dollar', 'symbol' => '$'];
+        }
+        ksort($unique);
+        return array_values($unique);
+    }
 }
