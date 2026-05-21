@@ -11,6 +11,7 @@ Disallow: /login
 Disallow: /register
 Disallow: /api/
 Disallow: /profile/
+Disallow: /history
 Disallow: /logout
 
 # Disallow crawlers from indexing processed binary storage

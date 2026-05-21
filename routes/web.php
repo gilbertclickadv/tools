@@ -205,6 +205,9 @@ Route::get('/terms', function () {
     return Inertia::render('TermsOfService');
 })->name('terms');
 
+// ─── SEO Sitemap ─────────────────────────────────────────────────────────────
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index']);
+
 // Admin Route Group
 Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
