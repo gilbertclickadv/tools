@@ -131,12 +131,12 @@ class IpLookupService
      */
     public function getExchangeRates(): array
     {
-        $apiKey = env('FREECURRENCY_API_KEY');
+        $apiKey = config('services.freecurrency.key') ?: env('FREECURRENCY_API_KEY', 'fca_live_kNQ5JGI2Q4DbhAajUd9s9Hsti4u2qnebc8WubUhu');
         if (!$apiKey) {
             return [];
         }
 
-        return Cache::remember('freecurrency_rates', now()->addHours(12), function () use ($apiKey) {
+        return Cache::remember('freecurrency_rates', now()->addMinutes(3), function () use ($apiKey) {
             try {
                 $response = Http::timeout(3)->get("https://api.freecurrencyapi.com/v1/latest", [
                     'apikey' => $apiKey,

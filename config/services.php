@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'freecurrency' => [
+        'key' => env('FREECURRENCY_API_KEY', 'fca_live_kNQ5JGI2Q4DbhAajUd9s9Hsti4u2qnebc8WubUhu'),
+    ],
+
 ];
