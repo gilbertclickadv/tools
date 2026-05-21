@@ -125,14 +125,32 @@ const copyToClipboard = (text, type) => {
         copiedText.value = '';
     }, 2000);
 };
+const fetchWithTimeout = async (url, options = {}, timeout = 3500) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    try {
+        const response = await fetch(url, {
+            ...options,
+            signal: controller.signal
+        });
+        clearTimeout(id);
+        return response;
+    } catch (error) {
+        clearTimeout(id);
+        throw error;
+    }
+};
 
 const fetchIpv4 = async () => {
-    // Primary: Ipify IPv4 (100% CORS guarantee)
+    // Primary: Ipify IPv4
     try {
-        const res = await axios.get('https://api.ipify.org?format=json', { timeout: 3500 });
-        if (res.data?.ip) {
-            detectedIpv4.value = res.data.ip;
-            return;
+        const res = await fetchWithTimeout('https://api.ipify.org?format=json');
+        if (res.ok) {
+            const data = await res.json();
+            if (data?.ip) {
+                detectedIpv4.value = data.ip;
+                return;
+            }
         }
     } catch (e) {
         console.warn('Ipify IPv4 failed, trying fallback:', e);
@@ -140,10 +158,13 @@ const fetchIpv4 = async () => {
 
     // Fallback: FreeIPAPI
     try {
-        const res = await axios.get('https://freeipapi.com/api/json', { timeout: 3500 });
-        if (res.data?.ipAddress && res.data.ipVersion === 4) {
-            detectedIpv4.value = res.data.ipAddress;
-            return;
+        const res = await fetchWithTimeout('https://freeipapi.com/api/json');
+        if (res.ok) {
+            const data = await res.json();
+            if (data?.ipAddress && data.ipVersion === 4) {
+                detectedIpv4.value = data.ipAddress;
+                return;
+            }
         }
     } catch (e) {
         console.warn('FreeIPAPI failed:', e);
@@ -153,10 +174,13 @@ const fetchIpv4 = async () => {
 const fetchIpv6 = async () => {
     // Primary: Ipify IPv6
     try {
-        const res = await axios.get('https://api64.ipify.org?format=json', { timeout: 3500 });
-        if (res.data?.ip && res.data.ip.includes(':')) {
-            detectedIpv6.value = res.data.ip;
-            return;
+        const res = await fetchWithTimeout('https://api64.ipify.org?format=json');
+        if (res.ok) {
+            const data = await res.json();
+            if (data?.ip && data.ip.includes(':')) {
+                detectedIpv6.value = data.ip;
+                return;
+            }
         }
     } catch (e) {
         console.warn('Ipify IPv6 failed, trying fallback:', e);

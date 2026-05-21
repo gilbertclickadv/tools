@@ -78,4 +78,48 @@ class IpLookupServiceTest extends TestCase
                    ($queryParams['apikey'] ?? '') === $testApiKey;
         });
     }
+
+    /**
+     * Test that we fall back to the long-term fallback cache if active cache is expired/cleared and API fails.
+     */
+    public function test_get_exchange_rates_falls_back_to_long_term_cache_on_api_failure(): void
+    {
+        // 1. Arrange: Ensure both active cache is empty but fallback cache is populated
+        Cache::forget('freecurrency_rates');
+        Cache::put('freecurrency_rates_fallback', ['EUR' => 0.95], now()->addDays(7));
+
+        Http::fake([
+            'https://api.freecurrencyapi.com/v1/latest*' => Http::response(null, 500)
+        ]);
+
+        // 2. Act: Call the service method
+        $service = new IpLookupService();
+        $rates = $service->getExchangeRates();
+
+        // 3. Assert: Check it falls back to the 7-day fallback cache
+        $this->assertEquals(0.95, $rates['EUR']);
+    }
+
+    /**
+     * Test that we fall back to the ultimate hardcoded seed rates if all caches are empty and the API fails.
+     */
+    public function test_get_exchange_rates_falls_back_to_seed_rates_on_total_failure(): void
+    {
+        // 1. Arrange: Clear all caches
+        Cache::forget('freecurrency_rates');
+        Cache::forget('freecurrency_rates_fallback');
+
+        Http::fake([
+            'https://api.freecurrencyapi.com/v1/latest*' => Http::response(null, 500)
+        ]);
+
+        // 2. Act: Call the service method
+        $service = new IpLookupService();
+        $rates = $service->getExchangeRates();
+
+        // 3. Assert: Verify the hardcoded EUR seed rate (0.92) is returned
+        $this->assertArrayHasKey('EUR', $rates);
+        $this->assertEquals(0.92, $rates['EUR']);
+        $this->assertEquals(83.3, $rates['INR']);
+    }
 }
