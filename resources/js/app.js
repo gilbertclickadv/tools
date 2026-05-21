@@ -1,21 +1,39 @@
 import '../css/app.css';
 import './bootstrap';
 
-// Register PWA service worker from the root (optimized non-blocking delay)
+// Register PWA service worker from the root (highly optimized interaction-based loading)
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
+    let swRegistered = false;
+    
+    const registerSW = () => {
+        if (swRegistered) return;
+        swRegistered = true;
+        
+        // Remove event listeners once registered
+        removeInteractionListeners();
+        
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+            console.error('SW registration failed: ', err);
+        });
+    };
+
+    const interactionEvents = ['mousedown', 'keydown', 'scroll', 'touchstart', 'mousemove'];
+    
+    const removeInteractionListeners = () => {
+        interactionEvents.forEach(event => {
+            window.removeEventListener(event, registerSW);
+        });
+    };
+
+    // Register on first interaction
+    interactionEvents.forEach(event => {
+        window.addEventListener(event, registerSW, { passive: true });
+    });
+
+    // Fallback: register after 8 seconds of page load to ensure registration 
+    // even if the user is completely idle
     window.addEventListener('load', () => {
-        const registerSW = () => {
-            navigator.serviceWorker.register('/sw.js').catch(err => {
-                console.error('SW registration failed: ', err);
-            });
-        };
-        // Defer SW registration to prevent massive PWA background precaching 
-        // from clogging the network/CPU during critical page interactivity audits
-        if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(() => setTimeout(registerSW, 2000));
-        } else {
-            setTimeout(registerSW, 4000);
-        }
+        setTimeout(registerSW, 8000);
     });
 }
 

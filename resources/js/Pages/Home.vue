@@ -406,7 +406,7 @@ const stats = [
         </section>
 
         <!-- ─────────────── TOOLS GRID ─────────────── -->
-        <main class="mx-auto max-w-5xl px-4 pb-24 lg:px-6" id="tools" aria-label="Available tools">
+        <main class="mx-auto max-w-5xl px-4 pb-24 lg:px-6 tools-containment" id="tools" aria-label="Available tools">
 
             <!-- Section heading -->
             <div class="mb-10 flex items-center gap-4">
@@ -487,3 +487,10 @@ const stats = [
         </main>
     </PublicLayout>
 </template>
+
+<style scoped>
+.tools-containment {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1200px;
+}
+</style>
