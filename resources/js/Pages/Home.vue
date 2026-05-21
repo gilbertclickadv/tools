@@ -357,9 +357,9 @@ const stats = [
 
             <!-- Ambient background glow -->
             <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-                <div class="absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-violet-600/[0.07] blur-[100px]"></div>
-                <div class="absolute left-[20%] top-[40%] h-[300px] w-[300px] rounded-full bg-sky-600/[0.05] blur-[80px]"></div>
-                <div class="absolute right-[15%] top-[30%] h-[250px] w-[250px] rounded-full bg-rose-600/[0.05] blur-[80px]"></div>
+                <div class="absolute left-1/2 top-0 h-[250px] w-[400px] md:h-[500px] md:w-[800px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-violet-600/[0.07] md:blur-[100px] blur-[40px]"></div>
+                <div class="absolute left-[20%] top-[40%] h-[150px] w-[150px] md:h-[300px] md:w-[300px] rounded-full bg-sky-600/[0.05] md:blur-[80px] blur-[30px]"></div>
+                <div class="absolute right-[15%] top-[30%] h-[120px] w-[120px] md:h-[250px] md:w-[250px] rounded-full bg-rose-600/[0.05] md:blur-[80px] blur-[30px]"></div>
                 <!-- Subtle grid -->
                 <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
             </div>
