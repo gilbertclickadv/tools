@@ -16,6 +16,8 @@
         <link rel="apple-touch-icon" href="/assets/images/pwa-192.webp">
         <link rel="apple-touch-startup-image" href="/assets/images/fluxmedia_main.webp">
         <link rel="manifest" href="/manifest.webmanifest">
+        <link rel="preload" as="image" href="/assets/images/fluxmedia_main.webp" fetchpriority="high">
+
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">

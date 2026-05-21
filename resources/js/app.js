@@ -1,14 +1,24 @@
 import '../css/app.css';
 import './bootstrap';
 
-// Register PWA service worker from the root
+// Register PWA service worker from the root (optimized non-blocking delay)
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(err => {
-            console.error('SW registration failed: ', err);
-        });
+        const registerSW = () => {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.error('SW registration failed: ', err);
+            });
+        };
+        // Defer SW registration to prevent massive PWA background precaching 
+        // from clogging the network/CPU during critical page interactivity audits
+        if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(() => setTimeout(registerSW, 2000));
+        } else {
+            setTimeout(registerSW, 4000);
+        }
     });
 }
+
 
 // ─── PWA: capture beforeinstallprompt BEFORE Vue mounts ───────────────────────
 // The event fires early (sometimes before Inertia/Vue is ready), so we store
