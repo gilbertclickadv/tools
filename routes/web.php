@@ -39,7 +39,7 @@ Route::get('/tools/image', function () {
                 'size_bytes'    => $img->size_bytes,
                 'expires_at'    => $img->expires_at ? $img->expires_at->diffForHumans() : null,
                 'download_url'  => route('image.download', ['path' => $img->disk_path]),
-                'output_url'    => \Illuminate\Support\Facades\Storage::disk('public')->url($img->disk_path),
+                'output_url'    => '/storage/' . $img->disk_path,
                 'created_at'    => $img->created_at->diffForHumans(),
             ];
         });
@@ -131,6 +131,11 @@ Route::post('/api/process-image', [ImageProcessingController::class, 'process'])
 Route::delete('/api/process-image/{processedImage}', [ImageProcessingController::class, 'destroy'])->name('image.destroy');
 Route::get('/api/download-image', [ImageProcessingController::class, 'download'])->name('image.download');
 Route::post('/api/store-qr-code', [ImageProcessingController::class, 'storeQrCode'])->name('qr.store');
+
+use App\Http\Controllers\BackgroundRemoverController;
+// ─── Background Remover ───────────────────────────────────────────────────────
+Route::get('/tools/background-remover', [BackgroundRemoverController::class, 'index'])->name('tools.background-remover');
+Route::post('/api/remove-background', [BackgroundRemoverController::class, 'process'])->name('image.remove-background');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/history', function () {

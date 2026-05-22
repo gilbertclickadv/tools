@@ -87,6 +87,14 @@ const categories = [
                 status: 'live',
                 icon: 'qrcode',
             },
+            {
+                id: 'background-remover',
+                name: 'Background Remover',
+                description: 'Remove image backgrounds instantly with AI. Fast and transparent.',
+                route: 'tools.background-remover',
+                status: 'live',
+                icon: 'sparkles',
+            },
         ],
     },
     {
@@ -295,6 +303,7 @@ const iconPaths = {
     'arrows-right-left': `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>`,
     cube: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/>`,
     clock: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>`,
+    sparkles: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.813 15.904L9 21L8.188 15.904L3 15L8.188 14.096L9 9L9.813 14.096L15 15L9.813 15.904ZM19.071 4.929L19.5 7.5L19.929 4.929L22.5 4.5L19.929 4.071L19.5 1.5L19.071 4.071L16.5 4.5L19.071 4.929ZM19.071 19.071L19.5 21.642L19.929 19.071L22.5 18.642L19.929 18.213L19.5 15.642L19.071 18.213L16.5 18.642L19.071 19.071Z"/>`,
 };
 
 const stats = [

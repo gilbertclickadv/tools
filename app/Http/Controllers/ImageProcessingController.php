@@ -248,7 +248,7 @@ class ImageProcessingController extends Controller
                     'size_bytes' => $processedSizeBytes,
                     'expires_at' => $expiresAt->diffForHumans(),
                     'download_url' => $downloadUrl,
-                    'output_url' => Storage::disk('public')->url($diskPath),
+                    'output_url' => '/storage/' . $diskPath,
                     'created_at' => 'Just now',
                 ],
                 'dimensions' => [
