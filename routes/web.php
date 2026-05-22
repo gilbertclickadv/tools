@@ -134,7 +134,7 @@ Route::post('/api/store-qr-code', [ImageProcessingController::class, 'storeQrCod
 
 use App\Http\Controllers\BackgroundRemoverController;
 // ─── Background Remover ───────────────────────────────────────────────────────
-Route::get('/tools/background-remover', [BackgroundRemoverController::class, 'index'])->name('tools.background-remover');
+Route::get('/tools/ai-background-remover', [BackgroundRemoverController::class, 'index'])->name('tools.background-remover');
 Route::post('/api/remove-background', [BackgroundRemoverController::class, 'process'])->name('image.remove-background');
 
 Route::middleware(['auth', 'verified'])->group(function () {

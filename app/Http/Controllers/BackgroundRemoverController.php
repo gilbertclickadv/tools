@@ -64,24 +64,40 @@ class BackgroundRemoverController extends Controller
 
         $request->validate([
             'image' => ['required', 'image', "max:{$maxUploadSizeKb}"],
+            'mode'  => ['nullable', 'string', 'in:smooth,sharp,text'],
         ]);
 
         try {
             $user = Auth::guard('web')->user();
             $ipAddress = $request->ip();
+            $mode = $request->input('mode', 'smooth');
 
-            // Enforce Unauthenticated Quotas (Bypass for Admins)
+            // Enforce Quotas for Background Remover (1 for guest, 2 for logged-in, unlimited for admin)
             if (!$user || ($user && !$user->is_admin)) {
                 if (!$user) {
-                    $guestDailyLimit = (int) (Redis::get('settings:guest_daily_limit') ?: 15);
+                    // Guest user: Limit is 1 per day
                     $todayCount = ProcessedImage::where('ip_address', $ipAddress)
+                        ->where('disk_path', 'like', 'processed/bg_%')
                         ->where('created_at', '>=', now()->startOfDay())
                         ->count();
 
-                    if ($todayCount >= $guestDailyLimit) {
+                    if ($todayCount >= 1) {
                         return response()->json([
                             'success' => false,
-                            'message' => "Daily limit of {$guestDailyLimit} files reached for guest sessions. Please sign in to unlock unlimited premium processing capability."
+                            'message' => "Daily limit of 1 AI background removal reached for guest sessions. Please sign in to unlock higher limits."
+                        ], 429);
+                    }
+                } else {
+                    // Logged in user (non-admin): Limit is 2 per day
+                    $todayCount = ProcessedImage::where('user_id', $user->id)
+                        ->where('disk_path', 'like', 'processed/bg_%')
+                        ->where('created_at', '>=', now()->startOfDay())
+                        ->count();
+
+                    if ($todayCount >= 2) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Daily limit of 2 AI background removals reached for your account. Unlimited access is available for administrators."
                         ], 429);
                     }
                 }
@@ -118,7 +134,8 @@ class BackgroundRemoverController extends Controller
                 $scriptPath,
                 $tempInputPath,
                 $tempOutputPath,
-                $cacheDir
+                $cacheDir,
+                $mode
             ]);
 
             // Set process timeout to 180 seconds to allow model download if running for first time

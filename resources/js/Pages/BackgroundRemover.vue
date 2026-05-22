@@ -21,13 +21,12 @@ const processedPreviewUrl = ref(null);
 const originalSize = ref(0);
 const processedSize = ref(0);
 const isProcessing = ref(false);
+const processingMode = ref('smooth');
 const processProgress = ref(0); // For fake/stepwise smooth loader progress
 const processError = ref(null);
 
-// Workspace Drag & Slider Compare State
+// Workspace Slider Compare Value (0-100)
 const comparisonSliderVal = ref(50);
-const isDraggingSlider = ref(false);
-const containerRef = ref(null);
 
 // Delete Modal State
 const deleteModal = reactive({ open: false, item: null, loading: false });
@@ -128,6 +127,7 @@ const removeBackground = async () => {
 
     const formData = new FormData();
     formData.append('image', selectedFile.value);
+    formData.append('mode', processingMode.value);
 
     try {
         const response = await axios.post('/api/remove-background', formData, {
@@ -157,36 +157,7 @@ const removeBackground = async () => {
     }
 };
 
-// Workspace slider interaction logic
-const startSliderDrag = () => {
-    isDraggingSlider.value = true;
-    window.addEventListener('mousemove', onSliderDrag);
-    window.addEventListener('mouseup', stopSliderDrag);
-    window.addEventListener('touchmove', onSliderDrag);
-    window.addEventListener('touchend', stopSliderDrag);
-};
-
-const stopSliderDrag = () => {
-    isDraggingSlider.value = false;
-    window.removeEventListener('mousemove', onSliderDrag);
-    window.removeEventListener('mouseup', stopSliderDrag);
-    window.removeEventListener('touchmove', onSliderDrag);
-    window.removeEventListener('touchend', stopSliderDrag);
-};
-
-const onSliderDrag = (e) => {
-    if (!isDraggingSlider.value || !containerRef.value) return;
-    
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const rect = containerRef.value.getBoundingClientRect();
-    const relativeX = clientX - rect.left;
-    
-    let percentage = (relativeX / rect.width) * 100;
-    if (percentage < 0) percentage = 0;
-    if (percentage > 100) percentage = 100;
-    
-    comparisonSliderVal.value = Math.round(percentage);
-};
+// Workspace slider comparison values are reactively bound via native input range controls.
 
 // Deletion logic
 const promptDelete = (item) => {
@@ -232,6 +203,7 @@ const resetWorkspace = () => {
     originalPreviewUrl.value = null;
     processedPreviewUrl.value = null;
     processError.value = null;
+    processingMode.value = 'smooth';
 };
 </script>
 
@@ -243,7 +215,7 @@ const resetWorkspace = () => {
             <meta name="keywords" content="background remover, remove background, ai background remover, background eraser, transparent background, background removal free, image background remover, transparent png generator, cut out image background" />
             <meta name="author" content="FluxMedia" />
             <meta name="robots" content="index, follow" />
-            <link rel="canonical" href="https://fluxmedia.space/tools/background-remover" />
+            <link rel="canonical" href="https://fluxmedia.space/tools/ai-background-remover" />
         </Head>
 
         <!-- Toast Notifications Portal -->
@@ -377,14 +349,14 @@ const resetWorkspace = () => {
         <div class="mx-auto max-w-4xl px-4 pb-16">
             <div class="rounded-3xl border border-gray-800/80 bg-[#121826]/40 backdrop-blur-xl p-5 sm:p-7 shadow-2xl relative">
                 
-                <!-- Reset Workspace Button (Top Right when image uploaded) -->
+                <!-- Reset Workspace Button (Top Right when image uploaded but not yet processed) -->
                 <button 
-                    v-if="originalPreviewUrl && !isProcessing" 
+                    v-if="originalPreviewUrl && !processedPreviewUrl && !isProcessing" 
                     @click="resetWorkspace"
                     class="absolute top-6 right-6 p-2 rounded-full bg-gray-800/80 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors z-30"
                     title="Clear Image"
                 >
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6" /></svg>
                 </button>
 
                 <!-- Zone 1: File Uploader Drag & Drop -->
@@ -476,6 +448,68 @@ const resetWorkspace = () => {
                             <p class="text-xs font-bold text-white truncate max-w-xs">{{ selectedFile.name }}</p>
                             <p class="text-[10px] text-gray-500 font-mono">Original Size: {{ formatBytes(originalSize) }}</p>
                         </div>
+
+                        <!-- Optimization Preset Panel -->
+                        <div class="w-full max-w-md bg-gray-900/40 border border-gray-800/80 rounded-2xl p-4 space-y-3">
+                            <div class="flex items-center justify-between border-b border-gray-800/50 pb-2">
+                                <span class="text-[10px] font-bold text-violet-400 uppercase tracking-widest flex items-center gap-x-1.5">
+                                    <svg class="h-3.5 w-3.5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                    </svg>
+                                    Optimization Strategy
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button 
+                                    type="button"
+                                    @click="processingMode = 'smooth'"
+                                    :class="[
+                                        'flex flex-col items-center justify-center p-2.5 rounded-xl border text-center transition-all duration-200 active:scale-95',
+                                        processingMode === 'smooth'
+                                            ? 'border-violet-500/50 bg-violet-500/10 text-white shadow-lg shadow-violet-500/5'
+                                            : 'border-white/[0.04] bg-white/[0.01] text-gray-400 hover:bg-white/[0.03] hover:text-gray-300'
+                                    ]"
+                                >
+                                    <svg class="h-4 w-4 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                    </svg>
+                                    <span class="text-[10px] font-bold">Smooth</span>
+                                    <span class="text-[8px] text-gray-500 mt-0.5 leading-tight">Portraits & standard</span>
+                                </button>
+                                <button 
+                                    type="button"
+                                    @click="processingMode = 'sharp'"
+                                    :class="[
+                                        'flex flex-col items-center justify-center p-2.5 rounded-xl border text-center transition-all duration-200 active:scale-95',
+                                        processingMode === 'sharp'
+                                            ? 'border-violet-500/50 bg-violet-500/10 text-white shadow-lg shadow-violet-500/5'
+                                            : 'border-white/[0.04] bg-white/[0.01] text-gray-400 hover:bg-white/[0.03] hover:text-gray-300'
+                                    ]"
+                                >
+                                    <svg class="h-4 w-4 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                    </svg>
+                                    <span class="text-[10px] font-bold">Sharp</span>
+                                    <span class="text-[8px] text-gray-500 mt-0.5 leading-tight">Products & edges</span>
+                                </button>
+                                <button 
+                                    type="button"
+                                    @click="processingMode = 'text'"
+                                    :class="[
+                                        'flex flex-col items-center justify-center p-2.5 rounded-xl border text-center transition-all duration-200 active:scale-95',
+                                        processingMode === 'text'
+                                            ? 'border-violet-500/50 bg-violet-500/10 text-white shadow-lg shadow-violet-500/5'
+                                            : 'border-white/[0.04] bg-white/[0.01] text-gray-400 hover:bg-white/[0.03] hover:text-gray-300'
+                                    ]"
+                                >
+                                    <svg class="h-4 w-4 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <span class="text-[10px] font-bold">Text & Badges</span>
+                                    <span class="text-[8px] text-gray-500 mt-0.5 leading-tight">Preserve text detail</span>
+                                </button>
+                            </div>
+                        </div>
                         
                         <button 
                             @click="removeBackground" 
@@ -492,34 +526,40 @@ const resetWorkspace = () => {
                     <div v-else class="space-y-6">
                         <!-- Premium Interactive Compare Slider -->
                         <div 
-                            ref="containerRef"
-                            class="relative w-full aspect-video sm:aspect-[4/3] rounded-3xl overflow-hidden border border-gray-800 bg-[#070b13] cursor-ew-resize select-none"
-                            @mousedown="startSliderDrag"
-                            @touchstart="startSliderDrag"
+                            class="relative w-full aspect-video sm:aspect-[4/3] rounded-3xl overflow-hidden border border-gray-800 bg-[#070b13] select-none group"
                         >
                             <!-- Background Checkered Pattern for transparency visual indicator -->
                             <div class="absolute inset-0 bg-checkerboard z-0"></div>
 
-                            <!-- Left Side: Original Image (Bottom Layer) -->
-                            <img :src="originalPreviewUrl" class="absolute inset-0 h-full w-full object-contain pointer-events-none z-1" />
+                            <!-- Left Side: Original Image (Bottom Layer, clipped) -->
+                            <img 
+                                :src="originalPreviewUrl" 
+                                class="absolute inset-0 h-full w-full object-contain pointer-events-none z-10" 
+                                draggable="false" 
+                                :style="{
+                                    'clip-path': `polygon(0% 0%, ${comparisonSliderVal}% 0%, ${comparisonSliderVal}% 100%, 0% 100%)`,
+                                    '-webkit-clip-path': `polygon(0% 0%, ${comparisonSliderVal}% 0%, ${comparisonSliderVal}% 100%, 0% 100%)`
+                                }"
+                            />
 
                             <!-- Right Side: Processed Transparent PNG (Top Layer, clipped) -->
                             <div 
-                                class="absolute inset-0 z-2"
-                                :style="{ clipPath: 'inset(0 0 0 ' + comparisonSliderVal + '%)' }"
+                                class="absolute inset-0 z-20 pointer-events-none"
+                                :style="{
+                                    'clip-path': `polygon(${comparisonSliderVal}% 0%, 100% 0%, 100% 100%, ${comparisonSliderVal}% 100%)`,
+                                    '-webkit-clip-path': `polygon(${comparisonSliderVal}% 0%, 100% 0%, 100% 100%, ${comparisonSliderVal}% 100%)`
+                                }"
                             >
-                                <!-- Backdrop checked board underneath transparent image inside clipped container -->
-                                <div class="absolute inset-0 bg-checkerboard"></div>
-                                <img :src="processedPreviewUrl" class="absolute inset-0 h-full w-full object-contain pointer-events-none" />
+                                <img :src="processedPreviewUrl" class="absolute inset-0 h-full w-full object-contain pointer-events-none" draggable="false" />
                             </div>
 
                             <!-- Visual Split slider line handle -->
                             <div 
-                                class="absolute top-0 bottom-0 w-0.5 bg-violet-400 shadow-[0_0_10px_rgba(139,92,246,0.6)] z-10 pointer-events-none"
+                                class="absolute top-0 bottom-0 w-0.5 bg-violet-400 shadow-[0_0_10px_rgba(139,92,246,0.6)] z-30 pointer-events-none"
                                 :style="{ left: comparisonSliderVal + '%' }"
                             >
                                 <!-- Circular Slider handle button -->
-                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-8 w-8 rounded-full border border-violet-400 bg-[#121826]/90 shadow-2xl backdrop-blur-xl flex items-center justify-center text-violet-300">
+                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-8 w-8 rounded-full border border-violet-400 bg-[#121826]/90 shadow-2xl backdrop-blur-xl flex items-center justify-center text-violet-300 transition-transform duration-200 group-hover:scale-110 group-active:scale-95">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7l-5 5 5 5M16 7l5 5-5 5" />
                                     </svg>
@@ -527,8 +567,18 @@ const resetWorkspace = () => {
                             </div>
 
                             <!-- Visual Badges labels -->
-                            <div class="absolute top-4 left-4 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-white/5 text-[9px] font-black text-gray-400 uppercase tracking-widest pointer-events-none z-20">Original</div>
-                            <div class="absolute top-4 right-4 px-3 py-1 rounded-lg bg-violet-950/60 backdrop-blur-md border border-violet-500/20 text-[9px] font-black text-violet-300 uppercase tracking-widest pointer-events-none z-20">Transferred</div>
+                            <div class="absolute top-4 left-4 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-white/5 text-[9px] font-black text-gray-400 uppercase tracking-widest pointer-events-none z-40">Original</div>
+                            <div class="absolute top-4 right-4 px-3 py-1 rounded-lg bg-violet-950/60 backdrop-blur-md border border-violet-500/20 text-[9px] font-black text-violet-300 uppercase tracking-widest pointer-events-none z-40">Transferred</div>
+
+                            <!-- Native transparent comparison range input capturing all drag gestures smoothly -->
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                step="1"
+                                v-model.number="comparisonSliderVal" 
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-50 touch-y m-0 p-0 border-none outline-none appearance-none"
+                            />
                         </div>
 
                         <!-- Info details & Download Actions -->
@@ -647,5 +697,37 @@ const resetWorkspace = () => {
 
 .animate-reverse {
     animation-direction: reverse;
+}
+
+/* Custom range input styles to make it fill the container and capture all pointer gestures */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 40px;
+    height: 100%;
+    background: transparent;
+    cursor: ew-resize;
+}
+input[type="range"]::-moz-range-thumb {
+    width: 40px;
+    height: 100%;
+    background: transparent;
+    cursor: ew-resize;
+    border: none;
 }
 </style>
