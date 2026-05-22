@@ -1,7 +1,7 @@
 <script setup>
 import { Head, usePage, Link } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
+import { ref, reactive, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
 
 const props = defineProps({
@@ -338,19 +338,37 @@ const downloadProcessedImage = () => {
     document.body.removeChild(link);
 };
 
-const deleteImage = async (id) => {
-    if (!confirm('Are you sure you want to delete this processed image permanently?')) {
-        return;
-    }
+// ── Delete modal ─────────────────────────────────────────────────────────────
+const deleteModal = reactive({ open: false, item: null, loading: false });
 
+const confirmDeleteImage = (item) => {
+    deleteModal.item = item;
+    deleteModal.open = true;
+};
+
+const cancelDeleteImage = () => {
+    deleteModal.open    = false;
+    deleteModal.item    = null;
+    deleteModal.loading = false;
+};
+
+const executeDeleteImage = async () => {
+    if (!deleteModal.item) return;
+    const itemId = deleteModal.item.id;
+    deleteModal.loading = true;
     try {
-        const response = await axios.delete(`/api/process-image/${id}`);
+        const response = await axios.delete(`/api/process-image/${itemId}`);
         if (response.data.success) {
-            userHistory.value = userHistory.value.filter(item => item.id !== id);
+            userHistory.value = userHistory.value.filter(item => item.id !== itemId);
+            deleteModal.open    = false;
+            deleteModal.item    = null;
+            deleteModal.loading = false;
         } else {
+            deleteModal.loading = false;
             alert(response.data.message || 'Failed to delete the image.');
         }
     } catch (err) {
+        deleteModal.loading = false;
         alert(err.response?.data?.message || 'Error occurred while trying to delete the image.');
     }
 };
@@ -713,7 +731,7 @@ const deleteImage = async (id) => {
                                         </svg>
                                     </a>
                                     <button 
-                                        @click="deleteImage(item.id)" 
+                                        @click="confirmDeleteImage(item)" 
                                         class="h-7 w-7 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white flex items-center justify-center shrink-0 transition-all border border-red-500/20 hover:border-red-600 shadow-lg shadow-red-950/20 active:scale-90"
                                         title="Delete Asset"
                                     >
@@ -777,6 +795,81 @@ const deleteImage = async (id) => {
                     </div>
                 </div>
             </div>
+
+            <!-- Delete Confirmation Modal -->
+            <Teleport to="body">
+                <Transition
+                    enter-active-class="transition-all duration-200 ease-out"
+                    enter-from-class="opacity-0"
+                    enter-to-class="opacity-100"
+                    leave-active-class="transition-all duration-150 ease-in"
+                    leave-from-class="opacity-100"
+                    leave-to-class="opacity-0"
+                >
+                    <div
+                        v-if="deleteModal.open"
+                        class="fixed inset-0 z-[400] flex items-end sm:items-center justify-center p-4"
+                        @keydown.esc="cancelDeleteImage"
+                        tabindex="-1"
+                        @click.self="cancelDeleteImage"
+                    >
+                        <!-- Backdrop -->
+                        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+
+                        <!-- Modal panel -->
+                        <Transition
+                            enter-active-class="transition-all duration-200 ease-out"
+                            enter-from-class="opacity-0 scale-95 translate-y-4"
+                            enter-to-class="opacity-100 scale-100 translate-y-0"
+                            leave-active-class="transition-all duration-150 ease-in"
+                            leave-from-class="opacity-100 scale-100 translate-y-0"
+                            leave-to-class="opacity-0 scale-95 translate-y-2"
+                        >
+                            <div
+                                v-if="deleteModal.open"
+                                class="relative w-full max-w-sm rounded-3xl border border-red-500/20 bg-[#121826]/95 backdrop-blur-xl shadow-2xl p-6"
+                            >
+                                <!-- Icon -->
+                                <div class="flex items-center justify-center h-12 w-12 rounded-2xl bg-red-500/10 border border-red-500/20 mx-auto mb-4">
+                                    <svg class="h-6 w-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </div>
+
+                                <!-- Text -->
+                                <h3 class="text-base font-bold text-white text-center mb-1">Delete Processed Image?</h3>
+                                <p class="text-xs text-gray-400 text-center mb-4">This action cannot be undone. The optimized asset will be permanently removed from secure storage.</p>
+
+                                <!-- Image preview -->
+                                <div v-if="deleteModal.item" class="rounded-xl bg-gray-900/60 border border-gray-800 px-3 py-2.5 mb-5">
+                                    <p class="text-[10px] font-black text-red-400 uppercase tracking-widest mb-1">Image to delete</p>
+                                    <p class="text-xs font-bold text-white font-mono truncate">{{ deleteModal.item.original_name }}</p>
+                                    <p class="text-[10px] text-gray-600 truncate mt-0.5">{{ deleteModal.item.format.toUpperCase() }} · {{ formatBytes(deleteModal.item.size_bytes) }}</p>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="flex gap-x-3">
+                                    <button
+                                        @click="cancelDeleteImage"
+                                        :disabled="deleteModal.loading"
+                                        class="flex-1 rounded-2xl border border-gray-700 bg-gray-800/60 hover:bg-gray-700/60 py-3 text-sm font-bold text-gray-300 transition-all active:scale-95 disabled:opacity-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        @click="executeDeleteImage"
+                                        :disabled="deleteModal.loading"
+                                        class="flex-1 inline-flex items-center justify-center gap-x-2 rounded-2xl bg-red-600 hover:bg-red-500 py-3 text-sm font-bold text-white shadow-lg shadow-red-600/20 transition-all active:scale-95 disabled:opacity-60"
+                                    >
+                                        <svg v-if="deleteModal.loading" class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                                        {{ deleteModal.loading ? 'Deleting...' : 'Delete Asset' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </Transition>
+                    </div>
+                </Transition>
+            </Teleport>
         </div>
     </PublicLayout>
 </template>
