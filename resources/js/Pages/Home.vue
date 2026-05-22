@@ -89,7 +89,7 @@ const categories = [
             },
             {
                 id: 'background-remover',
-                name: 'Background Remover',
+                name: 'AI Background Remover',
                 description: 'Remove image backgrounds instantly with AI. Fast and transparent.',
                 route: 'tools.background-remover',
                 status: 'live',
