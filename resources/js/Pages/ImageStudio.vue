@@ -337,6 +337,23 @@ const downloadProcessedImage = () => {
     link.click();
     document.body.removeChild(link);
 };
+
+const deleteImage = async (id) => {
+    if (!confirm('Are you sure you want to delete this processed image permanently?')) {
+        return;
+    }
+
+    try {
+        const response = await axios.delete(`/api/process-image/${id}`);
+        if (response.data.success) {
+            userHistory.value = userHistory.value.filter(item => item.id !== id);
+        } else {
+            alert(response.data.message || 'Failed to delete the image.');
+        }
+    } catch (err) {
+        alert(err.response?.data?.message || 'Error occurred while trying to delete the image.');
+    }
+};
 </script>
 
 <template>
@@ -695,6 +712,15 @@ const downloadProcessedImage = () => {
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                         </svg>
                                     </a>
+                                    <button 
+                                        @click="deleteImage(item.id)" 
+                                        class="h-7 w-7 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white flex items-center justify-center shrink-0 transition-all border border-red-500/20 hover:border-red-600 shadow-lg shadow-red-950/20 active:scale-90"
+                                        title="Delete Asset"
+                                    >
+                                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>

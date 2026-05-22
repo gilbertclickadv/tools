@@ -128,6 +128,7 @@ Route::get('/tools/password-generator', [PasswordGeneratorController::class, 'in
 Route::post('/api/password/track', [PasswordGeneratorController::class, 'track'])->name('password.track');
 
 Route::post('/api/process-image', [ImageProcessingController::class, 'process'])->name('image.process');
+Route::delete('/api/process-image/{processedImage}', [ImageProcessingController::class, 'destroy'])->name('image.destroy');
 Route::get('/api/download-image', [ImageProcessingController::class, 'download'])->name('image.download');
 Route::post('/api/store-qr-code', [ImageProcessingController::class, 'storeQrCode'])->name('qr.store');
 

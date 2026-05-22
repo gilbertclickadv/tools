@@ -340,4 +340,50 @@ class ImageProcessingController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Delete a processed image securely.
+     */
+    public function destroy(Request $request, ProcessedImage $processedImage)
+    {
+        $user = Auth::guard('web')->user();
+
+        // Security check: ensure user owns the resource
+        if ($user) {
+            if ($processedImage->user_id !== $user->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized operation.'
+                ], 403);
+            }
+        } else {
+            // Guest check: must be null user_id and matching IP address
+            if ($processedImage->user_id !== null || $processedImage->ip_address !== $request->ip()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized operation.'
+                ], 403);
+            }
+        }
+
+        try {
+            // Delete file from disk if it exists
+            if ($processedImage->disk_path && Storage::disk('public')->exists($processedImage->disk_path)) {
+                Storage::disk('public')->delete($processedImage->disk_path);
+            }
+
+            // Delete DB record
+            $processedImage->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Asset deleted successfully.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete asset: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
