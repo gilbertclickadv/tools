@@ -214,29 +214,7 @@ const highlightedOutput = computed(() => {
 const seoScripts = [];
 onMounted(() => {
   const schemas = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      'name': 'CSV ↔ JSON Converter — Free Online Transformer',
-      'url': 'https://fluxmedia.space/tools/csv-json',
-      'description': 'Free online CSV to JSON and JSON to CSV converter. Bidirectional, instant, and 100% browser-side. Auto-detects delimiters, type-coerces values, and supports file upload and download.',
-      'applicationCategory': 'DeveloperApplication',
-      'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
-      'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-      'featureList': ['CSV to JSON', 'JSON to CSV', 'Auto Delimiter Detection', 'Type Coercion', 'File Upload', 'Download Output', 'Swap Sides', 'JSON Syntax Highlighting'],
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'HowTo',
-      'name': 'How to Convert CSV to JSON Online for Free',
-      'description': 'Step-by-step guide to converting CSV data to JSON using FluxMedia CSV↔JSON Transformer.',
-      'totalTime': 'PT1M',
-      'step': [
-        { '@type': 'HowToStep', 'position': 1, 'name': 'Select Mode', 'text': 'Choose CSV → JSON or JSON → CSV using the mode toggle buttons.' },
-        { '@type': 'HowToStep', 'position': 2, 'name': 'Paste or Upload Data', 'text': 'Paste your data into the input pane, or click Upload to load a .csv or .json file.' },
-        { '@type': 'HowToStep', 'position': 3, 'name': 'Configure Options', 'text': 'Set your delimiter (auto-detect, comma, semicolon, or tab) and toggle first-row headers.' },
-        { '@type': 'HowToStep', 'position': 4, 'name': 'Copy or Download', 'text': 'Copy the output to clipboard or download it as a file. Use Swap to reverse the conversion instantly.' },
-      ],
+
       {
           '@context': 'https://schema.org',
           '@type': 'WebApplication',
