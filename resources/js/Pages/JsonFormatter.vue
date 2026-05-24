@@ -30,26 +30,61 @@ const showToast = (message, type = 'success') => {
 };
 
 // Inject JSON-LD structured data programmatically
-let ldScript = null;
+const seoScripts = [];
 onMounted(() => {
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        name: 'FluxMedia JSON Formatter',
-        url: 'https://fluxmedia.space/tools/json-formatter',
-        description: 'Free online JSON Formatter and Validator. Beautify, minify, and analyze your JSON data in real-time. Fast, secure, and privacy-focused.',
-        applicationCategory: 'UtilityApplication',
-        operatingSystem: 'Web',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'JSON Formatter & Validator — Free Online Tool',
+            'url': 'https://fluxmedia.space/tools/json-formatter',
+            'description': 'Free online JSON formatter and validator. Beautify, minify, and validate JSON data in real-time with structural analysis. 100% client-side and private.',
+            'applicationCategory': 'UtilityApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['JSON Beautify', 'JSON Minify', 'JSON Validate', 'Structure Analysis', 'File Upload', 'Download JSON', 'Custom Indentation'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Format and Validate JSON Online',
+            'description': 'Step-by-step guide to formatting and validating JSON using FluxMedia JSON Formatter.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Paste Your JSON', 'text': 'Paste your raw JSON string into the Input Raw JSON textarea.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'View Formatted Output', 'text': 'The formatted JSON appears in real-time in the output panel with syntax highlighting.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Validate or Minify', 'text': 'Click Validate JSON to check for syntax errors, or Minify JSON to compress it.' },
+                { '@type': 'HowToStep', 'position': 4, 'name': 'Copy or Download', 'text': 'Copy the formatted JSON to clipboard or download it as a .json file.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'Is the JSON formatter private?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. All JSON processing is performed entirely in your browser using JavaScript. Your data is never sent to any server.' } },
+                { '@type': 'Question', 'name': 'Can I upload a JSON file?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Click the Upload File button to load a .json file from your computer directly into the formatter.' } },
+                { '@type': 'Question', 'name': 'Does it show JSON validation errors?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. If your JSON contains syntax errors, an error message with the exact error is displayed to help you fix it.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'JSON Formatter', 'item': 'https://fluxmedia.space/tools/json-formatter' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
     });
-    document.head.appendChild(ldScript);
 });
 
-onUnmounted(() => {
-    ldScript?.remove();
-});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 
 // JSON Helper Functions
 const getJsonMetrics = (obj) => {
@@ -248,7 +283,8 @@ const handleFileUpload = (event) => {
             <meta name="description" content="Free online JSON Formatter and Validator. Beautify, format, validate, and minify your JSON data in real-time. Features structural analysis, file uploads, and full data privacy." />
             <meta name="keywords" content="json formatter, json validator, beautify json, minify json, format json, online json formatter, validate json, syntax checker, drag and drop json, parse json, copy json, format json online, free json tools" />
             <meta name="author" content="FluxMedia" />
-            <meta name="robots" content="index, follow" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/json-formatter" />
 
             <!-- Open Graph / Facebook -->

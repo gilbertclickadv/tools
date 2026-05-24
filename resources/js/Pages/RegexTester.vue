@@ -189,39 +189,67 @@ const loadSample = (pattern, text) => {
 };
 
 // --- Lifecycle & Persistence ---
-let ldScript = null;
+const seoScripts = [];
 onMounted(() => {
     const savedPattern = localStorage.getItem('fluxmedia_regex_pattern');
     const savedText = localStorage.getItem('fluxmedia_regex_text');
     if (savedPattern !== null) regexPattern.value = savedPattern;
     if (savedText !== null) testText.value = savedText;
-    
-    // SEO Structured Data
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Premium Online Regex Tester & Visual Explainer | FluxMedia",
-        "url": "https://fluxmedia.space/tools/regex",
-        "image": "https://fluxmedia.space/assets/images/fluxmedia_main.webp",
-        "description": "Create, test, and dissect regular expressions dynamically. Includes high-fidelity match highlighting and visual expression explanation.",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "All",
-        "browserRequirements": "Requires JavaScript.",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        }
-    };
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.text = JSON.stringify(jsonLd);
-    document.head.appendChild(ldScript);
+
+    // SEO Structured schemas
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'Regex Tester & Visual Explainer — Free Online Tool',
+            'url': 'https://fluxmedia.space/tools/regex',
+            'description': 'Free online regular expression tester and visual explainer. Test regex patterns with instant match highlighting, capture group inspection, and built-in cheat sheet.',
+            'applicationCategory': 'DeveloperApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['Live Match Highlighting', 'Capture Group Inspector', 'Pattern Explainer', 'Regex Cheat Sheet', 'Global/Case/Multiline Flags', 'Local Storage Autosave'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Test a Regular Expression Online',
+            'description': 'Step-by-step guide to testing and debugging regex patterns using FluxMedia Regex Tester.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Enter Your Pattern', 'text': 'Type or paste your regular expression into the Expression Canvas input field.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'Toggle Flags', 'text': 'Enable or disable Global (g), Case Insensitive (i), and Multiline (m) flags using the flag buttons.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Paste Test String', 'text': 'Enter your test input string in the Test String textarea.' },
+                { '@type': 'HowToStep', 'position': 4, 'name': 'View Matches', 'text': 'All matches are highlighted in the Live Matching Highlights panel. The Match List Inspector shows index and length of each match.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'What regex engine does the tester use?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'The regex tester uses the JavaScript native RegExp engine, which is compatible with most standard PCRE-like patterns.' } },
+                { '@type': 'Question', 'name': 'Does the regex tester save my patterns?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Your pattern and test text are automatically saved to browser local storage, so your work is preserved across page refreshes.' } },
+                { '@type': 'Question', 'name': 'Can I test email or phone number regex patterns?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Use the built-in Email Pattern or Phone Pattern sample buttons to load common patterns instantly, or enter your own custom pattern.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'Regex Tester', 'item': 'https://fluxmedia.space/tools/regex' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
+    });
 });
 
-onUnmounted(() => {
-    ldScript?.remove();
-});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 
 watch([regexPattern, testText], () => {
     localStorage.setItem('fluxmedia_regex_pattern', regexPattern.value);
@@ -235,7 +263,9 @@ watch([regexPattern, testText], () => {
             <title>Premium Online Regex Tester & Visual Explainer | FluxMedia</title>
             <meta name="description" content="A premium regular expression builder and analyzer. Test regex matches dynamically, review captured groups, and check visual pattern explanations in real-time." />
             <meta name="keywords" content="regex tester, regex builder, regular expression explainer, match highlighter, live regex testing, regex checker, developer tools, free utilities" />
-            <meta name="robots" content="index, follow" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/regex" />
         </Head>
 

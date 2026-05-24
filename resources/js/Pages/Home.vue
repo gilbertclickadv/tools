@@ -1,12 +1,45 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
 });
+
+// FAQ accordion state
+const openFaq = ref(null);
+const toggleFaq = (idx) => {
+    openFaq.value = openFaq.value === idx ? null : idx;
+};
+
+const faqs = [
+    {
+        q: 'Are all FluxMedia tools really free?',
+        a: 'Yes — every tool on FluxMedia is 100% free with no hidden fees, no subscriptions, and no usage limits. We are committed to keeping all core tools permanently free.',
+    },
+    {
+        q: 'Do I need to create an account to use the tools?',
+        a: 'No account is needed. All tools work instantly in your browser. Creating an optional account lets you save history and access your files across sessions.',
+    },
+    {
+        q: 'Is my data safe when using FluxMedia tools?',
+        a: 'Yes. Most processing happens directly in your browser — nothing is uploaded to our servers unless required (e.g., image conversion). Uploaded files are automatically purged from secure storage after a short retention period.',
+    },
+    {
+        q: 'What image formats does the Image Studio support?',
+        a: 'The Image Studio supports JPEG, PNG, WebP, GIF, AVIF, and ICO. You can convert between any of these formats, resize, crop, adjust brightness and blur, and download the result instantly.',
+    },
+    {
+        q: 'Can I use FluxMedia on mobile?',
+        a: 'Absolutely. FluxMedia is fully responsive and optimized for mobile devices. All tools work on smartphones and tablets without any app installation required.',
+    },
+    {
+        q: 'How many tools does FluxMedia offer?',
+        a: 'FluxMedia currently offers 14 tools across 5 categories: Image & Media, Web & Network, Generators, Encoding & Crypto, and Developer Tools. New tools are added regularly.',
+    },
+];
 
 // Inject JSON-LD structured data programmatically (can't use <script> inside Vue template)
 const ldScripts = [];
@@ -15,43 +48,120 @@ onMounted(() => {
     const webSiteScript = document.createElement('script');
     webSiteScript.type = 'application/ld+json';
     webSiteScript.textContent = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "FluxMedia",
-        "url": "https://fluxmedia.space",
-        "description": "Free online tools for image conversion, QR generation, URL shortening, password creation, Base64 encoding, hash generation, and more.",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "https://fluxmedia.space/search?q={search_term_string}"
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        'name': 'FluxMedia',
+        'url': 'https://fluxmedia.space',
+        'description': 'Free online tools for developers and creators. Convert images, generate QR codes, shorten URLs, create passwords, encode Base64, hash strings, format JSON, pick colors, and more.',
+        'potentialAction': {
+            '@type': 'SearchAction',
+            'target': {
+                '@type': 'EntryPoint',
+                'urlTemplate': 'https://fluxmedia.space/search?q={search_term_string}',
             },
-            "query-input": "required name=search_term_string"
-        }
+            'query-input': 'required name=search_term_string',
+        },
     });
     document.head.appendChild(webSiteScript);
     ldScripts.push(webSiteScript);
 
-    // 2. SoftwareApplication Structured Data
+    // 2. SoftwareApplication Structured Data (enhanced)
     const appScript = document.createElement('script');
     appScript.type = 'application/ld+json';
     appScript.textContent = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "FluxMedia Toolkit",
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Web",
-        "url": "https://fluxmedia.space",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        'name': 'FluxMedia Toolkit',
+        'applicationCategory': 'UtilitiesApplication',
+        'applicationSubCategory': 'Developer Tools',
+        'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+        'url': 'https://fluxmedia.space',
+        'offers': {
+            '@type': 'Offer',
+            'price': '0',
+            'priceCurrency': 'USD',
         },
-        "description": "A collection of 11 free online tools including image converter, QR code generator, URL shortener, password generator, UUID generator, Base64 encoder, and SHA hash generator.",
-        "featureList": ["Image Conversion", "QR Code Generation", "URL Shortening", "Password Generation", "UUID Generation", "Base64 Encoding", "Hash Generation", "IP Lookup"]
+        'description': '14 free online tools for developers and creators including image converter & compressor, QR code generator, URL shortener, password generator, UUID generator, Base64 encoder, SHA hash generator, IP lookup, JSON formatter, color picker, text tools, JWT debugger, regex tester, and CSV-to-JSON converter.',
+        'featureList': [
+            'Image Conversion (WebP, AVIF, PNG, JPEG, GIF, ICO)',
+            'QR Code Generator (URL, WiFi, Email, SMS, Phone)',
+            'URL Shortener',
+            'IP Geolocation Lookup',
+            'UUID Generator (v1, v4)',
+            'Secure Password Generator',
+            'Base64 Encoder & Decoder',
+            'Hash Generator (MD5, SHA-1, SHA-256, SHA-512)',
+            'JWT Debugger & Verifier',
+            'JSON Formatter & Validator',
+            'Color Picker (HEX, RGB, HSL)',
+            'Text Tools (word count, case converter)',
+            'Regex Tester & Explainer',
+            'CSV to JSON Converter',
+        ],
     });
     document.head.appendChild(appScript);
     ldScripts.push(appScript);
+
+    // 3. ItemList — all live tools (enables carousel rich results in Google)
+    const itemListScript = document.createElement('script');
+    itemListScript.type = 'application/ld+json';
+    itemListScript.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        'name': 'FluxMedia Free Online Tools',
+        'description': 'A curated list of free online tools for developers and creators.',
+        'url': 'https://fluxmedia.space',
+        'numberOfItems': 14,
+        'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': 'Image Studio — Convert, Resize & Compress Images', 'url': 'https://fluxmedia.space/tools/image', 'description': 'Free online image converter and compressor. Convert to WebP, AVIF, PNG, JPEG, GIF, ICO. Resize, crop, and adjust images instantly.' },
+            { '@type': 'ListItem', 'position': 2, 'name': 'QR Code Generator', 'url': 'https://fluxmedia.space/tools/qr-code', 'description': 'Generate custom QR codes for URLs, WiFi, email, SMS, phone, and plain text. Download as PNG or SVG.' },
+            { '@type': 'ListItem', 'position': 3, 'name': 'URL Shortener', 'url': 'https://fluxmedia.space/tools/url-shortener', 'description': 'Turn long URLs into short, trackable links. No account required.' },
+            { '@type': 'ListItem', 'position': 4, 'name': 'IP Lookup & Geolocation', 'url': 'https://fluxmedia.space/tools/ip-lookup', 'description': 'Look up geolocation, ISP, ASN, and threat intelligence data for any IP address.' },
+            { '@type': 'ListItem', 'position': 5, 'name': 'UUID Generator', 'url': 'https://fluxmedia.space/tools/uuid-generator', 'description': 'Generate RFC-compliant UUID v1 and v4 identifiers in bulk with one click.' },
+            { '@type': 'ListItem', 'position': 6, 'name': 'Password Generator', 'url': 'https://fluxmedia.space/tools/password-generator', 'description': 'Generate strong, secure passwords with custom length and character sets.' },
+            { '@type': 'ListItem', 'position': 7, 'name': 'Base64 Encoder & Decoder', 'url': 'https://fluxmedia.space/tools/base64', 'description': 'Encode or decode Base64 strings and files in real-time, directly in your browser.' },
+            { '@type': 'ListItem', 'position': 8, 'name': 'Hash Generator — MD5, SHA-1, SHA-256, SHA-512', 'url': 'https://fluxmedia.space/tools/hash-generator', 'description': 'Instantly compute MD5, SHA-1, SHA-256, and SHA-512 cryptographic hashes for any text.' },
+            { '@type': 'ListItem', 'position': 9, 'name': 'JWT Debugger & Verifier', 'url': 'https://fluxmedia.space/tools/jwt', 'description': 'Decode, encode, and verify JSON Web Tokens (JWT). Inspect claims and signatures locally.' },
+            { '@type': 'ListItem', 'position': 10, 'name': 'JSON Formatter & Validator', 'url': 'https://fluxmedia.space/tools/json-formatter', 'description': 'Beautify, minify, and validate JSON with syntax highlighting and error detection.' },
+            { '@type': 'ListItem', 'position': 11, 'name': 'Color Picker — HEX, RGB, HSL', 'url': 'https://fluxmedia.space/tools/color-picker', 'description': 'Pick colors and convert between HEX, RGB, and HSL formats. Save custom palettes.' },
+            { '@type': 'ListItem', 'position': 12, 'name': 'Text Tools', 'url': 'https://fluxmedia.space/tools/text', 'description': 'Word count, character count, case converter, remove duplicates, and more text utilities.' },
+            { '@type': 'ListItem', 'position': 13, 'name': 'Regex Tester & Explainer', 'url': 'https://fluxmedia.space/tools/regex', 'description': 'Test and visualize regular expression patterns with real-time match highlighting and explanations.' },
+            { '@type': 'ListItem', 'position': 14, 'name': 'CSV to JSON Converter', 'url': 'https://fluxmedia.space/tools/csv-json', 'description': 'Convert CSV spreadsheet data to formatted JSON instantly. Supports custom delimiters.' },
+        ],
+    });
+    document.head.appendChild(itemListScript);
+    ldScripts.push(itemListScript);
+
+    // 4. FAQPage Structured Data (enables FAQ rich snippets)
+    const faqScript = document.createElement('script');
+    faqScript.type = 'application/ld+json';
+    faqScript.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': faqs.map(f => ({
+            '@type': 'Question',
+            'name': f.q,
+            'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': f.a,
+            },
+        })),
+    });
+    document.head.appendChild(faqScript);
+    ldScripts.push(faqScript);
+
+    // 5. BreadcrumbList
+    const breadcrumbScript = document.createElement('script');
+    breadcrumbScript.type = 'application/ld+json';
+    breadcrumbScript.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+        ],
+    });
+    document.head.appendChild(breadcrumbScript);
+    ldScripts.push(breadcrumbScript);
 });
 onUnmounted(() => {
     ldScripts.forEach(script => script.remove());
@@ -320,9 +430,10 @@ const stats = [
             <!-- Primary Meta -->
             <title>{{ siteTitle }}</title>
             <meta name="description" :content="siteDescription" />
-            <meta name="keywords" content="online tools, free tools, image converter, webp converter, avif converter, qr code generator, url shortener, password generator, json formatter, base64 encoder, hash generator, sha256, md5, uuid generator, developer tools, web utilities, ip lookup, geolocation" />
+            <meta name="keywords" content="free online tools, developer tools, AI tools, image converter, webp converter, avif converter, qr code generator, url shortener, password generator, json formatter, base64 encoder, hash generator, sha256, md5, uuid generator, web utilities, ip lookup, geolocation, text tools, regex tester, csv to json, color picker, jwt decoder, no signup tools, browser tools, free developer utilities" />
             <meta name="author" content="FluxMedia" />
             <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" :href="siteUrl" />
 
             <!-- Open Graph / Facebook / LinkedIn -->
@@ -494,6 +605,94 @@ const stats = [
                 </div>
             </div>
         </main>
+
+        <!-- ─────────────── WHY FLUXMEDIA (Trust Signals) ─────────────── -->
+        <section class="mx-auto max-w-5xl px-4 pb-16 lg:px-6" aria-label="Why FluxMedia">
+            <div class="mb-8 flex items-center gap-4">
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"></div>
+                <h2 class="text-[11px] font-bold uppercase tracking-[0.25em] text-gray-600">Why FluxMedia</h2>
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"></div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <!-- Private & Secure -->
+                <div class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-5 text-center">
+                    <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-400/10">
+                        <svg class="h-5 w-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                        </svg>
+                    </div>
+                    <h3 class="mb-1.5 text-[13px] font-bold text-white">Private &amp; Secure</h3>
+                    <p class="text-[11px] leading-relaxed text-gray-500">Files processed in your browser. Nothing stored without your permission. Uploads auto-purge from secure servers.</p>
+                </div>
+
+                <!-- Fast & Free -->
+                <div class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-5 text-center">
+                    <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-violet-400/10">
+                        <svg class="h-5 w-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="mb-1.5 text-[13px] font-bold text-white">Fast &amp; Free Forever</h3>
+                    <p class="text-[11px] leading-relaxed text-gray-500">No ads, no account required, no usage limits. Built for speed — most tools run instantly in your browser.</p>
+                </div>
+
+                <!-- 14 Tools in One -->
+                <div class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-5 text-center">
+                    <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-400/10">
+                        <svg class="h-5 w-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+                        </svg>
+                    </div>
+                    <h3 class="mb-1.5 text-[13px] font-bold text-white">14 Tools in One Place</h3>
+                    <p class="text-[11px] leading-relaxed text-gray-500">Image processing, encoding, network utilities, generators, and developer tools — all under one roof, always expanding.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─────────────── FAQ SECTION ─────────────── -->
+        <section class="mx-auto max-w-5xl px-4 pb-24 lg:px-6" aria-label="Frequently asked questions" id="faq">
+            <div class="mb-8 flex items-center gap-4">
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"></div>
+                <h2 class="text-[11px] font-bold uppercase tracking-[0.25em] text-gray-600">FAQ</h2>
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"></div>
+            </div>
+
+            <dl class="space-y-2">
+                <div
+                    v-for="(faq, idx) in faqs"
+                    :key="idx"
+                    class="rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden transition-all duration-200"
+                    :class="openFaq === idx ? 'border-white/[0.1]' : ''"
+                >
+                    <dt>
+                        <button
+                            @click="toggleFaq(idx)"
+                            class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer"
+                            :aria-expanded="openFaq === idx"
+                            :aria-controls="`faq-answer-${idx}`"
+                            :id="`faq-btn-${idx}`"
+                        >
+                            <span class="text-[13px] font-semibold text-white">{{ faq.q }}</span>
+                            <svg
+                                :class="['h-4 w-4 shrink-0 text-gray-500 transition-transform duration-200', openFaq === idx ? 'rotate-180' : '']"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </dt>
+                    <dd
+                        v-show="openFaq === idx"
+                        :id="`faq-answer-${idx}`"
+                        :aria-labelledby="`faq-btn-${idx}`"
+                        class="px-5 pb-4"
+                    >
+                        <p class="text-[12px] leading-relaxed text-gray-400">{{ faq.a }}</p>
+                    </dd>
+                </div>
+            </dl>
+        </section>
     </PublicLayout>
 </template>
 

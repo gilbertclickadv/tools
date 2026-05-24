@@ -120,22 +120,59 @@ onMounted(() => {
 });
 
 // ── SEO ──────────────────────────────────────────────────────────────────────
-let ldScript = null;
+const seoScripts = [];
 onMounted(() => {
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        name: 'FluxMedia Password Generator',
-        url: 'https://fluxmedia.space/tools/password-generator',
-        description: 'Generate strong, secure, and random passwords online. Custom length, characters, and instant copy.',
-        applicationCategory: 'UtilityApplication',
-        operatingSystem: 'Web',
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'Password Generator — Free Secure Password Creator',
+            'url': 'https://fluxmedia.space/tools/password-generator',
+            'description': 'Free online password generator. Create strong, secure, cryptographically random passwords with custom length and character sets. 100% browser-side, nothing sent to servers.',
+            'applicationCategory': 'UtilityApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['Custom Length (4-64)', 'Uppercase Letters', 'Lowercase Letters', 'Numbers', 'Symbols', 'Strength Meter', 'Browser Cryptography'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Generate a Strong Password Online',
+            'description': 'Step-by-step guide to creating a secure password using FluxMedia Password Generator.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Set Password Length', 'text': 'Drag the slider to set the desired password length (4 to 64 characters).' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'Choose Character Types', 'text': 'Toggle uppercase letters, lowercase letters, numbers, and symbols.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Generate & Copy', 'text': 'Click Regenerate Password to create a new password, then click the copy icon to copy it.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'Is the generated password stored anywhere?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'No. All passwords are generated entirely in your browser using the Web Crypto API. Nothing is ever sent to our servers.' } },
+                { '@type': 'Question', 'name': 'How long should my password be?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'We recommend at least 16 characters using a mix of uppercase, lowercase, numbers, and symbols for strong security.' } },
+                { '@type': 'Question', 'name': 'Is this password generator free?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, completely free with no account required and no limits.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'Password Generator', 'item': 'https://fluxmedia.space/tools/password-generator' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
     });
-    document.head.appendChild(ldScript);
 });
-onUnmounted(() => { ldScript?.remove(); });
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 
 const toastConfig = {
     success: { bg: 'bg-emerald-500/10 border-emerald-500/30', text: 'text-emerald-400', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
@@ -150,6 +187,9 @@ const toastConfig = {
             <title>Secure Password Generator — Create Strong Random Passwords | FluxMedia</title>
             <meta name="description" content="Generate strong, secure, and random passwords instantly. Uses browser-side cryptography for maximum privacy. Customizable length, symbols, and one-click copy." />
             <meta name="keywords" content="password generator, secure password, random password, strong password creator, safe password generator, password generator online, cryptographically secure password" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             
             <!-- Open Graph / Facebook -->
             <meta property="og:type" content="website" />

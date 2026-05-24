@@ -4,29 +4,59 @@ import { Head } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 // Programmatic JSON-LD Injection
-let ldScript = null;
+const seoScripts = [];
 onMounted(() => {
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        'name': 'FluxMedia Base64 Encoder & Decoder',
-        'url': 'https://fluxmedia.space/tools/base64',
-        'description': 'Instantly encode or decode text to Base64 formatting right in your browser. Fast, secure, and 100% browser-based client-side utility.',
-        'applicationCategory': 'UtilityApplication',
-        'operatingSystem': 'Web',
-        'offers': {
-            '@type': 'Offer',
-            'price': '0',
-            'priceCurrency': 'USD'
-        }
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'Base64 Encoder & Decoder — Free Online Tool',
+            'url': 'https://fluxmedia.space/tools/base64',
+            'description': 'Free online Base64 encoder and decoder. Encode text to Base64 or decode Base64 strings back to readable text instantly, 100% in your browser.',
+            'applicationCategory': 'UtilityApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['Base64 Encode', 'Base64 Decode', 'Unicode Support', 'Real-time Conversion', 'Privacy-First (100% Browser-Side)'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Encode Text to Base64 Online',
+            'description': 'Step-by-step guide to encoding or decoding Base64 strings using FluxMedia Base64 Converter.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Select Mode', 'text': 'Choose "Encode" to convert text to Base64, or "Decode" to convert Base64 back to text.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'Enter Your Text', 'text': 'Type or paste your input text into the input field.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Copy the Result', 'text': 'The converted output appears instantly. Click Copy to copy it to your clipboard.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'What is Base64 encoding?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Base64 is a binary-to-text encoding scheme that converts binary data to ASCII text using 64 characters. It is commonly used in email attachments, data URLs, and API authentication.' } },
+                { '@type': 'Question', 'name': 'Is the Base64 conversion private?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. All encoding and decoding happens entirely in your browser using JavaScript. Nothing is sent to any server.' } },
+                { '@type': 'Question', 'name': 'Does it support Unicode characters?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. FluxMedia Base64 Converter correctly handles Unicode and multi-byte characters.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'Base64 Encoder & Decoder', 'item': 'https://fluxmedia.space/tools/base64' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
     });
-    document.head.appendChild(ldScript);
 });
-onUnmounted(() => {
-    ldScript?.remove();
-});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 
 const mode = ref('encode'); // 'encode' or 'decode'
 const inputText = ref('');
@@ -95,7 +125,8 @@ const clearAll = () => {
             <meta name="description" content="Instantly encode or decode text to Base64 formatting right in your browser. Fast, secure, and privacy-focused utility with 100% client-side execution." />
             <meta name="keywords" content="base64 encoder, base64 decoder, base64 convert, base64 encode online, base64 decode online, base64 translator, free utility, client-side base64" />
             <meta name="author" content="FluxMedia" />
-            <meta name="robots" content="index, follow" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/base64" />
 
             <!-- Open Graph / Facebook -->

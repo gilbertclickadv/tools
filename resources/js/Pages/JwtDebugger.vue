@@ -240,7 +240,7 @@ const loadSampleToken = () => {
 };
 
 // --- Lifecycle ---
-let ldScript = null;
+const seoScripts = [];
 onMounted(() => {
     // Local storage persistence
     const savedToken = localStorage.getItem('fluxmedia_jwt_token');
@@ -252,32 +252,59 @@ onMounted(() => {
 
     generateArchitectToken();
 
-    // SEO structured schema
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Premium Online JWT Debugger & Token Inspector | FluxMedia",
-        "url": "https://fluxmedia.space/tools/jwt",
-        "image": "https://fluxmedia.space/assets/images/fluxmedia_main.webp",
-        "description": "Examine, decode, verify signatures, and generate secure JSON Web Tokens client-side. 100% free and sandboxed inside browser.",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "All",
-        "browserRequirements": "Requires JavaScript.",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        }
-    };
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.text = JSON.stringify(jsonLd);
-    document.head.appendChild(ldScript);
+    // SEO structured schemas
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'JWT Debugger & Token Inspector — Free Online Tool',
+            'url': 'https://fluxmedia.space/tools/jwt',
+            'description': 'Free online JWT debugger and token inspector. Decode JWT headers and payloads, verify HS256 signatures, and generate new tokens entirely in your browser.',
+            'applicationCategory': 'DeveloperApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['JWT Decode', 'HS256 Signature Verification', 'JWT Encoder/Architect', 'Claim Timestamp Translator', 'Browser-side Only'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Decode and Verify a JWT Token Online',
+            'description': 'Step-by-step guide to decoding and verifying a JSON Web Token using FluxMedia JWT Debugger.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Paste Your JWT', 'text': 'Paste your encoded JWT string into the Token Decoder panel.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'View Decoded Claims', 'text': 'The header and payload are decoded instantly with claim translations for exp, iat, and nbf timestamps.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Verify Signature', 'text': 'Enter your HMAC secret to verify the HS256 signature directly in your browser.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'Is JWT decoding safe?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. All JWT decoding and verification happens entirely in your browser. No token data or secrets are sent to any server.' } },
+                { '@type': 'Question', 'name': 'What algorithms does the JWT Debugger support?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'The JWT Debugger supports HS256 signature verification and encoding. Decoding works for all standard JWT formats regardless of algorithm.' } },
+                { '@type': 'Question', 'name': 'Can I generate a JWT token?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Use the Architect (Encoder) tab to edit the header and payload JSON and generate a signed HS256 JWT token instantly.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'JWT Debugger', 'item': 'https://fluxmedia.space/tools/jwt' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
+    });
 });
 
-onUnmounted(() => {
-    ldScript?.remove();
-});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 
 watch(tokenInput, (newVal) => {
     if (newVal) {
@@ -294,7 +321,9 @@ watch(tokenInput, (newVal) => {
             <title>Premium Online JWT Debugger & Token Inspector | FluxMedia</title>
             <meta name="description" content="A state-of-the-art JSON Web Token utility. Decode header and payload claims, translate timestamps dynamically, verify signatures, and sign tokens client-side." />
             <meta name="keywords" content="jwt debugger, json web token, jwt decoder, jwt encoder, verify jwt signature, token architect, hs256 signing, claims translator, epoch expiration, developer tools" />
-            <meta name="robots" content="index, follow" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/jwt" />
         </Head>
 

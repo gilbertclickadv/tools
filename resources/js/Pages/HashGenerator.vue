@@ -61,29 +61,59 @@ const clearInput = () => {
 onMounted(generateHashes);
 
 // Programmatic JSON-LD Injection
-let ldScript = null;
+const seoScripts = [];
 onMounted(() => {
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        'name': 'FluxMedia Cryptographic Hash Generator',
-        'url': 'https://fluxmedia.space/tools/hash-generator',
-        'description': 'Generate cryptographic hashes instantly in your browser. Supports MD5, SHA-1, SHA-256, SHA-384, SHA-512, and SHA-3 with 100% secure client-side execution.',
-        'applicationCategory': 'UtilityApplication',
-        'operatingSystem': 'Web',
-        'offers': {
-            '@type': 'Offer',
-            'price': '0',
-            'priceCurrency': 'USD'
-        }
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'Hash Generator — MD5, SHA-1, SHA-256, SHA-512, SHA-3',
+            'url': 'https://fluxmedia.space/tools/hash-generator',
+            'description': 'Free online cryptographic hash generator. Compute MD5, SHA-1, SHA-256, SHA-384, SHA-512, and SHA-3 hashes instantly in your browser. 100% client-side, private, and secure.',
+            'applicationCategory': 'UtilityApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['MD5', 'SHA-1', 'SHA-256', 'SHA-384', 'SHA-512', 'SHA-3', 'Real-time Hashing', 'Browser-Side Only'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Generate an SHA-256 Hash Online',
+            'description': 'Step-by-step guide to generating a cryptographic hash using FluxMedia Hash Generator.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Enter Your Text', 'text': 'Type or paste the text you want to hash into the input field.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'View All Hashes', 'text': 'MD5, SHA-1, SHA-256, SHA-384, SHA-512, and SHA-3 hashes are computed in real time.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Copy Your Hash', 'text': 'Click the copy button next to any hash to copy it to your clipboard.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'What is the difference between MD5 and SHA-256?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'MD5 produces a 128-bit hash and is faster but no longer cryptographically secure. SHA-256 produces a 256-bit hash and is widely used in security applications including TLS and blockchain.' } },
+                { '@type': 'Question', 'name': 'Is my data safe when using the hash generator?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. All hashing is performed entirely in your browser using JavaScript. Your text never leaves your device.' } },
+                { '@type': 'Question', 'name': 'What is SHA-3?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'SHA-3 is the latest member of the Secure Hash Algorithm family, standardized by NIST in 2015. It uses a different internal structure (Keccak) from SHA-1 and SHA-2.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'Hash Generator', 'item': 'https://fluxmedia.space/tools/hash-generator' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
     });
-    document.head.appendChild(ldScript);
 });
-onUnmounted(() => {
-    ldScript?.remove();
-});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 </script>
 
 <template>
@@ -95,7 +125,8 @@ onUnmounted(() => {
             <meta name="description" content="Generate cryptographic hashes instantly in your browser. Supports MD5, SHA-1, SHA-256, SHA-384, SHA-512, and SHA-3. 100% secure client-side execution." />
             <meta name="keywords" content="hash generator, md5 hash, sha256 generator, sha512 generator, cryptographic hash, online sha256, md5 converter, sha3 generator, free hash tool, secure hashing" />
             <meta name="author" content="FluxMedia" />
-            <meta name="robots" content="index, follow" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/hash-generator" />
 
             <!-- Open Graph / Facebook -->

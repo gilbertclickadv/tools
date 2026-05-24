@@ -547,7 +547,7 @@ const copyText = async (text, formatName) => {
 };
 
 // --- Programmatic JSON-LD Injection ---
-let ldScript = null;
+const seoScripts = [];
 onMounted(() => {
     // Read saved colors from localStorage
     const saved = localStorage.getItem('fluxmedia_saved_colors');
@@ -602,28 +602,59 @@ onMounted(() => {
         }
     }
 
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        'name': 'FluxMedia Color Picker & Palette Designer',
-        'url': 'https://fluxmedia.space/tools/color-picker',
-        'description': 'Instantly pick colors, convert between HEX/RGB/HSL/HSV/CMYK, match WCAG contrast ratios, and generate dynamic complementary, triadic, and analogous color palettes.',
-        'applicationCategory': 'UtilityApplication',
-        'operatingSystem': 'Web',
-        'offers': {
-            '@type': 'Offer',
-            'price': '0',
-            'priceCurrency': 'USD'
-        }
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'Color Picker & Palette Designer — Free Online Tool',
+            'url': 'https://fluxmedia.space/tools/color-picker',
+            'description': 'Free online color picker and palette designer. Pick colors, convert between HEX, RGB, HSL, HSV, and CMYK formats. Calculate WCAG contrast ratios and generate complementary color harmonies.',
+            'applicationCategory': 'DesignApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['HEX/RGB/HSL/HSV/CMYK Converter', 'WCAG Contrast Checker', 'Color Harmony Generator (Complementary, Analogous, Triadic)', 'Screen Eyedropper API', 'Local & Cloud Swatch Saving'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Pick Colors and Check Contrast Online',
+            'description': 'Step-by-step guide to using FluxMedia Color Picker to select colors and check WCAG accessibility.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Select a Color', 'text': 'Use the hue, saturation, and lightness sliders to pick a color, or type a HEX/RGB value directly.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'View Conversions', 'text': 'Instantly see and copy your color converted into HEX, RGB, HSL, HSV, and CMYK formats.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Check WCAG Contrast', 'text': 'Click the WCAG Contrast tab to verify accessibility ratios for text and background colors.' },
+                { '@type': 'HowToStep', 'position': 4, 'name': 'Generate Harmonies', 'text': 'Switch to the Color Harmonies tab to discover complementary, analogous, and triadic palettes based on your selected color.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'Can I pick a color from my screen?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes! If you are using a supported browser (like Chrome or Edge), click the "Screen Eyedropper" button to select any color visible on your monitor.' } },
+                { '@type': 'Question', 'name': 'Are my color swatches saved?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Guests have their swatches saved to browser local storage. Logged-in users will have their swatches securely synced to the cloud.' } },
+                { '@type': 'Question', 'name': 'What is the WCAG Contrast Checker?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'The WCAG checker calculates the visual contrast ratio between a text color and background color to ensure your design meets web accessibility standards (AA or AAA).' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'Color Picker', 'item': 'https://fluxmedia.space/tools/color-picker' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
     });
-    document.head.appendChild(ldScript);
 });
 
-onUnmounted(() => {
-    ldScript?.remove();
-});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 </script>
 
 <template>
@@ -635,7 +666,8 @@ onUnmounted(() => {
             <meta name="description" content="Pick, convert, and design professional palettes. Supports HEX, RGB, HSL, HSV, and CMYK formats. Built-in WCAG 2.1 contrast ratios and dynamic harmonizer." />
             <meta name="keywords" content="color picker, color converter, rgb to hex, hex to hsl, contrast checker, wcag ratio, color harmony, complementary colors, design palette generator, eyedropper tool" />
             <meta name="author" content="FluxMedia" />
-            <meta name="robots" content="index, follow" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/color-picker" />
 
             <!-- Open Graph / Facebook -->

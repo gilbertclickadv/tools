@@ -1,7 +1,7 @@
 <script setup>
 import { Head, usePage } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
 import QrcodeVue from 'qrcode.vue';
 
@@ -142,6 +142,63 @@ const applyThemePreset = (fg, bg) => {
     qrForeground.value = fg;
     qrBackground.value = bg;
 };
+
+// SEO: Inject structured data
+const seoScripts = [];
+onMounted(() => {
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'QR Code Generator — Free Custom QR Codes',
+            'url': 'https://fluxmedia.space/tools/qr-code',
+            'applicationCategory': 'UtilitiesApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'description': 'Free online QR code generator. Create custom QR codes for URLs, WiFi, email, SMS, and phone numbers. Download high-quality PNG or SVG files instantly.',
+            'featureList': ['URL QR Code', 'WiFi QR Code', 'Email QR Code', 'SMS QR Code', 'Phone QR Code', 'Custom Colors', 'PNG Export', 'SVG Export', 'Error Correction Levels'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Create a Custom QR Code Online for Free',
+            'description': 'Step-by-step guide to generating a custom QR code using FluxMedia QR Code Generator.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Choose QR Type', 'text': 'Select the type of QR code: URL, Text, Email, Phone, WiFi, or SMS.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'Enter Your Content', 'text': 'Type your URL, text, or connection details into the form.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Customize Design', 'text': 'Adjust colors, size, margin, and error correction level to match your brand.' },
+                { '@type': 'HowToStep', 'position': 4, 'name': 'Download QR Code', 'text': 'Click PNG or SVG to download your custom QR code for free.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'Can I create a QR code for WiFi?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Select the WiFi tab, enter your network name (SSID) and password, and your WiFi QR code is generated instantly.' } },
+                { '@type': 'Question', 'name': 'What formats can I download the QR code in?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'You can download your QR code as PNG (raster) or SVG (vector) for high-quality print use.' } },
+                { '@type': 'Question', 'name': 'Is the QR code generator free?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, 100% free with no account required and no limits on how many QR codes you generate.' } },
+                { '@type': 'Question', 'name': 'Can I customize the QR code colors?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Absolutely. You can set custom foreground and background colors to match your brand identity.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'QR Code Generator', 'item': 'https://fluxmedia.space/tools/qr-code' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
+    });
+});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 </script>
 
 <template>
@@ -153,7 +210,8 @@ const applyThemePreset = (fg, bg) => {
             <meta name="description" content="Generate custom QR codes for free. Create styled QR codes for links, WiFi, Email, SMS, and phone numbers with custom colors. Download high-quality PNG or SVG vectors instantly." />
             <meta name="keywords" content="qr code generator, free qr code, custom qr code, qr code wifi, qr code email, svg qr code, png qr code, fluxmedia qr, design qr code, high quality qr code, dynamic qr code generator" />
             <meta name="author" content="FluxMedia" />
-            <meta name="robots" content="index, follow" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/qr-code" />
 
             <!-- Open Graph / Facebook -->

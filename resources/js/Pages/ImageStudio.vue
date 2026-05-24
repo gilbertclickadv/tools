@@ -372,6 +372,63 @@ const executeDeleteImage = async () => {
         alert(err.response?.data?.message || 'Error occurred while trying to delete the image.');
     }
 };
+
+// SEO: Inject structured data
+const seoScripts = [];
+onMounted(() => {
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'Image Studio — Free Online Image Converter & Compressor',
+            'url': 'https://fluxmedia.space/tools/image',
+            'applicationCategory': 'MultimediaApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'description': 'Free online image converter and compressor. Convert images to WebP, AVIF, PNG, JPEG, GIF, and ICO. Resize, crop, adjust brightness, and blur images directly in your browser.',
+            'featureList': ['Convert to WebP', 'Convert to AVIF', 'PNG to JPEG', 'Image Resize', 'Image Crop', 'Brightness Adjustment', 'Blur Filter', 'Greyscale Filter', 'Batch Processing'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Convert an Image to WebP Online for Free',
+            'description': 'Step-by-step guide to converting any image (JPEG, PNG, GIF) to WebP format using FluxMedia Image Studio.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Upload Your Image', 'text': 'Click the upload area or drag and drop your image file. Supported formats: JPEG, PNG, WebP, GIF, AVIF, ICO.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'Select Convert Tab', 'text': 'Click the "Convert" tab in the processing mode selector.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Choose WebP Format', 'text': 'Select "webp" from the target format options and set your desired quality.' },
+                { '@type': 'HowToStep', 'position': 4, 'name': 'Convert & Download', 'text': 'Click "Convert & Optimize" and download your converted WebP image.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'What image formats can I convert to with FluxMedia Image Studio?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'You can convert to WebP, AVIF, JPEG, PNG, GIF, and ICO formats.' } },
+                { '@type': 'Question', 'name': 'Is the image converter free?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, FluxMedia Image Studio is 100% free with no limits and no account required.' } },
+                { '@type': 'Question', 'name': 'Are my images uploaded to a server?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, images are processed on our secure server and automatically deleted after a short retention period.' } },
+                { '@type': 'Question', 'name': 'Can I resize and crop images too?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. The Image Studio supports Convert, Resize, Crop, and Adjust operations including brightness and blur filters.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'Image Studio', 'item': 'https://fluxmedia.space/tools/image' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
+    });
+});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 </script>
 
 <template>
@@ -383,7 +440,8 @@ const executeDeleteImage = async () => {
             <meta name="description" content="Free online image studio. Convert, resize, crop, and adjust JPEG, PNG, WebP, GIF, and AVIF. Secure browser-side processing, no signup required." />
             <meta name="keywords" content="image converter, image compressor, online image optimizer, webp converter, png to webp, jpeg optimizer, free image tools, convert to avif, crop image online, resize image free" />
             <meta name="author" content="FluxMedia" />
-            <meta name="robots" content="index, follow" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/image" />
 
             <!-- Open Graph / Facebook -->

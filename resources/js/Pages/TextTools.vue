@@ -253,7 +253,7 @@ const resetToOriginal = () => {
 };
 
 // --- Lifecycle & Persistence ---
-let ldScript = null;
+const seoScripts = [];
 
 onMounted(() => {
     // Load local storage draft
@@ -262,32 +262,60 @@ onMounted(() => {
         text.value = draft;
     }
 
-    // Inject SEO JSON-LD
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Text Utility & Analysis Suite | FluxMedia",
-        "url": "https://fluxmedia.space/tools/text",
-        "image": "https://fluxmedia.space/assets/images/fluxmedia_main.webp",
-        "description": "Premium text analysis, case conversion, HTML tag stripping, and regex-powered find & replace tools with persistent local storage autosave.",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "All",
-        "browserRequirements": "Requires JavaScript. EyeDropper support optional.",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        }
-    };
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.text = JSON.stringify(jsonLd);
-    document.head.appendChild(ldScript);
+    // Inject SEO structured schemas
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'Text Tools & Analysis Suite — Free Online Text Editor',
+            'url': 'https://fluxmedia.space/tools/text',
+            'description': 'Free online text tools suite. Count words, characters, sentences, and paragraphs, convert cases, strip HTML, run regex find & replace, and analyze word density in real-time.',
+            'applicationCategory': 'UtilityApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['Word Count', 'Character Count', 'Sentence & Paragraph Count', 'Case Conversion (UPPER, lower, Title, Sentence, camelCase, PascalCase)', 'Slugify & snake_case', 'Strip HTML Tags', 'Word Density Analysis', 'Regex Find & Replace', 'Local Storage Autosave'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Use Online Text Analysis and Transformation Tools',
+            'description': 'Step-by-step guide to using FluxMedia Text Tools Suite.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Paste or Type Text', 'text': 'Paste or type your text into the interactive editor. It is autosaved to your browser automatically.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'View Real-time Metrics', 'text': 'See your character count, word count, sentence count, reading time, and more update live.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Transform Text', 'text': 'Use the Modifiers tab to convert case, slugify, strip HTML tags, or reverse text.' },
+                { '@type': 'HowToStep', 'position': 4, 'name': 'Find & Replace with Regex', 'text': 'Switch to the Regex tab to run pattern-based find & replace with optional case sensitivity.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'Is my text stored on a server?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'No. All text processing happens in your browser. Drafts are saved to your browser local storage only, and never sent to any server.' } },
+                { '@type': 'Question', 'name': 'What case conversions are available?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'UPPERCASE, lowercase, Title Case, Sentence case, slugify-text, snake_case, camelCase, and PascalCase.' } },
+                { '@type': 'Question', 'name': 'Can I use regular expressions in Find & Replace?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Toggle the Use Regex option in the Regex tab to use full JavaScript regular expression patterns with optional case sensitivity.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'Text Tools', 'item': 'https://fluxmedia.space/tools/text' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
+    });
 });
 
-onUnmounted(() => {
-    ldScript?.remove();
-});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 
 watch(text, (newVal) => {
     if (newVal) {
@@ -304,7 +332,9 @@ watch(text, (newVal) => {
             <title>Free Online Text Tool Suite & Word Count Analyzer | FluxMedia</title>
             <meta name="description" content="A premium real-time text manipulation dashboard. Count characters, convert cases, strip HTML tags, run regex find & replace, and analyze word density in browser." />
             <meta name="keywords" content="text tool, word count, character counter, regex find replace, title case, slugify, HTML stripper, duplicate lines, string editor, side-by-side diff" />
-            <meta name="robots" content="index, follow" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/text" />
 
             <!-- Open Graph -->

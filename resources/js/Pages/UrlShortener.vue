@@ -7,24 +7,61 @@ import { usePage } from '@inertiajs/vue3';
 
 defineProps({ canLogin: Boolean, canRegister: Boolean });
 
-// Inject JSON-LD structured data programmatically (can't use <script> inside Vue template)
-let ldScript = null;
+// Inject JSON-LD structured data programmatically
+const seoScripts = [];
 onMounted(() => {
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        name: 'FluxMedia URL Shortener',
-        url: 'https://fluxmedia.space/tools/url-shortener',
-        description: 'Free URL shortener tool to shorten long links, create custom aliases, and track click analytics.',
-        applicationCategory: 'UtilityApplication',
-        operatingSystem: 'Web',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'URL Shortener — Free Short Link Generator',
+            'url': 'https://fluxmedia.space/tools/url-shortener',
+            'description': 'Free URL shortener tool. Shorten long URLs into clean, trackable short links with custom aliases. No signup required.',
+            'applicationCategory': 'UtilityApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['Custom Aliases', 'Click Tracking', 'No Account Required', '301 Redirect', 'Instant Short Links'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Shorten a URL Online for Free',
+            'description': 'Step-by-step guide to shortening a long URL using FluxMedia URL Shortener.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Paste Your Long URL', 'text': 'Paste your long URL into the input field.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'Add Optional Alias', 'text': 'Optionally enter a custom alias like "my-link" for a branded short URL.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Click Shorten', 'text': 'Click the Shorten button to generate your short link instantly.' },
+                { '@type': 'HowToStep', 'position': 4, 'name': 'Copy & Share', 'text': 'Copy your short URL and share it anywhere.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'Is the URL shortener free?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, completely free with no account needed and no limits.' } },
+                { '@type': 'Question', 'name': 'Can I create custom short URL aliases?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Type your desired alias in the custom alias field and your short link will use that custom slug.' } },
+                { '@type': 'Question', 'name': 'Can I track how many clicks my short link gets?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Click counts are tracked and shown in your session links list.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'URL Shortener', 'item': 'https://fluxmedia.space/tools/url-shortener' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
     });
-    document.head.appendChild(ldScript);
 });
-onUnmounted(() => { ldScript?.remove(); });
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 
 const page    = usePage();
 const myLinks = ref(page.props.myLinks || []);
@@ -150,7 +187,8 @@ const toastConfig = {
             <meta name="description" content="Free URL shortener tool. Shorten long links instantly, create custom branded aliases, and track click analytics. No signup or account required. Fast, simple, and 100% free." />
             <meta name="keywords" content="url shortener, free url shortener, shorten link, link shortener, custom short url, bitly alternative, short link generator, url shortener no signup, create short link, link tracker, short url creator, tiny url, free link shortener online" />
             <meta name="author" content="FluxMedia" />
-            <meta name="robots" content="index, follow" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/url-shortener" />
 
             <!-- Open Graph -->

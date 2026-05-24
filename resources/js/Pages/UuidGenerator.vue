@@ -172,22 +172,60 @@ const confirmDelete = async () => {
 };
 
 // ── SEO & Layout ─────────────────────────────────────────────────────────────
-let ldScript = null;
+const seoScripts = [];
 onMounted(() => {
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        name: 'FluxMedia UUID Generator',
-        url: 'https://fluxmedia.space/tools/uuid-generator',
-        description: 'Generate unique UUIDs (v1, v4) online. Bulk generation, custom versions, and instant copy.',
-        applicationCategory: 'UtilityApplication',
-        operatingSystem: 'Web',
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'UUID Generator — Free Bulk UUID/GUID Creator',
+            'url': 'https://fluxmedia.space/tools/uuid-generator',
+            'description': 'Generate RFC-compliant UUID v1 and v4 identifiers in bulk. Free online UUID generator with history tracking and export as JSON, CSV, or list.',
+            'applicationCategory': 'UtilityApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['UUID v4 (Random)', 'UUID v1 (Time-based)', 'Bulk Generation (1-100)', 'JSON Export', 'CSV Export', 'List Export', 'History Tracking'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Generate a UUID Online for Free',
+            'description': 'Step-by-step guide to generating UUID identifiers using FluxMedia UUID Generator.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Select Version', 'text': 'Choose UUID v4 (random) or UUID v1 (time-based) from the version dropdown.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'Set Quantity', 'text': 'Enter how many UUIDs you need (1 to 100).' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Generate UUIDs', 'text': 'Click Generate UUIDs to create your identifiers instantly.' },
+                { '@type': 'HowToStep', 'position': 4, 'name': 'Copy or Export', 'text': 'Copy individual UUIDs or export the entire list as JSON, CSV, or plain text.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'What is the difference between UUID v1 and UUID v4?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'UUID v1 is time-based and encodes the current timestamp. UUID v4 is randomly generated. For most applications, UUID v4 is preferred for privacy and security.' } },
+                { '@type': 'Question', 'name': 'Is the UUID generator free?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, completely free with no account required.' } },
+                { '@type': 'Question', 'name': 'Are the UUIDs unique?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. UUIDs are generated using RFC 4122-compliant algorithms, making collisions statistically impossible for practical applications.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'UUID Generator', 'item': 'https://fluxmedia.space/tools/uuid-generator' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
     });
-    document.head.appendChild(ldScript);
 });
-onUnmounted(() => { ldScript?.remove(); });
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 
 const toastConfig = {
     success: { bg: 'bg-emerald-500/10 border-emerald-500/30', text: 'text-emerald-400', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
@@ -203,6 +241,9 @@ const toastConfig = {
             <title>Bulk UUID Generator — Online v1 & v4 UUID/GUID Creator | FluxMedia</title>
             <meta name="description" content="Generate RFC-compliant UUIDs (v1 time-based & v4 random) in bulk. Secure, instant, and privacy-first. Copy as JSON, CSV, or list. The ultimate tool for developers." />
             <meta name="keywords" content="uuid generator, bulk uuid, guid generator, v4 uuid online, v1 uuid generator, unique id generator, rfc compliant uuid, developer tools" />
+            <meta name="author" content="FluxMedia" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             
             <!-- Open Graph / Facebook -->
             <meta property="og:type" content="website" />

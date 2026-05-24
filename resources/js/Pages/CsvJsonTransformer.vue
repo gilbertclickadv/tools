@@ -211,23 +211,86 @@ const highlightedOutput = computed(() => {
 });
 
 // ─── Lifecycle ────────────────────────────────────────────────────────
-let ldScript = null;
+const seoScripts = [];
 onMounted(() => {
-  ldScript = document.createElement('script');
-  ldScript.type = 'application/ld+json';
-  ldScript.textContent = JSON.stringify({
-    '@context': 'https://schema.org', '@type': 'WebApplication',
-    name: 'FluxMedia CSV ↔ JSON Converter',
-    url: 'https://fluxmedia.space/tools/csv-json',
-    description: 'Free browser-based CSV to JSON and JSON to CSV converter.',
-    applicationCategory: 'DeveloperApplication', operatingSystem: 'Web',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  const schemas = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      'name': 'CSV ↔ JSON Converter — Free Online Transformer',
+      'url': 'https://fluxmedia.space/tools/csv-json',
+      'description': 'Free online CSV to JSON and JSON to CSV converter. Bidirectional, instant, and 100% browser-side. Auto-detects delimiters, type-coerces values, and supports file upload and download.',
+      'applicationCategory': 'DeveloperApplication',
+      'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+      'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+      'featureList': ['CSV to JSON', 'JSON to CSV', 'Auto Delimiter Detection', 'Type Coercion', 'File Upload', 'Download Output', 'Swap Sides', 'JSON Syntax Highlighting'],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      'name': 'How to Convert CSV to JSON Online for Free',
+      'description': 'Step-by-step guide to converting CSV data to JSON using FluxMedia CSV↔JSON Transformer.',
+      'totalTime': 'PT1M',
+      'step': [
+        { '@type': 'HowToStep', 'position': 1, 'name': 'Select Mode', 'text': 'Choose CSV → JSON or JSON → CSV using the mode toggle buttons.' },
+        { '@type': 'HowToStep', 'position': 2, 'name': 'Paste or Upload Data', 'text': 'Paste your data into the input pane, or click Upload to load a .csv or .json file.' },
+        { '@type': 'HowToStep', 'position': 3, 'name': 'Configure Options', 'text': 'Set your delimiter (auto-detect, comma, semicolon, or tab) and toggle first-row headers.' },
+        { '@type': 'HowToStep', 'position': 4, 'name': 'Copy or Download', 'text': 'Copy the output to clipboard or download it as a file. Use Swap to reverse the conversion instantly.' },
+      ],
+      {
+          '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          'name': 'CSV ↔ JSON Converter — Free Online Data Transformer',
+          'url': 'https://fluxmedia.space/tools/csv-json',
+          'description': 'Free browser-based CSV to JSON and JSON to CSV converter. Instantly parse and format data with custom delimiters, JSON indentation, and structural syntax highlighting.',
+          'applicationCategory': 'DeveloperApplication',
+          'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+          'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+          'featureList': ['CSV to JSON', 'JSON to CSV', 'Custom Delimiters (comma, tab, semicolon)', 'JSON Indentation Formatting', 'File Upload (.csv, .json)', 'Data Privacy (100% Client-side)'],
+      },
+      {
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          'name': 'How to Convert CSV to JSON (or JSON to CSV) Online',
+          'description': 'Step-by-step guide to transforming data between CSV and JSON formats using FluxMedia.',
+          'totalTime': 'PT1M',
+          'step': [
+              { '@type': 'HowToStep', 'position': 1, 'name': 'Select Conversion Mode', 'text': 'Choose either "CSV → JSON" or "JSON → CSV" using the toggle buttons at the top.' },
+              { '@type': 'HowToStep', 'position': 2, 'name': 'Input Data', 'text': 'Paste your raw data into the left input panel, or use the Upload button to load a file.' },
+              { '@type': 'HowToStep', 'position': 3, 'name': 'Configure Settings', 'text': 'Adjust the delimiter, JSON indent size, and header row settings via the configuration bar.' },
+              { '@type': 'HowToStep', 'position': 4, 'name': 'Copy or Download', 'text': 'The transformed data appears instantly in the right panel. Click Copy or Download to save your results.' },
+          ],
+      },
+      {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          'mainEntity': [
+              { '@type': 'Question', 'name': 'Is my data safe when using this converter?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. All data transformation occurs entirely in your web browser. Your CSV or JSON data is never uploaded to any server, ensuring 100% privacy.' } },
+              { '@type': 'Question', 'name': 'Does it support TSV (Tab-Separated Values)?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. You can select "tab \\t" from the Delimiter dropdown, or use "auto-detect" to automatically handle TSV files.' } },
+              { '@type': 'Question', 'name': 'What is the file size limit?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Because it runs in the browser, the limit depends on your devices memory. Typically, files up to a few megabytes process instantly without issue.' } },
+          ],
+      },
+      {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          'itemListElement': [
+              { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+              { '@type': 'ListItem', 'position': 2, 'name': 'CSV to JSON Transformer', 'item': 'https://fluxmedia.space/tools/csv-json' },
+          ],
+      },
+  ];
+  schemas.forEach(schema => {
+      const s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.textContent = JSON.stringify(schema);
+      document.head.appendChild(s);
+      seoScripts.push(s);
   });
-  document.head.appendChild(ldScript);
+  
   const saved = localStorage.getItem(`fm_csvjson_${mode.value}`);
   if (saved) inputText.value = saved;
 });
-onUnmounted(() => ldScript?.remove());
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 </script>
 
 <template>
@@ -235,7 +298,10 @@ onUnmounted(() => ldScript?.remove());
     <Head>
       <title>CSV ↔ JSON Converter — Free, Private & Instant | FluxMedia</title>
       <meta name="description" content="Convert CSV to JSON or JSON to CSV instantly in your browser. 100% private — no data leaves your device." />
-      <meta name="robots" content="index, follow" />
+      <meta name="keywords" content="csv to json, json to csv, online data converter, parse csv, format json, tsv to json, json to excel, free data tools, private csv converter" />
+      <meta name="author" content="FluxMedia" />
+      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
       <link rel="canonical" href="https://fluxmedia.space/tools/csv-json" />
       <meta property="og:type" content="website" />
       <meta property="og:title" content="CSV ↔ JSON Converter — Free & Private | FluxMedia" />

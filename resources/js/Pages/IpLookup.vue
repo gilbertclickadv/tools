@@ -309,23 +309,56 @@ onMounted(() => {
     detectYourIPs();
 
     // Inject JSON-LD structured data
-    ldScript = document.createElement('script');
-    ldScript.type = 'application/ld+json';
-    ldScript.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        'name': 'FluxMedia IP Lookup & Geolocation',
-        'url': 'https://fluxmedia.space/tools/ip-lookup',
-        'description': 'Discover instant geolocation, ISP details, timezone coordinates, and currency exchange rates for any IP address with our high-speed lookup engine.',
-        'applicationCategory': 'UtilityApplication',
-        'operatingSystem': 'Web',
-        'offers': {
-            '@type': 'Offer',
-            'price': '0',
-            'priceCurrency': 'USD'
-        }
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'IP Lookup & Geolocation — Free IP Address Intelligence',
+            'url': 'https://fluxmedia.space/tools/ip-lookup',
+            'description': 'Free IP address lookup tool. Discover geolocation, ISP, ASN, timezone, and currency exchange rates for any IPv4 or IPv6 address instantly.',
+            'applicationCategory': 'UtilityApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['IP Geolocation', 'ISP Lookup', 'ASN Lookup', 'IPv6 Support', 'Currency Exchange Rates', 'Interactive Map', 'No Account Required'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Look Up an IP Address Location Online',
+            'description': 'Step-by-step guide to looking up geolocation and network details for any IP address using FluxMedia IP Lookup.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Enter IP Address', 'text': 'Type or paste an IPv4 or IPv6 address into the search field, or leave blank to look up your own IP.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'Click Analyze Route', 'text': 'Click the Analyze Route button to retrieve geolocation data.' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'View Results', 'text': 'Inspect country, city, ISP, ASN, timezone, coordinates, and currency information.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'What is my IP address?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Your IP address is automatically detected and displayed when you visit the IP Lookup tool at fluxmedia.space/tools/ip-lookup.' } },
+                { '@type': 'Question', 'name': 'Can I look up any IP address?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Enter any IPv4 or IPv6 address to retrieve its geolocation, ISP, ASN, and network details.' } },
+                { '@type': 'Question', 'name': 'Is the IP lookup tool free?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, completely free with no account required.' } },
+                { '@type': 'Question', 'name': 'Does it support IPv6?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. FluxMedia IP Lookup supports both IPv4 and IPv6 addresses and dual-stack detection.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'IP Lookup', 'item': 'https://fluxmedia.space/tools/ip-lookup' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        ldScript = s; // reuse ldScript variable for cleanup compat
     });
-    document.head.appendChild(ldScript);
 });
 
 onUnmounted(() => {
@@ -343,7 +376,8 @@ onUnmounted(() => {
             <meta name="description" content="Discover instant geolocation, ISP details, timezone coordinates, and currency exchange rates for any IP address with our high-speed lookup engine." />
             <meta name="keywords" content="ip lookup, ip geolocation, find ip address, my ip address, track ip, ip details, autonomous system number, asn lookup, ip location finder, free network tool" />
             <meta name="author" content="FluxMedia" />
-            <meta name="robots" content="index, follow" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/ip-lookup" />
 
             <!-- Open Graph / Facebook -->
