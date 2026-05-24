@@ -111,7 +111,7 @@ onMounted(() => {
         'name': 'FluxMedia Free Online Tools',
         'description': 'A curated list of free online tools for developers and creators.',
         'url': 'https://fluxmedia.space',
-        'numberOfItems': 14,
+        'numberOfItems': 15,
         'itemListElement': [
             { '@type': 'ListItem', 'position': 1, 'name': 'Image Studio — Convert, Resize & Compress Images', 'url': 'https://fluxmedia.space/tools/image', 'description': 'Free online image converter and compressor. Convert to WebP, AVIF, PNG, JPEG, GIF, ICO. Resize, crop, and adjust images instantly.' },
             { '@type': 'ListItem', 'position': 2, 'name': 'QR Code Generator', 'url': 'https://fluxmedia.space/tools/qr-code', 'description': 'Generate custom QR codes for URLs, WiFi, email, SMS, phone, and plain text. Download as PNG or SVG.' },
@@ -127,6 +127,7 @@ onMounted(() => {
             { '@type': 'ListItem', 'position': 12, 'name': 'Text Tools', 'url': 'https://fluxmedia.space/tools/text', 'description': 'Word count, character count, case converter, remove duplicates, and more text utilities.' },
             { '@type': 'ListItem', 'position': 13, 'name': 'Regex Tester & Explainer', 'url': 'https://fluxmedia.space/tools/regex', 'description': 'Test and visualize regular expression patterns with real-time match highlighting and explanations.' },
             { '@type': 'ListItem', 'position': 14, 'name': 'CSV to JSON Converter', 'url': 'https://fluxmedia.space/tools/csv-json', 'description': 'Convert CSV spreadsheet data to formatted JSON instantly. Supports custom delimiters.' },
+            { '@type': 'ListItem', 'position': 15, 'name': 'AI Background Remover', 'url': 'https://fluxmedia.space/tools/ai-background-remover', 'description': 'Remove image backgrounds instantly with AI. Download transparent PNGs.' },
         ],
     });
     document.head.appendChild(itemListScript);
@@ -171,7 +172,7 @@ onUnmounted(() => {
 const siteUrl = 'https://fluxmedia.space';
 const siteName = 'FluxMedia';
 const siteTitle = 'FluxMedia — Free Online Tools for Creators & Developers';
-const siteDescription = 'Convert images, generate QR codes, shorten URLs, create passwords, encode Base64, hash strings, and more. 8+ free tools, no account needed, no limits. Fast, private, and built for everyone.';
+const siteDescription = 'Convert images, generate QR codes, shorten URLs, create passwords, encode Base64, hash strings, and more. 15+ free tools, no account needed, no limits. Fast, private, and built for everyone.';
 const ogImage = `${siteUrl}/assets/images/fluxmedia_og.webp`;
 
 const categories = [
@@ -417,8 +418,8 @@ const iconPaths = {
 };
 
 const stats = [
-    { value: '16', label: 'Total Tools' },
-    { value: '14', label: 'Live Now' },
+    { value: '17', label: 'Total Tools' },
+    { value: '15', label: 'Live Now' },
     { value: '100%', label: 'Free Forever' },
     { value: '0', label: 'Sign-up Needed' },
 ];
@@ -637,14 +638,14 @@ const stats = [
                     <p class="text-[11px] leading-relaxed text-gray-500">No ads, no account required, no usage limits. Built for speed — most tools run instantly in your browser.</p>
                 </div>
 
-                <!-- 14 Tools in One -->
+                <!-- 15 Tools in One -->
                 <div class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-5 text-center">
                     <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-sky-400/10">
                         <svg class="h-5 w-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
                         </svg>
                     </div>
-                    <h3 class="mb-1.5 text-[13px] font-bold text-white">14 Tools in One Place</h3>
+                    <h3 class="mb-1.5 text-[13px] font-bold text-white">15 Tools in One Place</h3>
                     <p class="text-[11px] leading-relaxed text-gray-500">Image processing, encoding, network utilities, generators, and developer tools — all under one roof, always expanding.</p>
                 </div>
             </div>
