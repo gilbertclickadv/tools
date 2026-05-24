@@ -205,6 +205,62 @@ const resetWorkspace = () => {
     processError.value = null;
     processingMode.value = 'smooth';
 };
+
+// SEO Structured Data Injection
+const seoScripts = [];
+onMounted(() => {
+    const schemas = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            'name': 'AI Background Remover — Free Image Cutout Tool',
+            'url': 'https://fluxmedia.space/tools/ai-background-remover',
+            'description': 'Free online AI background remover. Instantly erase image backgrounds with high precision using the RMBG-1.4 model and download transparent PNGs.',
+            'applicationCategory': 'MultimediaApplication',
+            'operatingSystem': 'Web, Windows, macOS, Linux, Android, iOS',
+            'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+            'featureList': ['Instant AI Background Removal', 'High-Precision Edge Detection', 'Download Transparent PNG', 'Drag & Drop Interface', '100% Free'],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': 'How to Remove the Background from an Image',
+            'description': 'Step-by-step guide to removing image backgrounds online using FluxMedia.',
+            'totalTime': 'PT1M',
+            'step': [
+                { '@type': 'HowToStep', 'position': 1, 'name': 'Upload Image', 'text': 'Drag and drop your image (JPEG, PNG, WebP) into the upload area.' },
+                { '@type': 'HowToStep', 'position': 2, 'name': 'Select Optimization Strategy', 'text': 'Choose Smooth (for portraits), Sharp (for products), or Text (to preserve badges).' },
+                { '@type': 'HowToStep', 'position': 3, 'name': 'Remove Background', 'text': 'Click "Execute AI Background Removal" and wait a few seconds.' },
+                { '@type': 'HowToStep', 'position': 4, 'name': 'Download PNG', 'text': 'Preview the result using the interactive comparison slider, then download your transparent PNG.' },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': [
+                { '@type': 'Question', 'name': 'Is the background remover completely free?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes! The FluxMedia AI Background Remover is 100% free to use with no account required.' } },
+                { '@type': 'Question', 'name': 'What image formats are supported?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'You can upload PNG, JPEG, WebP, and AVIF files up to 20MB in size.' } },
+                { '@type': 'Question', 'name': 'How does the background removal work?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'We use the highly accurate RMBG-1.4 AI model to analyze the image, detect the primary subjects, and instantly erase the background.' } },
+            ],
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://fluxmedia.space' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'AI Background Remover', 'item': 'https://fluxmedia.space/tools/ai-background-remover' },
+            ],
+        },
+    ];
+    schemas.forEach(schema => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(schema);
+        document.head.appendChild(s);
+        seoScripts.push(s);
+    });
+});
+onUnmounted(() => seoScripts.forEach(s => s.remove()));
 </script>
 
 <template>
@@ -214,7 +270,8 @@ const resetWorkspace = () => {
             <meta name="description" content="Remove backgrounds from images instantly with AI. Completely free, high-speed, secure background segmentation. Download transparent PNGs. No login required." />
             <meta name="keywords" content="background remover, remove background, ai background remover, background eraser, transparent background, background removal free, image background remover, transparent png generator, cut out image background" />
             <meta name="author" content="FluxMedia" />
-            <meta name="robots" content="index, follow" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
             <link rel="canonical" href="https://fluxmedia.space/tools/ai-background-remover" />
         </Head>
 

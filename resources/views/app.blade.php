@@ -92,6 +92,7 @@
                     <li><a href="/tools/url-shortener" style="color: #3b82f6;">High-Speed URL Shortener</a></li>
                     <li><a href="/tools/uuid-generator" style="color: #3b82f6;">RFC 4122 UUID Generator</a></li>
                     <li><a href="/tools/password-generator" style="color: #3b82f6;">Secure Password & Passphrase Generator</a></li>
+                    <li><a href="/tools/ai-background-remover" style="color: #3b82f6;">AI Image Background Remover (RMBG-1.4)</a></li>
                 </ul>
             </div>
         </noscript>

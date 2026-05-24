@@ -31,6 +31,7 @@ class SitemapController extends Controller
             '/tools/url-shortener',
             '/tools/uuid-generator',
             '/tools/password-generator',
+            '/tools/ai-background-remover',
             '/privacy',
             '/terms',
         ];
